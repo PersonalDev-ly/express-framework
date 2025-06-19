@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { Auth, Controller, Post } from "../decorators";
 import { UserLoginDTO, UserRegisterDTO } from "../models/user.model";
+import { TokenService } from "../services/token.service";
 import { UserService } from "../services/user.service";
 import { JwtUtil } from "../utils/jwt.util";
 import { logger } from "../utils/logger";
@@ -33,7 +34,7 @@ export class AuthController {
       });
 
       // 保存刷新令牌
-      UserService.saveRefreshToken(user.id, refreshToken);
+      await TokenService.saveRefreshToken(user.id, refreshToken);
 
       // 返回结果
       return res.status(201).json({
@@ -90,7 +91,7 @@ export class AuthController {
       });
 
       // 保存刷新令牌
-      UserService.saveRefreshToken(user.id, refreshToken);
+      await TokenService.saveRefreshToken(user.id, refreshToken);
 
       // 返回结果
       return res.status(200).json({
@@ -138,7 +139,11 @@ export class AuthController {
       }
 
       // 验证刷新令牌是否与存储的一致
-      if (!UserService.validateRefreshToken(user.id, refreshToken)) {
+      const isValid = await TokenService.validateRefreshToken(
+        user.id,
+        refreshToken
+      );
+      if (!isValid) {
         return res.status(401).json({ message: "刷新令牌无效" });
       }
 
@@ -149,7 +154,7 @@ export class AuthController {
       });
 
       // 更新存储的刷新令牌
-      UserService.saveRefreshToken(user.id, tokens.refreshToken);
+      await TokenService.saveRefreshToken(user.id, tokens.refreshToken);
 
       // 返回新的令牌对
       return res.status(200).json({
@@ -194,7 +199,7 @@ export class AuthController {
           const expiresAt = decoded.exp * 1000; // 转换为毫秒
 
           // 将令牌添加到黑名单
-          TokenBlacklistUtil.addToBlacklist(token, expiresAt);
+          await TokenBlacklistUtil.addToBlacklist(token, expiresAt);
 
           logger.info(`令牌已添加到黑名单，用户ID: ${userId}`);
         } catch (tokenError) {
@@ -203,7 +208,7 @@ export class AuthController {
       }
 
       // 删除用户的刷新令牌
-      await UserService.removeRefreshToken(userId);
+      await TokenService.removeRefreshToken(userId);
 
       // 返回成功响应
       return res.status(200).json({

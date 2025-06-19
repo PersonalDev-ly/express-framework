@@ -1,12 +1,15 @@
+import { logger } from "./logger";
+import redisClient from "./redis.util";
+
 /**
  * 令牌黑名单工具类
- * 用于管理已吊销的JWT令牌
+ * 使用Redis存储已吊销的JWT令牌，同时保留内存存储作为备份
  */
 export class TokenBlacklistUtil {
-  // 使用Set存储已吊销的令牌，提高查找效率
-  private static blacklistedTokens: Set<string> = new Set();
+  private static readonly KEY_PREFIX = "token:blacklist:";
 
-  // 存储令牌过期时间，用于清理过期的黑名单条目
+  // 内存存储作为备份机制
+  private static blacklistedTokens: Set<string> = new Set();
   private static tokenExpirations: Map<string, number> = new Map();
 
   // 定期清理间隔（毫秒）
@@ -22,12 +25,21 @@ export class TokenBlacklistUtil {
    * @param token JWT令牌
    * @param expiresAt 令牌过期时间戳（毫秒）
    */
-  static addToBlacklist(token: string, expiresAt: number): void {
-    this.blacklistedTokens.add(token);
-    this.tokenExpirations.set(token, expiresAt);
-    console.log(
-      `令牌已添加到黑名单，将在 ${new Date(expiresAt).toISOString()} 过期`
-    );
+  static async addToBlacklist(token: string, expiresAt: number): Promise<void> {
+    try {
+      // 计算令牌剩余有效期（秒）
+      const ttl = Math.floor((expiresAt - Date.now()) / 1000);
+
+      // 只有当令牌还未过期时才添加到Redis
+      if (ttl > 0) {
+        await redisClient.set(`${this.KEY_PREFIX}${token}`, "1", "EX", ttl);
+        logger.debug(`令牌已添加到Redis黑名单，过期时间: ${ttl}秒`);
+      }
+    } catch (error) {
+      logger.error("将令牌添加到Redis黑名单时出错", { error });
+      // 降级到内存存储作为备份
+      this.fallbackAddToBlacklist(token, expiresAt);
+    }
   }
 
   /**
@@ -35,12 +47,48 @@ export class TokenBlacklistUtil {
    * @param token JWT令牌
    * @returns 如果令牌在黑名单中返回true，否则返回false
    */
-  static isBlacklisted(token: string): boolean {
+  static async isBlacklisted(token: string): Promise<boolean> {
+    try {
+      const exists = await redisClient.exists(`${this.KEY_PREFIX}${token}`);
+      return exists === 1;
+    } catch (error) {
+      logger.error("检查Redis令牌黑名单状态时出错", { error });
+      // 降级到内存存储作为备份
+      return this.fallbackIsBlacklisted(token);
+    }
+  }
+
+  /**
+   * 获取黑名单大小（仅内存备份部分）
+   * @returns 内存黑名单中的令牌数量
+   */
+  static getBlacklistSize(): number {
+    return this.blacklistedTokens.size;
+  }
+
+  /**
+   * 内存备份：添加令牌到黑名单
+   */
+  private static fallbackAddToBlacklist(
+    token: string,
+    expiresAt: number
+  ): void {
+    this.blacklistedTokens.add(token);
+    this.tokenExpirations.set(token, expiresAt);
+    logger.warn("使用内存备份存储令牌黑名单", {
+      expiresAt: new Date(expiresAt).toISOString(),
+    });
+  }
+
+  /**
+   * 内存备份：检查令牌是否在黑名单中
+   */
+  private static fallbackIsBlacklisted(token: string): boolean {
     return this.blacklistedTokens.has(token);
   }
 
   /**
-   * 清理已过期的黑名单令牌
+   * 清理已过期的内存黑名单令牌
    */
   private static cleanupExpiredTokens(): void {
     const now = Date.now();
@@ -55,15 +103,7 @@ export class TokenBlacklistUtil {
     }
 
     if (cleanedCount > 0) {
-      console.log(`已清理 ${cleanedCount} 个过期的黑名单令牌`);
+      logger.debug(`已清理 ${cleanedCount} 个过期的内存黑名单令牌`);
     }
-  }
-
-  /**
-   * 获取黑名单大小
-   * @returns 黑名单中的令牌数量
-   */
-  static getBlacklistSize(): number {
-    return this.blacklistedTokens.size;
   }
 }

@@ -20,7 +20,7 @@ export async function authMiddleware(
     const payload = JwtUtil.verifyAccessToken(token);
 
     // 检查令牌是否在黑名单中
-    if (TokenBlacklistUtil.isBlacklisted(token)) {
+    if (await TokenBlacklistUtil.isBlacklisted(token)) {
       return res.status(401).json({ message: "未授权：令牌已被吊销" });
     }
 
