@@ -2,6 +2,7 @@ import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import express from "express";
 import path from "path";
+import { initializeDatabase } from "./config/database";
 import { AuthController } from "./controllers/auth.controller";
 import { ProfileController } from "./controllers/profile.controller";
 import { TestController } from "./controllers/test.controller";
@@ -54,6 +55,19 @@ app.use(errorHandler);
 setupGlobalErrorHandlers();
 
 // 启动服务器
-app.listen(PORT, () => {
-  logger.info(`Server is running on http://localhost:${PORT}`);
-});
+const startServer = async () => {
+  try {
+    // 初始化数据库连接
+    await initializeDatabase();
+    logger.info("数据库连接已初始化");
+
+    app.listen(PORT, () => {
+      logger.info(`服务器运行在 http://localhost:${PORT}`);
+    });
+  } catch (error) {
+    logger.error("服务器启动失败:", error);
+    process.exit(1);
+  }
+};
+
+startServer();

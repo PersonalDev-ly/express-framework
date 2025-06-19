@@ -1,15 +1,19 @@
 import * as crypto from "crypto";
-import { v4 as uuidv4 } from "uuid";
-import { User, UserRegisterDTO } from "../models/user.model";
+import { MoreThan, Repository } from "typeorm";
+import { AppDataSource } from "../config/database";
+import { RefreshToken } from "../entities/refresh-token.entity";
+import { User } from "../entities/user.entity";
+import { UserRegisterDTO } from "../models/user.model";
+import { logger } from "../utils/logger";
 
 /**
  * 用户服务类 - 处理用户相关的业务逻辑
- * 注意：这是一个简单的内存存储实现，仅用于演示目的
- * 在实际应用中，应该使用数据库来存储用户信息
  */
 export class UserService {
-  private static users: Map<string, User> = new Map();
-  private static refreshTokens: Map<string, string> = new Map(); // userId -> refreshToken
+  private static userRepository: Repository<User> =
+    AppDataSource.getRepository(User);
+  private static refreshTokenRepository: Repository<RefreshToken> =
+    AppDataSource.getRepository(RefreshToken);
 
   /**
    * 创建新用户
@@ -18,9 +22,11 @@ export class UserService {
    */
   static async createUser(userData: UserRegisterDTO): Promise<User> {
     // 检查邮箱是否已存在
-    const existingUser = Array.from(this.users.values()).find(
-      (user) => user.email === userData.email
-    );
+    const existingUser = await this.userRepository.findOne({
+      where: { email: userData.email },
+    });
+
+    logger.info(`正在创建用户 ${userData.email}`);
 
     if (existingUser) {
       throw new Error("邮箱已被注册");
@@ -28,17 +34,15 @@ export class UserService {
 
     // 创建新用户
     const now = new Date();
-    const newUser: User = {
-      id: uuidv4(),
+    const user = this.userRepository.create({
       email: userData.email,
       password: this.hashPassword(userData.password),
       createdAt: now,
       updatedAt: now,
-    };
+    });
 
     // 保存用户
-    this.users.set(newUser.id, newUser);
-    return newUser;
+    return await this.userRepository.save(user);
   }
 
   /**
@@ -46,8 +50,10 @@ export class UserService {
    * @param email 用户邮箱
    * @returns 用户对象或undefined
    */
-  static async findByEmail(email: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find((user) => user.email === email);
+  static async findByEmail(email: string): Promise<User | null> {
+    return await this.userRepository.findOne({
+      where: { email },
+    });
   }
 
   /**
@@ -55,8 +61,10 @@ export class UserService {
    * @param id 用户ID
    * @returns 用户对象或undefined
    */
-  static async findById(id: string): Promise<User | undefined> {
-    return this.users.get(id);
+  static async findById(id: string): Promise<User | null> {
+    return await this.userRepository.findOne({
+      where: { id },
+    });
   }
 
   /**
@@ -90,8 +98,21 @@ export class UserService {
    * @param userId 用户ID
    * @param refreshToken 刷新令牌
    */
-  static saveRefreshToken(userId: string, refreshToken: string): void {
-    this.refreshTokens.set(userId, refreshToken);
+  static async saveRefreshToken(
+    userId: string,
+    refreshToken: string
+  ): Promise<void> {
+    // 删除该用户的所有现有刷新令牌
+    await this.refreshTokenRepository.delete({ userId });
+
+    // 创建新的刷新令牌记录
+    const tokenEntity = this.refreshTokenRepository.create({
+      userId,
+      token: refreshToken,
+      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7天后过期
+    });
+
+    await this.refreshTokenRepository.save(tokenEntity);
   }
 
   /**
@@ -100,16 +121,26 @@ export class UserService {
    * @param refreshToken 刷新令牌
    * @returns 令牌是否有效
    */
-  static validateRefreshToken(userId: string, refreshToken: string): boolean {
-    const storedToken = this.refreshTokens.get(userId);
-    return storedToken === refreshToken;
+  static async validateRefreshToken(
+    userId: string,
+    refreshToken: string
+  ): Promise<boolean> {
+    const tokenEntity = await this.refreshTokenRepository.findOne({
+      where: {
+        userId,
+        token: refreshToken,
+        expiresAt: MoreThan(new Date()), // 确保令牌未过期
+      },
+    });
+
+    return !!tokenEntity;
   }
 
   /**
    * 删除用户的刷新令牌
    * @param userId 用户ID
    */
-  static removeRefreshToken(userId: string): void {
-    this.refreshTokens.delete(userId);
+  static async removeRefreshToken(userId: string): Promise<void> {
+    await this.refreshTokenRepository.delete({ userId });
   }
 }
