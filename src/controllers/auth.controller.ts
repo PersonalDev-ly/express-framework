@@ -1,8 +1,10 @@
 import { Request, Response } from "express";
-import { Controller, Post } from "../decorators";
+import { Auth, Controller, Post } from "../decorators";
 import { UserLoginDTO, UserRegisterDTO } from "../models/user.model";
 import { UserService } from "../services/user.service";
 import { JwtUtil } from "../utils/jwt.util";
+import { logger } from "../utils/logger";
+import { TokenBlacklistUtil } from "../utils/token-blacklist.util";
 
 @Controller("/auth")
 export class AuthController {
@@ -159,6 +161,57 @@ export class AuthController {
     } catch (error) {
       return res.status(401).json({
         message: "令牌刷新失败：" + (error as Error).message,
+      });
+    }
+  }
+
+  /**
+   * 用户登出
+   * @param req 请求对象
+   * @param res 响应对象
+   */
+  @Auth()
+  @Post("/logout")
+  async logout(req: Request, res: Response) {
+    try {
+      // 从请求中获取用户ID
+      const userId = req.user?.id;
+
+      logger.info("登出请求", req.user);
+
+      if (!userId) {
+        return res.status(400).json({ message: "用户未认证" });
+      }
+
+      // 获取当前访问令牌
+      const authHeader = req.headers.authorization;
+      if (authHeader && authHeader.startsWith("Bearer ")) {
+        const token = authHeader.substring(7);
+
+        try {
+          // 解析令牌以获取过期时间
+          const decoded = JwtUtil.verifyAccessToken(token);
+          const expiresAt = decoded.exp * 1000; // 转换为毫秒
+
+          // 将令牌添加到黑名单
+          TokenBlacklistUtil.addToBlacklist(token, expiresAt);
+
+          logger.info(`令牌已添加到黑名单，用户ID: ${userId}`);
+        } catch (tokenError) {
+          logger.error("令牌解析失败", tokenError);
+        }
+      }
+
+      // 删除用户的刷新令牌
+      await UserService.removeRefreshToken(userId);
+
+      // 返回成功响应
+      return res.status(200).json({
+        message: "登出成功",
+      });
+    } catch (error) {
+      return res.status(400).json({
+        message: "登出失败：" + (error as Error).message,
       });
     }
   }

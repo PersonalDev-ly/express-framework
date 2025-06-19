@@ -1,4 +1,18 @@
-import { NextFunction, Request, Response } from "express";
+import { Request as ExpressRequest, NextFunction, Response } from "express";
+
+// 扩展Express的Request类型
+declare global {
+  namespace Express {
+    interface Request {
+      user?: {
+        id: string;
+        email: string;
+      };
+    }
+  }
+}
+
+export type Request = ExpressRequest;
 
 export type Constructor<T = any> = new (...args: any[]) => T;
 

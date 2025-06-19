@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { UserService } from "../services/user.service";
 import { JwtUtil } from "../utils/jwt.util";
+import { TokenBlacklistUtil } from "../utils/token-blacklist.util";
 
 /**
  * 认证中间件 - 验证用户是否已登录
@@ -17,6 +18,11 @@ export async function authMiddleware(
 
     // 验证token
     const payload = JwtUtil.verifyAccessToken(token);
+
+    // 检查令牌是否在黑名单中
+    if (TokenBlacklistUtil.isBlacklisted(token)) {
+      return res.status(401).json({ message: "未授权：令牌已被吊销" });
+    }
 
     // 查找用户
     const user = await UserService.findById(payload.userId);
