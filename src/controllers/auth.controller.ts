@@ -182,8 +182,6 @@ export class AuthController {
       // 从请求中获取用户ID
       const userId = req.user?.id;
 
-      logger.info("登出请求", req.user);
-
       if (!userId) {
         return res.status(400).json({ message: "用户未认证" });
       }

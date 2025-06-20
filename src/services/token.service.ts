@@ -10,7 +10,7 @@ import { AppDataSource } from "../config/database";
  */
 export class TokenService {
   private static readonly KEY_PREFIX = "refresh:token:";
-  private static readonly DEFAULT_TTL = 7 * 24 * 60 * 60; // 7天（秒）
+  private static readonly DEFAULT_TTL = process.env.REDIS_TTL ?? 7 * 24 * 60 * 60; // 7天（秒）
 
   /**
    * 保存刷新令牌
@@ -104,7 +104,7 @@ export class TokenService {
     refreshToken.id = uuidv4();
     refreshToken.userId = userId;
     refreshToken.token = token;
-    refreshToken.expiresAt = new Date(Date.now() + this.DEFAULT_TTL * 1000);
+    refreshToken.expiresAt = new Date(Date.now() + Number(this.DEFAULT_TTL) * 1000);
 
     await refreshTokenRepo.save(refreshToken);
     logger.warn("使用数据库备份存储刷新令牌", { userId });
