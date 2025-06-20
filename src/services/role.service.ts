@@ -158,6 +158,14 @@ export class RoleService {
       }
 
       await queryRunner.commitTransaction();
+      // 权限变更后清理所有拥有该角色的用户的权限缓存
+      const userRoles = await this.userRoleRepository.find({ where: { roleId } });
+      const userIds = userRoles.map(ur => ur.userId);
+      for (const userId of userIds) {
+        // 这里直接调用UserService的静态方法
+        const { UserService } = require('./user.service');
+        await UserService.clearUserPermissionsCache(userId);
+      }
       return true;
     } catch (error) {
       await queryRunner.rollbackTransaction();
@@ -197,6 +205,13 @@ export class RoleService {
       }
 
       await queryRunner.commitTransaction();
+      // 权限变更后清理所有拥有该角色的用户的权限缓存
+      const userRoles = await this.userRoleRepository.find({ where: { roleId } });
+      const userIds = userRoles.map(ur => ur.userId);
+      for (const userId of userIds) {
+        const { UserService } = require('./user.service');
+        await UserService.clearUserPermissionsCache(userId);
+      }
       return true;
     } catch (error) {
       await queryRunner.rollbackTransaction();

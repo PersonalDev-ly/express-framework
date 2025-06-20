@@ -13,6 +13,7 @@ declare global {
           action: string;
           name: string;
         }>;
+        isSuperAdmin?: boolean;
       };
     }
   }

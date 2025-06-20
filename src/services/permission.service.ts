@@ -13,22 +13,31 @@ export class PermissionService {
    * 创建新权限
    * @param name 权限名称
    * @param description 权限描述
+   * @param resource 资源
+   * @param action 操作
    * @returns 创建的权限对象
    */
   static async createPermission(
     name: string,
-    description: string
+    description: string,
+    resource: string,
+    action: string
   ): Promise<Permission> {
-    // 检查权限名称是否已存在
-    const existingPermission = await this.findPermissionByName(name);
+    // 检查resource+action唯一性
+    const existingPermission = await this.findPermissionByResourceAction(resource, action);
     if (existingPermission) {
+      throw new Error(`权限 resource='${resource}' action='${action}' 已存在`);
+    }
+    // 检查权限名称是否已存在
+    const existingName = await this.findPermissionByName(name);
+    if (existingName) {
       throw new Error(`权限名称 '${name}' 已存在`);
     }
-
     const permission = new Permission();
     permission.name = name;
     permission.description = description;
-
+    permission.resource = resource;
+    permission.action = action;
     return this.permissionRepository.save(permission);
   }
 
@@ -48,6 +57,16 @@ export class PermissionService {
    */
   static async findPermissionByName(name: string): Promise<Permission | null> {
     return this.permissionRepository.findOne({ where: { name } });
+  }
+
+  /**
+   * 通过resource和action查找权限
+   * @param resource 资源
+   * @param action 操作
+   * @returns 权限对象或undefined
+   */
+  static async findPermissionByResourceAction(resource: string, action: string): Promise<Permission | null> {
+    return this.permissionRepository.findOne({ where: { resource, action } });
   }
 
   /**
@@ -72,18 +91,21 @@ export class PermissionService {
     if (!permission) {
       throw new Error(`ID为 '${id}' 的权限不存在`);
     }
-
+    // 如果要更新resource/action，检查唯一性
+    if ((data.resource && data.resource !== permission.resource) || (data.action && data.action !== permission.action)) {
+      const existing = await this.findPermissionByResourceAction(data.resource || permission.resource, data.action || permission.action);
+      if (existing && existing.id !== id) {
+        throw new Error(`权限 resource='${data.resource || permission.resource}' action='${data.action || permission.action}' 已存在`);
+      }
+    }
     // 如果要更新名称，检查新名称是否已存在
     if (data.name && data.name !== permission.name) {
-      const existingPermission = await this.findPermissionByName(data.name);
-      if (existingPermission) {
+      const existingName = await this.findPermissionByName(data.name);
+      if (existingName) {
         throw new Error(`权限名称 '${data.name}' 已存在`);
       }
     }
-
-    // 更新权限属性
     Object.assign(permission, data);
-
     return this.permissionRepository.save(permission);
   }
 
@@ -135,42 +157,40 @@ export class PermissionService {
 
   /**
    * 批量创建权限
-   * @param permissions 权限对象数组，每个对象包含name和description
+   * @param permissions 权限对象数组，每个对象包含name, description, resource, action
    * @returns 创建的权限对象数组
    */
   static async createBulkPermissions(
-    permissions: { name: string; description: string }[]
+    permissions: { name: string; description: string; resource: string; action: string }[]
   ): Promise<Permission[]> {
     const createdPermissions: Permission[] = [];
-
-    // 使用事务批量创建权限
-    const queryRunner =
-      this.permissionRepository.manager.connection.createQueryRunner();
+    const queryRunner = this.permissionRepository.manager.connection.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
-
     try {
       for (const permData of permissions) {
-        // 检查权限名称是否已存在
-        const existingPermission = await queryRunner.manager.findOne(
-          Permission,
-          {
-            where: { name: permData.name },
-          }
-        );
-
-        if (existingPermission) {
-          continue; // 跳过已存在的权限
+        // 检查resource+action唯一性
+        const existing = await queryRunner.manager.findOne(Permission, {
+          where: { resource: permData.resource, action: permData.action },
+        });
+        if (existing) {
+          continue;
         }
-
+        // 检查权限名称是否已存在
+        const existingName = await queryRunner.manager.findOne(Permission, {
+          where: { name: permData.name },
+        });
+        if (existingName) {
+          continue;
+        }
         const permission = new Permission();
         permission.name = permData.name;
         permission.description = permData.description;
-
+        permission.resource = permData.resource;
+        permission.action = permData.action;
         const savedPermission = await queryRunner.manager.save(permission);
         createdPermissions.push(savedPermission);
       }
-
       await queryRunner.commitTransaction();
       return createdPermissions;
     } catch (error) {

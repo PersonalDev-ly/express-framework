@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import {Auth, Controller, Get} from "../decorators";
+import { Controller, Get} from "../decorators";
 import { UserService } from "../services/user.service";
 
 @Controller("/profile")
@@ -9,7 +9,6 @@ export class ProfileController {
    * @param req 请求对象
    * @param res 响应对象
    */
-  @Auth()
   @Get("/")
   async getProfile(req: Request, res: Response) {
     try {

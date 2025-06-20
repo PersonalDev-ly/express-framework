@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Auth, Controller, Post } from "../decorators";
+import { AllowAnonymous, Controller, Post } from "../decorators";
 import { UserLoginDTO, UserRegisterDTO } from "../models/user.model";
 import { TokenService } from "../services/token.service";
 import { UserService } from "../services/user.service";
@@ -14,6 +14,7 @@ export class AuthController {
    * @param req 请求对象
    * @param res 响应对象
    */
+  @AllowAnonymous()
   @Post("/register")
   async register(req: Request, res: Response) {
     try {
@@ -63,6 +64,7 @@ export class AuthController {
    * @param req 请求对象
    * @param res 响应对象
    */
+  @AllowAnonymous()
   @Post("/login")
   async login(req: Request, res: Response) {
     try {
@@ -175,7 +177,6 @@ export class AuthController {
    * @param req 请求对象
    * @param res 响应对象
    */
-  @Auth()
   @Post("/logout")
   async logout(req: Request, res: Response) {
     try {

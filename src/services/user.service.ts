@@ -8,6 +8,7 @@ import { UserRole } from "../entities/user-role.entity";
 import { User } from "../entities/user.entity";
 import { UserRegisterDTO } from "../models/user.model";
 import { logger } from "../utils/logger";
+import redisClient from "../utils/redis.util";
 
 /**
  * 用户服务类 - 处理用户相关的业务逻辑
@@ -271,76 +272,136 @@ export class UserService {
   }
 
   /**
-   * 获取用户的所有权限（包括通过角色继承的权限）
+   * 获取用户的所有权限（包括通过角色继承的权限），带缓存
    * @param userId 用户ID
    * @returns 权限列表
    */
   static async getUserPermissions(userId: string): Promise<Permission[]> {
+    const cacheKey = `user:permissions:${userId}`;
+    // 先查缓存
+    const cached = await redisClient.get(cacheKey);
+    if (cached) {
+      try {
+        return JSON.parse(cached);
+      } catch { }
+    }
     const user = await this.findById(userId);
     if (!user) {
       throw new Error(`ID为 '${userId}' 的用户不存在`);
     }
-
-    // 获取用户的所有角色ID
-    const userRoles = await this.userRoleRepository.find({
-      where: { userId },
-    });
+    const userRoles = await this.userRoleRepository.find({ where: { userId } });
     const roleIds = userRoles.map((ur) => ur.roleId);
-
     if (roleIds.length === 0) {
-      return []; // 用户没有角色，返回空权限列表
+      await redisClient.setex(cacheKey, 3600, JSON.stringify([]));
+      return [];
     }
-
-    // 查询这些角色关联的所有权限
+    const placeholders = roleIds.map(() => "?").join(", ");
     const query = `
       SELECT DISTINCT p.*
-      FROM permission p
-      JOIN role_permission rp ON p.id = rp.permission_id
-      WHERE rp.role_id IN (${roleIds.map(() => "?").join(", ")})
+      FROM permissions p
+      JOIN role_permissions rp ON p.id = rp.permission_id
+      WHERE rp.role_id IN (${placeholders})
     `;
-
     const permissions = await this.permissionRepository.query(query, roleIds);
+    // 写入缓存
+    await redisClient.setex(cacheKey, 3600, JSON.stringify(permissions));
     return permissions;
   }
 
   /**
-   * 检查用户是否拥有特定权限
+   * 清理用户权限缓存
+   */
+  static async clearUserPermissionsCache(userId: string) {
+    const cacheKey = `user:permissions:${userId}`;
+    await redisClient.del(cacheKey);
+  }
+
+  /**
+   * 检查用户是否拥有特定权限（支持resource+action或name）
    * @param userId 用户ID
-   * @param permissionName 权限名称
+   * @param opts 权限校验参数
    * @returns 如果用户拥有该权限返回true，否则返回false
    */
   static async hasPermission(
     userId: string,
-    permissionName: string
+    opts: { resource?: string; action?: string; name?: string }
   ): Promise<boolean> {
     const user = await this.findById(userId);
     if (!user) {
       throw new Error(`ID为 '${userId}' 的用户不存在`);
     }
-
     // 获取用户的所有角色ID
-    const userRoles = await this.userRoleRepository.find({
-      where: { userId },
-    });
+    const userRoles = await this.userRoleRepository.find({ where: { userId } });
     const roleIds = userRoles.map((ur) => ur.roleId);
-
     if (roleIds.length === 0) {
-      return false; // 用户没有角色，没有权限
+      return false;
     }
+    // 优先resource+action校验
+    if (opts.resource && opts.action) {
+      const placeholders = roleIds.map(roleId => roleId).join(", ");
+      const query = `
+        SELECT COUNT(*) as count
+        FROM permissions p
+        JOIN role_permissions rp ON p.id = rp.permission_id
+        WHERE rp.role_id IN (${placeholders}) AND p.resource = '${opts.resource}' AND p.action = '${opts.action}'
+      `;
+      const result = await this.permissionRepository.query(query, [
+        ...roleIds,
+        opts.resource,
+        opts.action,
+      ]);
+      return result[0].count > 0;
+    }
+    // 兼容name校验
+    if (opts.name) {
+      const query = `
+        SELECT COUNT(*) as count
+        FROM permissions p
+        JOIN role_permissions rp ON p.id = rp.permission_id
+        WHERE rp.role_id IN (${roleIds.map(() => "?").join(", ")}) AND p.name = ?
+      `;
+      const result = await this.permissionRepository.query(query, [
+        ...roleIds,
+        opts.name,
+      ]);
+      return result[0].count > 0;
+    }
+    return false;
+  }
 
-    // 查询这些角色是否包含指定的权限
-    const query = `
-      SELECT COUNT(*) as count
-      FROM permission p
-      JOIN role_permission rp ON p.id = rp.permission_id
-      WHERE rp.role_id IN (${roleIds.map(() => "?").join(", ")}) AND p.name = ?
-    `;
+  /**
+   * 检查用户是否拥有任一权限
+   * @param userId 用户ID
+   * @param permissions 权限参数数组
+   * @returns 只要有一个权限满足即返回true
+   */
+  static async hasAnyPermission(
+    userId: string,
+    permissions: { resource?: string; action?: string; name?: string }[]
+  ): Promise<boolean> {
+    for (const perm of permissions) {
+      if (await this.hasPermission(userId, perm)) {
+        return true;
+      }
+    }
+    return false;
+  }
 
-    const result = await this.permissionRepository.query(query, [
-      ...roleIds,
-      permissionName,
-    ]);
-
-    return result[0].count > 0;
+  /**
+   * 检查用户是否拥有全部权限
+   * @param userId 用户ID
+   * @param permissions 权限参数数组
+   * @returns 只有全部权限都满足才返回true
+   */
+  static async hasAllPermissions(
+    userId: string,
+    permissions: { resource?: string; action?: string; name?: string }[]
+  ): Promise<boolean> {
+    for (const perm of permissions) {
+      if (!(await this.hasPermission(userId, perm))) {
+        return false;
+      }
+    }
+    return true;
   }
 }

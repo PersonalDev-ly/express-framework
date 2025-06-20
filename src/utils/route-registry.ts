@@ -1,5 +1,6 @@
 import { Application, NextFunction, Request, Response } from "express";
-import { extractParamValue } from "../decorators/params.decorator";
+import { extractParamValue } from "../decorators";
+import { authMiddleware } from "../middleware/auth.middleware";
 import {
   Constructor,
   CONTROLLER_METADATA,
@@ -49,6 +50,12 @@ function registerController(app: Application, Controller: Constructor) {
     const { method, path, methodName, middleware } = route;
     const fullPath = `${basePath}${path}`;
 
+    // 检查是否允许匿名访问
+    const isAllowAnonymous = Reflect.getMetadata('allow_anonymous', Controller, methodName);
+
+    // 组装中间件，默认加authMiddleware，除非允许匿名
+    const finalMiddleware = isAllowAnonymous ? middleware : [authMiddleware, ...middleware];
+
     // 创建路由处理函数
     const handler = async (req: Request, res: Response, next: NextFunction) => {
       try {
@@ -75,7 +82,7 @@ function registerController(app: Application, Controller: Constructor) {
     };
 
     // 注册路由
-    (app as any)[method.toLowerCase()](fullPath, ...middleware, handler);
+    (app as any)[method.toLowerCase()](fullPath, ...finalMiddleware, handler);
 
     logger.debug(`Registered route: [${method}] ${fullPath}`);
   }
