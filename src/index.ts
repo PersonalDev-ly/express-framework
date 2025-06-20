@@ -5,7 +5,6 @@ import path from "path";
 import { initializeDatabase } from "./config/database";
 import { AuthController } from "./controllers/auth.controller";
 import { ProfileController } from "./controllers/profile.controller";
-import { UserController } from "./controllers/user.controller";
 import {
   errorHandler,
   notFoundHandler,
@@ -37,7 +36,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // 注册控制器
-registerControllers(app, [UserController, AuthController, ProfileController]);
+registerControllers(app, [AuthController, ProfileController]);
 
 // 404处理中间件（必须在所有路由之后注册）
 app.use(notFoundHandler);
