@@ -4,3 +4,4 @@ export * from "./controller.decorator";
 export * from "./handlers.decorator";
 export * from "./middleware.decorator";
 export * from "./params.decorator";
+export * from "./rbac.decorator";

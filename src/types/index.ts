@@ -7,6 +7,12 @@ declare global {
       user?: {
         id: string;
         email: string;
+        roles?: string[];
+        permissions?: Array<{
+          resource: string;
+          action: string;
+          name: string;
+        }>;
       };
     }
   }

@@ -3,14 +3,15 @@ import { AppDataSource } from "../config/database";
 import { Permission } from "../entities/permission.entity";
 import { RolePermission } from "../entities/role-permission.entity";
 import { Role } from "../entities/role.entity";
+import { UserRole } from "../entities/user-role.entity";
 
 export class RoleService {
   private static roleRepository: Repository<Role> =
     AppDataSource.getRepository(Role);
-  private static permissionRepository: Repository<Permission> =
-    AppDataSource.getRepository(Permission);
   private static rolePermissionRepository: Repository<RolePermission> =
     AppDataSource.getRepository(RolePermission);
+  private static userRoleRepository: Repository<UserRole> =
+    AppDataSource.getRepository(UserRole);
 
   /**
    * 创建新角色
@@ -29,13 +30,13 @@ export class RoleService {
     role.name = name;
     role.description = description;
 
-    return await this.roleRepository.save(role);
+    return this.roleRepository.save(role);
   }
 
   /**
    * 通过ID查找角色
    * @param id 角色ID
-   * @returns 角色对象或undefined
+   * @returns 角色对象或null
    */
   static async findRoleById(id: string): Promise<Role | null> {
     return this.roleRepository.findOne({ where: { id } });
@@ -44,7 +45,7 @@ export class RoleService {
   /**
    * 通过名称查找角色
    * @param name 角色名称
-   * @returns 角色对象或undefined
+   * @returns 角色对象或null
    */
   static async findRoleByName(name: string): Promise<Role | null> {
     return this.roleRepository.findOne({ where: { name } });
@@ -95,18 +96,17 @@ export class RoleService {
       throw new Error(`ID为 '${id}' 的角色不存在`);
     }
 
-    // 使用事务删除角色及其关联的权限关系
-    const queryRunner =
-      this.roleRepository.manager.connection.createQueryRunner();
+    // 使用事务删除角色及其关联关系
+    const queryRunner = AppDataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
 
     try {
+      // 删除角色与用户的关联关系
+      await queryRunner.manager.delete(UserRole, { roleId: id });
+
       // 删除角色与权限的关联关系
       await queryRunner.manager.delete(RolePermission, { roleId: id });
-
-      // 删除角色与用户的关联关系
-      await queryRunner.manager.delete("user_roles", { roleId: id });
 
       // 删除角色
       await queryRunner.manager.delete(Role, id);
@@ -136,19 +136,8 @@ export class RoleService {
       throw new Error(`ID为 '${roleId}' 的角色不存在`);
     }
 
-    // 验证所有权限ID是否有效
-    for (const permissionId of permissionIds) {
-      const permission = await this.permissionRepository.findOne({
-        where: { id: permissionId },
-      });
-      if (!permission) {
-        throw new Error(`ID为 '${permissionId}' 的权限不存在`);
-      }
-    }
-
     // 使用事务处理权限分配
-    const queryRunner =
-      this.roleRepository.manager.connection.createQueryRunner();
+    const queryRunner = AppDataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
 
@@ -179,7 +168,7 @@ export class RoleService {
   }
 
   /**
-   * 从角色中移除权限
+   * 移除角色的权限
    * @param roleId 角色ID
    * @param permissionIds 权限ID数组
    * @returns 移除结果
@@ -194,8 +183,7 @@ export class RoleService {
     }
 
     // 使用事务处理权限移除
-    const queryRunner =
-      this.roleRepository.manager.connection.createQueryRunner();
+    const queryRunner = AppDataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
 
@@ -229,13 +217,23 @@ export class RoleService {
       throw new Error(`ID为 '${roleId}' 的角色不存在`);
     }
 
-    // 查询角色的所有权限
     const rolePermissions = await this.rolePermissionRepository.find({
       where: { roleId },
       relations: ["permission"],
     });
 
-    // 提取权限对象
     return rolePermissions.map((rp) => rp.permission);
+  }
+
+  /**
+   * 检查角色是否被任何用户使用
+   * @param id 角色ID
+   * @returns 如果角色被使用返回true，否则返回false
+   */
+  static async isRoleInUse(id: string): Promise<boolean> {
+    const count = await this.userRoleRepository.count({
+      where: { roleId: id },
+    });
+    return count > 0;
   }
 }
