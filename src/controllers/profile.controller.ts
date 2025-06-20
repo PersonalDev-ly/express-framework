@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
-import { Controller, Get } from "../decorators";
-import { Auth } from "../middleware/auth.middleware";
+import {Auth, Controller, Get} from "../decorators";
 import { UserService } from "../services/user.service";
 
 @Controller("/profile")
