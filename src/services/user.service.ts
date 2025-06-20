@@ -1,7 +1,10 @@
 import * as crypto from "crypto";
 import { MoreThan, Repository } from "typeorm";
 import { AppDataSource } from "../config/database";
+import { Permission } from "../entities/permission.entity";
 import { RefreshToken } from "../entities/refresh-token.entity";
+import { Role } from "../entities/role.entity";
+import { UserRole } from "../entities/user-role.entity";
 import { User } from "../entities/user.entity";
 import { UserRegisterDTO } from "../models/user.model";
 import { logger } from "../utils/logger";
@@ -14,6 +17,13 @@ export class UserService {
     AppDataSource.getRepository(User);
   private static refreshTokenRepository: Repository<RefreshToken> =
     AppDataSource.getRepository(RefreshToken);
+  // 角色管理相关方法
+  private static roleRepository: Repository<Role> =
+    AppDataSource.getRepository(Role);
+  private static userRoleRepository: Repository<UserRole> =
+    AppDataSource.getRepository(UserRole);
+  private static permissionRepository: Repository<Permission> =
+    AppDataSource.getRepository(Permission);
 
   /**
    * 创建新用户
@@ -142,5 +152,195 @@ export class UserService {
    */
   static async removeRefreshToken(userId: string): Promise<void> {
     await this.refreshTokenRepository.delete({ userId });
+  }
+
+  /**
+   * 为用户分配角色
+   * @param userId 用户ID
+   * @param roleIds 角色ID数组
+   * @returns 分配结果
+   */
+  static async assignRolesToUser(
+    userId: string,
+    roleIds: string[]
+  ): Promise<boolean> {
+    const user = await this.findById(userId);
+    if (!user) {
+      throw new Error(`ID为 '${userId}' 的用户不存在`);
+    }
+
+    // 验证所有角色ID是否有效
+    for (const roleId of roleIds) {
+      const role = await this.roleRepository.findOne({
+        where: { id: roleId },
+      });
+      if (!role) {
+        throw new Error(`ID为 '${roleId}' 的角色不存在`);
+      }
+    }
+
+    // 使用事务处理角色分配
+    const queryRunner = AppDataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      // 创建用户-角色关联
+      for (const roleId of roleIds) {
+        // 检查关联是否已存在
+        const existingRelation = await this.userRoleRepository.findOne({
+          where: { userId, roleId },
+        });
+
+        if (!existingRelation) {
+          const userRole = new UserRole();
+          userRole.userId = userId;
+          userRole.roleId = roleId;
+          await queryRunner.manager.save(userRole);
+        }
+      }
+
+      await queryRunner.commitTransaction();
+      return true;
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw error;
+    } finally {
+      await queryRunner.release();
+    }
+  }
+
+  /**
+   * 移除用户的角色
+   * @param userId 用户ID
+   * @param roleIds 角色ID数组
+   * @returns 移除结果
+   */
+  static async removeRolesFromUser(
+    userId: string,
+    roleIds: string[]
+  ): Promise<boolean> {
+    const user = await this.findById(userId);
+    if (!user) {
+      throw new Error(`ID为 '${userId}' 的用户不存在`);
+    }
+
+    // 使用事务处理角色移除
+    const queryRunner = AppDataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      // 删除指定的用户-角色关联
+      for (const roleId of roleIds) {
+        await queryRunner.manager.delete(UserRole, {
+          userId,
+          roleId,
+        });
+      }
+
+      await queryRunner.commitTransaction();
+      return true;
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw error;
+    } finally {
+      await queryRunner.release();
+    }
+  }
+
+  /**
+   * 获取用户的所有角色
+   * @param userId 用户ID
+   * @returns 角色列表
+   */
+  static async getUserRoles(userId: string): Promise<Role[]> {
+    const user = await this.findById(userId);
+    if (!user) {
+      throw new Error(`ID为 '${userId}' 的用户不存在`);
+    }
+
+    // 查询用户的所有角色
+    const userRoles = await this.userRoleRepository.find({
+      where: { userId },
+      relations: ["role"],
+    });
+
+    // 提取角色对象
+    return userRoles.map((ur) => ur.role);
+  }
+
+  /**
+   * 获取用户的所有权限（包括通过角色继承的权限）
+   * @param userId 用户ID
+   * @returns 权限列表
+   */
+  static async getUserPermissions(userId: string): Promise<Permission[]> {
+    const user = await this.findById(userId);
+    if (!user) {
+      throw new Error(`ID为 '${userId}' 的用户不存在`);
+    }
+
+    // 获取用户的所有角色ID
+    const userRoles = await this.userRoleRepository.find({
+      where: { userId },
+    });
+    const roleIds = userRoles.map((ur) => ur.roleId);
+
+    if (roleIds.length === 0) {
+      return []; // 用户没有角色，返回空权限列表
+    }
+
+    // 查询这些角色关联的所有权限
+    const query = `
+      SELECT DISTINCT p.*
+      FROM permission p
+      JOIN role_permission rp ON p.id = rp.permission_id
+      WHERE rp.role_id IN (${roleIds.map(() => "?").join(", ")})
+    `;
+
+    const permissions = await this.permissionRepository.query(query, roleIds);
+    return permissions;
+  }
+
+  /**
+   * 检查用户是否拥有特定权限
+   * @param userId 用户ID
+   * @param permissionName 权限名称
+   * @returns 如果用户拥有该权限返回true，否则返回false
+   */
+  static async hasPermission(
+    userId: string,
+    permissionName: string
+  ): Promise<boolean> {
+    const user = await this.findById(userId);
+    if (!user) {
+      throw new Error(`ID为 '${userId}' 的用户不存在`);
+    }
+
+    // 获取用户的所有角色ID
+    const userRoles = await this.userRoleRepository.find({
+      where: { userId },
+    });
+    const roleIds = userRoles.map((ur) => ur.roleId);
+
+    if (roleIds.length === 0) {
+      return false; // 用户没有角色，没有权限
+    }
+
+    // 查询这些角色是否包含指定的权限
+    const query = `
+      SELECT COUNT(*) as count
+      FROM permission p
+      JOIN role_permission rp ON p.id = rp.permission_id
+      WHERE rp.role_id IN (${roleIds.map(() => "?").join(", ")}) AND p.name = ?
+    `;
+
+    const result = await this.permissionRepository.query(query, [
+      ...roleIds,
+      permissionName,
+    ]);
+
+    return result[0].count > 0;
   }
 }
