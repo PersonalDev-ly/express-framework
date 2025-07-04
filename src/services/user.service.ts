@@ -338,17 +338,19 @@ export class UserService {
     }
     // 优先resource+action校验
     if (opts.resource && opts.action) {
-      const placeholders = roleIds.map(roleId => roleId).join(", ");
+      const placeholders = roleIds.map(roleId => `'${roleId}'`).join(", ");
       const query = `
         SELECT COUNT(*) as count
-        FROM permissions p
+            FROM permissions p
         JOIN role_permissions rp ON p.id = rp.permission_id
-        WHERE rp.role_id IN (${placeholders}) AND p.resource = '${opts.resource}' AND p.action = '${opts.action}'
+            WHERE rp.role_id IN (${roleIds.map((_, i) => `$${i + 1}`).join(", ")})
+            AND p.resource = $${roleIds.length + 1}
+            AND p.action = $${roleIds.length + 2}
       `;
       const result = await this.permissionRepository.query(query, [
         ...roleIds,
         opts.resource,
-        opts.action,
+        opts.action
       ]);
       return result[0].count > 0;
     }
@@ -356,9 +358,9 @@ export class UserService {
     if (opts.name) {
       const query = `
         SELECT COUNT(*) as count
-        FROM permissions p
+            FROM permissions p
         JOIN role_permissions rp ON p.id = rp.permission_id
-        WHERE rp.role_id IN (${roleIds.map(() => "?").join(", ")}) AND p.name = ?
+            WHERE rp.role_id IN (${roleIds.map(() => "?").join(", ")}) AND p.name = ?
       `;
       const result = await this.permissionRepository.query(query, [
         ...roleIds,
