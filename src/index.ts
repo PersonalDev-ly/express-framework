@@ -4,7 +4,10 @@ import express from "express";
 import path from "path";
 import { initializeDatabase } from "./config/database";
 import { AuthController } from "./controllers/auth.controller";
+import { PermissionController } from "./controllers/permission.controller";
 import { ProfileController } from "./controllers/profile.controller";
+import { RoleController } from "./controllers/role.controller";
+import { UserController } from "./controllers/user.controller";
 import {
   errorHandler,
   notFoundHandler,
@@ -12,8 +15,6 @@ import {
 } from "./middleware/error-handler.middleware";
 import { logger, LogLevel } from "./utils/logger";
 import { registerControllers } from "./utils/route-registry";
-import {PermissionController} from "./controllers/permission.controller";
-import {RoleController} from "./controllers/role.controller";
 
 dotenv.config();
 
@@ -38,7 +39,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // 注册控制器
-registerControllers(app, [AuthController, ProfileController, PermissionController, RoleController]);
+registerControllers(app, [
+  AuthController,
+  ProfileController,
+  PermissionController,
+  RoleController,
+  UserController,
+]);
 
 // 404处理中间件（必须在所有路由之后注册）
 app.use(notFoundHandler);

@@ -283,7 +283,7 @@ export class UserService {
     if (cached) {
       try {
         return JSON.parse(cached);
-      } catch { }
+      } catch {}
     }
     const user = await this.findById(userId);
     if (!user) {
@@ -338,19 +338,21 @@ export class UserService {
     }
     // 优先resource+action校验
     if (opts.resource && opts.action) {
-      const placeholders = roleIds.map(roleId => `'${roleId}'`).join(", ");
+      const placeholders = roleIds.map((roleId) => `'${roleId}'`).join(", ");
       const query = `
         SELECT COUNT(*) as count
             FROM permissions p
         JOIN role_permissions rp ON p.id = rp.permission_id
-            WHERE rp.role_id IN (${roleIds.map((_, i) => `$${i + 1}`).join(", ")})
+            WHERE rp.role_id IN (${roleIds
+              .map((_, i) => `$${i + 1}`)
+              .join(", ")})
             AND p.resource = $${roleIds.length + 1}
             AND p.action = $${roleIds.length + 2}
       `;
       const result = await this.permissionRepository.query(query, [
         ...roleIds,
         opts.resource,
-        opts.action
+        opts.action,
       ]);
       return result[0].count > 0;
     }
@@ -360,7 +362,9 @@ export class UserService {
         SELECT COUNT(*) as count
             FROM permissions p
         JOIN role_permissions rp ON p.id = rp.permission_id
-            WHERE rp.role_id IN (${roleIds.map(() => "?").join(", ")}) AND p.name = ?
+            WHERE rp.role_id IN (${roleIds
+              .map(() => "?")
+              .join(", ")}) AND p.name = ?
       `;
       const result = await this.permissionRepository.query(query, [
         ...roleIds,
@@ -405,5 +409,22 @@ export class UserService {
       }
     }
     return true;
+  }
+
+  /**
+   * 获取所有用户
+   * @returns 用户列表
+   */
+  static async getAllUsers(): Promise<User[]> {
+    return this.userRepository.find();
+  }
+
+  /**
+   * 根据ID获取用户
+   * @param id 用户ID
+   * @returns 用户信息
+   */
+  static async getUserById(id: string): Promise<User | null> {
+    return this.userRepository.findOne({ where: { id } });
   }
 }
