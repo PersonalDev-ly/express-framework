@@ -1,4 +1,3 @@
-import * as crypto from "crypto";
 import { MoreThan, Repository } from "typeorm";
 import { AppDataSource } from "../config/database";
 import { Permission } from "../entities/permission.entity";
@@ -7,6 +6,7 @@ import { Role } from "../entities/role.entity";
 import { UserRole } from "../entities/user-role.entity";
 import { User } from "../entities/user.entity";
 import { UserRegisterDTO } from "../models/user.model";
+import { HashPassword } from "../utils/hash-password";
 import { logger } from "../utils/logger";
 import redisClient from "../utils/redis.util";
 
@@ -47,7 +47,7 @@ export class UserService {
     const now = new Date();
     const user = this.userRepository.create({
       email: userData.email,
-      password: this.hashPassword(userData.password),
+      password: HashPassword.hashPassword(userData.password),
       createdAt: now,
       updatedAt: now,
     });
@@ -76,32 +76,6 @@ export class UserService {
     return await this.userRepository.findOne({
       where: { id },
     });
-  }
-
-  /**
-   * 验证用户密码
-   * @param plainPassword 明文密码
-   * @param hashedPassword 哈希后的密码
-   * @returns 密码是否匹配
-   */
-  static verifyPassword(
-    plainPassword: string,
-    hashedPassword: string
-  ): boolean {
-    const hash = crypto
-      .createHash("sha256")
-      .update(plainPassword)
-      .digest("hex");
-    return hash === hashedPassword;
-  }
-
-  /**
-   * 哈希密码
-   * @param password 明文密码
-   * @returns 哈希后的密码
-   */
-  static hashPassword(password: string): string {
-    return crypto.createHash("sha256").update(password).digest("hex");
   }
 
   /**
