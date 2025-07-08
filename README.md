@@ -276,17 +276,3 @@ app.listen(3000, () => {
   logger.info("服务器已启动，监听端口 3000");
 });
 ```
-
-## 许可证
-
-MIT
-
-## 贡献指南
-
-欢迎提交 Issue 和 Pull Request！
-
-1. Fork 项目
-2. 创建特性分支：`git checkout -b feature/my-feature`
-3. 提交更改：`git commit -am 'Add some feature'`
-4. 推送分支：`git push origin feature/my-feature`
-5. 提交 Pull Request
