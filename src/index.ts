@@ -5,7 +5,6 @@ import path from "path";
 import { initializeDatabase } from "./config/database";
 import { AuthController } from "./controllers/auth.controller";
 import { PermissionController } from "./controllers/permission.controller";
-import { ProfileController } from "./controllers/profile.controller";
 import { RoleController } from "./controllers/role.controller";
 import { UserController } from "./controllers/user.controller";
 import {
@@ -41,7 +40,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // 注册控制器
 registerControllers(app, [
   AuthController,
-  ProfileController,
   PermissionController,
   RoleController,
   UserController,
