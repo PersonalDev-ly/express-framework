@@ -16,6 +16,7 @@ export interface User {
 // 用户注册请求数据接口
 export interface UserRegisterDTO {
   email: string;
+  username?: string;
   password: string;
 }
 

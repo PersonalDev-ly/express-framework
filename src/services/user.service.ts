@@ -47,6 +47,7 @@ export class UserService {
     const now = new Date();
     const user = this.userRepository.create({
       email: userData.email,
+      username: userData.username,
       password: HashPassword.hashPassword(userData.password),
       createdAt: now,
       updatedAt: now,
@@ -407,5 +408,21 @@ export class UserService {
    */
   static async updateUserById(data: Partial<User>): Promise<User> {
     return await this.userRepository.save(data);
+  }
+
+  /**
+   * 删除用户
+   * @param id 用户ID
+   */
+  static async deleteUserById(id: string): Promise<void> {
+    await this.userRepository.delete(id);
+  }
+
+  /**
+   * 批量删除用户
+   * @param ids 用户ID列表
+   */
+  static async deleteUsers(ids: string[]): Promise<void> {
+    await this.userRepository.delete(ids);
   }
 }

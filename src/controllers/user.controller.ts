@@ -1,5 +1,12 @@
 import { Request, Response } from "express";
-import { Controller, Get, Put, RequirePermission } from "../decorators";
+import {
+  Controller,
+  Delete,
+  Get,
+  Post,
+  Put,
+  RequirePermission,
+} from "../decorators";
 import { toUserProfile } from "../models/user.model";
 import { UserService } from "../services/user.service";
 import { HashPassword } from "../utils/hash-password";
@@ -29,7 +36,7 @@ export class UserController {
   }
 
   /**
-   * 获取指定用户
+   * 根据ID获取用户信息
    * @param req 请求对象
    * @param res 响应对象
    */
@@ -86,6 +93,84 @@ export class UserController {
     } catch (error) {
       return res.status(400).json({
         message: "更新用户失败：" + (error as Error).message,
+      });
+    }
+  }
+
+  /**
+   * 删除用户
+   * @param req 请求对象
+   * @param res 响应对象
+   */
+  @RequirePermission({ resource: "user", action: "delete" })
+  @Delete("/:id")
+  async deleteUserById(req: Request, res: Response) {
+    try {
+      // 从请求对象中获取用户ID
+      const { id } = req.params;
+      // 查找指定用户
+      const user = await UserService.getUserById(id);
+      if (!user) {
+        return res.status(404).json({ message: "用户不存在" });
+      }
+      // 删除用户
+      await UserService.deleteUserById(id);
+      // 返回成功消息
+      return res.status(200).json({
+        message: "删除用户成功",
+      });
+    } catch (error) {
+      return res.status(400).json({
+        message: "删除用户失败：" + (error as Error).message,
+      });
+    }
+  }
+
+  /**
+   * 批量删除用户
+   * @param req 请求对象
+   * @param res 响应对象
+   */
+  @RequirePermission({ resource: "user", action: "delete" })
+  @Delete("/")
+  async deleteUsers(req: Request, res: Response) {
+    try {
+      // 从请求对象中获取用户ID列表
+      const { ids } = req.body;
+      // 删除用户
+      await UserService.deleteUsers(ids);
+      // 返回成功消息
+      return res.status(200).json({
+        message: "删除用户成功",
+      });
+    } catch (error) {
+      return res.status(400).json({
+        message: "删除用户失败：" + (error as Error).message,
+      });
+    }
+  }
+
+  /**
+   * 创建用户
+   * @param req 请求对象
+   * @param res 响应对象
+   */
+  @RequirePermission({ resource: "user", action: "create" })
+  @Post("/")
+  async createUser(req: Request, res: Response) {
+    try {
+      // 从请求对象中获取用户信息
+      const userData = req.body;
+      // 创建用户
+      const user = await UserService.createUser(userData);
+      // 返回用户信息
+      return res.status(201).json({
+        message: "创建用户成功",
+        data: toUserProfile(user),
+      });
+    } catch (error) {
+      return res.status(400).json({
+        message: "创建用户失败：" + (error as Error).message,
       });
     }
   }
