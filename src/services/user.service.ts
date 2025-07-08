@@ -312,7 +312,6 @@ export class UserService {
     }
     // 优先resource+action校验
     if (opts.resource && opts.action) {
-      const placeholders = roleIds.map((roleId) => `'${roleId}'`).join(", ");
       const query = `
         SELECT COUNT(*) as count
             FROM permissions p
@@ -400,5 +399,13 @@ export class UserService {
    */
   static async getUserById(id: string): Promise<User | null> {
     return this.userRepository.findOne({ where: { id } });
+  }
+
+  /**
+   * 修改用户信息
+   * @param data 用户信息
+   */
+  static async updateUserById(data: Partial<User>): Promise<User> {
+    return await this.userRepository.save(data);
   }
 }

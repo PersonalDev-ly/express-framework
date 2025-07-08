@@ -6,7 +6,9 @@
 export interface User {
   id: string;
   email: string;
+  username: string;
   password: string; // 存储哈希后的密码
+  isSuperAdmin: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -33,7 +35,10 @@ export interface AuthTokens {
 export interface UserProfile {
   id: string;
   email: string;
+  username: string;
+  isSuperAdmin: boolean;
   createdAt: Date;
+  updatedAt: Date;
 }
 
 // 将用户对象转换为公开信息
@@ -41,6 +46,9 @@ export function toUserProfile(user: User): UserProfile {
   return {
     id: user.id,
     email: user.email,
+    username: user.username,
+    isSuperAdmin: user.isSuperAdmin,
     createdAt: user.createdAt,
+    updatedAt: user.updatedAt,
   };
 }

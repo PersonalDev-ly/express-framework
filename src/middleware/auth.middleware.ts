@@ -34,6 +34,7 @@ export async function authMiddleware(
     (req as any).user = {
       id: user.id,
       email: user.email,
+      isSuperAdmin: user.isSuperAdmin,
     };
 
     return next();

@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { Controller, Get, Put, RequirePermission } from "../decorators";
+import { toUserProfile } from "../models/user.model";
 import { UserService } from "../services/user.service";
+import { HashPassword } from "../utils/hash-password";
 
 @Controller("/users")
 export class UserController {
@@ -71,15 +73,15 @@ export class UserController {
         return res.status(404).json({ message: "用户不存在" });
       }
       // 更新用户信息
-      const { username, email, password } = req.body;
+      const { username, password } = req.body;
       if (username) user.username = username;
-      if (password) user.password = password;
+      if (password) user.password = HashPassword.hashPassword(password);
       // 保存用户信息
-      //   await UserService.saveUser(user);
+      const userData = await UserService.updateUserById(user);
       // 返回用户信息
       return res.status(200).json({
         message: "更新用户成功",
-        data: user,
+        data: toUserProfile(userData),
       });
     } catch (error) {
       return res.status(400).json({

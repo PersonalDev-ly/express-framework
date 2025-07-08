@@ -1,6 +1,10 @@
 import { Request, Response } from "express";
 import { AllowAnonymous, Controller, Post } from "../decorators";
-import { UserLoginDTO, UserRegisterDTO } from "../models/user.model";
+import {
+  toUserProfile,
+  UserLoginDTO,
+  UserRegisterDTO,
+} from "../models/user.model";
 import { TokenService } from "../services/token.service";
 import { UserService } from "../services/user.service";
 import { HashPassword } from "../utils/hash-password";
@@ -29,28 +33,11 @@ export class AuthController {
       // 创建用户
       const user = await UserService.createUser(userData);
 
-      // 生成令牌
-      const { accessToken, refreshToken } = JwtUtil.generateTokenPair({
-        userId: user.id,
-        email: user.email,
-      });
-
-      // 保存刷新令牌
-      await TokenService.saveRefreshToken(user.id, refreshToken);
-
       // 返回结果
       return res.status(201).json({
         message: "注册成功",
         data: {
-          user: {
-            id: user.id,
-            email: user.email,
-            createdAt: user.createdAt,
-          },
-          tokens: {
-            accessToken,
-            refreshToken,
-          },
+          user: toUserProfile(user),
         },
       });
     } catch (error) {
@@ -91,6 +78,7 @@ export class AuthController {
       const { accessToken, refreshToken } = JwtUtil.generateTokenPair({
         userId: user.id,
         email: user.email,
+        isSuperAdmin: user.isSuperAdmin,
       });
 
       // 保存刷新令牌
@@ -100,11 +88,7 @@ export class AuthController {
       return res.status(200).json({
         message: "登录成功",
         data: {
-          user: {
-            id: user.id,
-            email: user.email,
-            createdAt: user.createdAt,
-          },
+          user: toUserProfile(user),
           tokens: {
             accessToken,
             refreshToken,
@@ -123,6 +107,7 @@ export class AuthController {
    * @param req 请求对象
    * @param res 响应对象
    */
+  @AllowAnonymous()
   @Post("/refresh")
   async refresh(req: Request, res: Response) {
     try {

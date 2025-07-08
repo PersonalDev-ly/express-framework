@@ -21,6 +21,9 @@ export class User {
   @Column()
   password: string;
 
+  @Column({ type: "boolean", nullable: false, default: false })
+  isSuperAdmin: boolean;
+
   @CreateDateColumn()
   createdAt: Date;
 
