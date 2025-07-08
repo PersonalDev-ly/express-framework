@@ -1,38 +1,87 @@
-# TypeScript Express Decorator Framework
+# TypeScript Express Framework
 
-一个基于 TypeScript 装饰器实现的 Express.js 框架，提供了优雅的路由注册和中间件管理方式。
+一个基于 TypeScript 装饰器实现的 Express.js 框架，提供了优雅的路由注册、中间件管理、权限控制和数据库集成方案。
 
-## 特性
+## 核心特性
 
-- 使用装饰器进行路由注册
-- 支持控制器级别的路由前缀
-- 内置请求参数装饰器（@Body, @Query, @Param 等）
-- 灵活的中间件管理
-- 完全类型安全
+- **装饰器驱动开发**：使用装饰器进行路由注册和中间件配置
+- **完整的认证系统**：JWT 认证、刷新令牌、令牌黑名单
+- **RBAC 权限控制**：基于角色的访问控制系统
+- **数据库集成**：TypeORM + PostgreSQL
+- **Redis 支持**：缓存、令牌黑名单
+- **日志系统**：多级别日志、文件轮转
+- **环境配置**：基于 dotenv 的环境变量管理
+- **错误处理**：全局错误捕获和处理
+- **类型安全**：完全基于 TypeScript
 
 ## 技术栈
 
-- TypeScript
-- Express.js
-- reflect-metadata
+- **核心**：TypeScript + Express.js
+- **数据库**：PostgreSQL + TypeORM
+- **缓存**：Redis
+- **认证**：JWT (jsonwebtoken)
+- **工具库**：reflect-metadata, dotenv
+- **开发工具**：ts-node-dev, rimraf
 
 ## 项目结构
 
 ```
 src/
-├── controllers/        # 控制器目录
-│   └── user.controller.ts
-├── decorators/        # 装饰器实现
-│   ├── controller.decorator.ts
-│   ├── handlers.decorator.ts
-│   ├── middleware.decorator.ts
-│   └── index.ts
-├── types/            # 类型定义
-│   └── index.ts
-└── index.ts         # 应用入口
+├── config/             # 配置文件
+│   ├── database.ts               # 数据库配置
+│   └── redisConfig.ts            # Redis配置
+├── controllers/                  # 控制器目录
+│   ├── auth.controller.ts        # 认证控制器
+│   ├── user.controller.ts        # 用户控制器
+│   ├── role.controller.ts        # 角色控制器
+│   └── permission.controller.ts  # 权限控制器
+├── decorators/         # 装饰器实现
+│   ├── auth.decorator.ts         # 认证装饰器
+│   ├── controller.decorator.ts   # 控制器装饰器
+│   ├── handlers.decorator.ts     # 路由处理装饰器
+│   ├── middleware.decorator.ts   # 中间件装饰器
+│   ├── params.decorator.ts       # 参数装饰器
+│   ├── rbac.decorator.ts         # 权限装饰器
+│   └── index.ts                  # 装饰器导出
+├── entities/           # 数据库实体
+│   ├── user.entity.ts            # 用户实体
+│   ├── role.entity.ts            # 角色实体
+│   ├── permission.entity.ts      # 权限实体
+│   ├── user-role.entity.ts       # 用户-角色关系
+│   ├── role-permission.entity.ts # 角色-权限关系
+│   └── refresh-token.entity.ts   # 刷新令牌实体
+├── middleware/         # 中间件
+│   ├── auth.middleware.ts        # 认证中间件
+│   ├── rbac.middleware.ts        # 权限中间件
+│   └── error-handler.middleware.ts # 错误处理中间件
+├── models/             # 数据模型/DTO
+│   └── user.model.ts             # 用户模型
+├── services/           # 业务逻辑服务
+│   ├── user.service.ts           # 用户服务
+│   ├── token.service.ts          # 令牌服务
+│   ├── permission.service.ts     # 权限服务
+│   └── role.service.ts           # 角色服务
+├── types/              # 类型定义
+│   ├── index.ts
+│   └── errors.ts
+├── utils/              # 工具函数
+│   ├── logger.ts                 # 日志工具
+│   ├── jwt.util.ts               # JWT工具
+│   ├── hash-password.ts          # 密码哈希工具
+│   ├── route-registry.ts         # 路由注册工具
+│   └── token-blacklist.util.ts   # 令牌黑名单工具
+└── index.ts            # 应用入口
 ```
 
-## 安装
+## 安装与运行
+
+### 前置条件
+
+- Node.js 14+
+- PostgreSQL
+- Redis (可选，用于令牌黑名单和缓存)
+
+### 安装步骤
 
 ```bash
 # 克隆项目
@@ -41,119 +90,171 @@ git clone [项目地址]
 # 安装依赖
 npm install
 
+# 编辑 .env 文件，设置数据库连接信息和JWT密钥
+
 # 启动开发服务器
 npm run dev
 
 # 构建项目
 npm run build
+
+# 运行生产环境
+npm start
 ```
 
-## 使用示例
+## 核心功能
 
-### 1. 创建控制器
+### 1. 认证系统
+
+框架提供完整的 JWT 认证系统，包括：
+
+- 用户注册
+- 用户登录
+- 令牌刷新
+- 用户登出
+- 令牌黑名单
 
 ```typescript
-import { Controller, Get, Post, Body, Query } from "../decorators";
+// 用户登录示例
+@AllowAnonymous()
+@Post("/login")
+async login(req: Request, res: Response) {
+  // 登录逻辑
+}
+```
 
+### 2. RBAC 权限控制
+
+基于角色的访问控制系统，支持：
+
+- 角色管理
+- 权限管理
+- 用户-角色分配
+- 角色-权限分配
+
+```typescript
+// 权限控制示例
+@RequirePermission({ resource: "user", action: "read" })
+@Get("/")
+async getAllUsers(req: Request, res: Response) {
+  // 获取用户列表
+}
+```
+
+### 3. 装饰器路由系统
+
+使用装饰器定义路由和中间件：
+
+```typescript
 @Controller("/users")
 export class UserController {
-  @Get("/")
-  async getAllUsers(@Query("page") page: number) {
-    return { users: [], page };
-  }
-
-  @Post("/")
-  async createUser(@Body() userData: any) {
-    return { message: "User created", data: userData };
-  }
-}
-```
-
-### 2. 使用中间件
-
-```typescript
-import { Controller, Get, Use } from "../decorators";
-import { authMiddleware } from "../middlewares";
-
-@Controller("/admin")
-@Use(authMiddleware) // 控制器级别中间件
-export class AdminController {
-  @Get("/")
-  @Use(logMiddleware) // 路由级别中间件
-  async getAdminDashboard() {
-    return { status: "ok" };
-  }
-}
-```
-
-### 3. 参数装饰器
-
-```typescript
-import { Controller, Get, Post, Body, Query, Param } from "../decorators";
-
-@Controller("/posts")
-export class PostController {
   @Get("/:id")
-  async getPost(@Param("id") id: string, @Query("fields") fields?: string) {
-    return { id, fields };
+  async getUserById(req: Request, res: Response) {
+    // 获取用户详情
   }
 
   @Post("/")
-  async createPost(
-    @Body() postData: any,
-    @Headers("authorization") token: string
-  ) {
-    return { message: "Post created", data: postData };
+  async createUser(req: Request, res: Response) {
+    // 创建用户
   }
 }
+```
+
+### 4. 数据库集成
+
+使用 TypeORM 进行数据库操作：
+
+```typescript
+// 数据库配置
+export const AppDataSource = new DataSource({
+  type: "postgres",
+  host: process.env.DB_HOST || "localhost",
+  port: parseInt(process.env.DB_PORT || "5432", 10),
+  username: process.env.DB_USERNAME || "postgres",
+  password: process.env.DB_PASSWORD || "your_password",
+  database: process.env.DB_DATABASE || "express_auth",
+  synchronize: process.env.NODE_ENV === "development",
+  logging: process.env.NODE_ENV === "development",
+  entities: [User, RefreshToken, Permission, RolePermission, Role, UserRole],
+  subscribers: [],
+  migrations: [],
+});
+```
+
+### 5. 日志系统
+
+框架内置了一个功能强大的日志系统，支持多级别日志、控制台和文件输出、日志轮转等特性。
+
+```typescript
+// 日志配置
+logger.configure({
+  consoleLevel:
+    process.env.NODE_ENV === "production" ? LogLevel.INFO : LogLevel.DEBUG,
+  fileLevel: LogLevel.INFO,
+  logFilePath: path.join(__dirname, "../logs/app.log"),
+  includeTimestamp: true,
+  includeLogLevel: true,
+});
+
+// 使用日志
+logger.info("服务器已启动");
+logger.error("发生错误", error);
+```
+
+## 环境变量配置
+
+项目使用 dotenv 管理环境变量，主要配置项包括：
+
+```
+# 服务器配置
+PORT=3001
+NODE_ENV=development
+
+# JWT配置
+JWT_SECRET=your_jwt_secret
+JWT_EXPIRES_IN=1h
+JWT_REFRESH_SECRET=your_refresh_secret
+JWT_REFRESH_EXPIRES_IN=1d
+
+# 数据库配置
+DB_HOST=localhost
+DB_PORT=5432
+DB_USERNAME=postgres
+DB_PASSWORD=your_password
+DB_DATABASE=your_database
+
+# Redis配置
+REDIS_HOST=localhost
+REDIS_PORT=6379
+REDIS_PASSWORD=your_redis_password
+REDIS_DB=0
+REDIS_TTL=86400
 ```
 
 ## API 文档
 
-### 控制器装饰器
+详细的 API 文档请参考 `api_documentation` 目录。
+将目录下的 `json` 文件导入 ApiFox 工具查看、测试。
 
-- `@Controller(basePath: string)`: 定义控制器的基础路径
+## 开发指南
 
-### 路由装饰器
+### 创建新控制器
 
-- `@Get(path: string)`
-- `@Post(path: string)`
-- `@Put(path: string)`
-- `@Delete(path: string)`
-- `@Patch(path: string)`
+1. 在 `src/controllers` 目录下创建新的控制器文件
+2. 使用 `@Controller` 装饰器定义控制器
+3. 使用 `@Get`, `@Post` 等装饰器定义路由
+4. 在 `src/index.ts` 中注册控制器
 
-### 参数装饰器
+### 添加新的实体
 
-- `@Body()`: 获取请求体
-- `@Query(name?: string)`: 获取查询参数
-- `@Param(name?: string)`: 获取路由参数
-- `@Headers(name?: string)`: 获取请求头
-- `@Cookies(name?: string)`: 获取 Cookie
+1. 在 `src/entities` 目录下创建新的实体文件
+2. 使用 TypeORM 装饰器定义实体
+3. 在 `src/config/database.ts` 中注册实体
 
-### 中间件装饰器
+### 实现权限控制
 
-- `@Use(...middleware: Middleware[])`: 应用中间件
-
-## 类型定义
-
-```typescript
-// 中间件类型
-type Middleware = (req: Request, res: Response, next: NextFunction) => void;
-
-// 路由定义
-type RouteDefinition = {
-  path: string;
-  method: string;
-  methodName: string | symbol;
-  middleware: Middleware[];
-};
-
-// 控制器定义
-type ControllerDefinition = {
-  basePath: string;
-  routes: RouteDefinition[];
-};
-```
+1. 在数据库中添加相应的权限记录
+2. 使用 `@RequirePermission` 装饰器保护路由
 
 ## 注意事项
 
@@ -168,111 +269,4 @@ type ControllerDefinition = {
 }
 ```
 
-2. 需要安装 `reflect-metadata` 包并在应用入口导入：
-
-```typescript
-import "reflect-metadata";
-```
-
-## 日志系统
-
-框架内置了一个功能强大的日志系统，支持多级别日志、控制台和文件输出、日志轮转等特性。
-
-### 日志级别
-
-```typescript
-enum LogLevel {
-  DEBUG = 0, // 调试信息
-  INFO = 1, // 一般信息
-  WARN = 2, // 警告信息
-  ERROR = 3, // 错误信息
-  NONE = 4, // 不记录日志
-}
-```
-
-### 日志配置
-
-```typescript
-interface LoggerConfig {
-  /** 控制台日志级别 */
-  consoleLevel: LogLevel;
-  /** 文件日志级别 */
-  fileLevel: LogLevel;
-  /** 日志文件路径 */
-  logFilePath?: string;
-  /** 是否在日志中包含时间戳 */
-  includeTimestamp?: boolean;
-  /** 是否在日志中包含日志级别 */
-  includeLogLevel?: boolean;
-}
-```
-
-### 使用示例
-
-#### 基本用法
-
-```typescript
-import { logger, debug, info, warn, error } from "../utils/logger";
-
-// 使用便捷函数
-debug("这是一条调试日志");
-info("这是一条信息日志");
-warn("这是一条警告日志");
-error("这是一条错误日志");
-
-// 或者使用 logger 实例
-logger.debug("这是一条调试日志");
-logger.info("这是一条信息日志");
-logger.warn("这是一条警告日志");
-logger.error("这是一条错误日志");
-```
-
-#### 配置日志系统
-
-```typescript
-import { Logger, LogLevel } from "../utils/logger";
-
-// 获取日志实例
-const logger = Logger.getInstance();
-
-// 配置日志系统
-logger.configure({
-  consoleLevel: LogLevel.DEBUG, // 控制台输出 DEBUG 及以上级别的日志
-  fileLevel: LogLevel.INFO, // 文件输出 INFO 及以上级别的日志
-  logFilePath: "./logs/app.log", // 日志文件路径
-  includeTimestamp: true, // 包含时间戳
-  includeLogLevel: true, // 包含日志级别
-});
-```
-
-### 日志轮转
-
-日志系统支持按日期自动轮转日志文件。例如，如果配置的日志文件路径为 `./logs/app.log`，实际生成的日志文件会是 `./logs/app-2023-05-20.log`，每天会自动创建新的日志文件。
-
-### 在应用中集成
-
-在应用入口文件中配置日志系统：
-
-```typescript
-import express from "express";
-import { Logger, LogLevel } from "./utils/logger";
-
-// 配置日志系统
-const logger = Logger.getInstance();
-logger.configure({
-  consoleLevel:
-    process.env.NODE_ENV === "production" ? LogLevel.INFO : LogLevel.DEBUG,
-  fileLevel: LogLevel.INFO,
-  logFilePath: "./logs/app.log",
-});
-
-// 创建 Express 应用
-const app = express();
-
-// ... 应用配置 ...
-
-// 启动服务器
-app.listen(3000, () => {
-  logger.info("服务器已启动，监听端口 3000");
-});
-```
+2. 开发环境下数据库会自动同步结构，生产环境请使用迁移

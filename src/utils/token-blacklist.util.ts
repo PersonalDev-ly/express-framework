@@ -1,5 +1,5 @@
+import redisClient from "../config/redisConfig";
 import { logger } from "./logger";
-import redisClient from "./redis.util";
 
 /**
  * 令牌黑名单工具类

@@ -1,5 +1,6 @@
 import { MoreThan, Repository } from "typeorm";
 import { AppDataSource } from "../config/database";
+import redisClient from "../config/redisConfig";
 import { Permission } from "../entities/permission.entity";
 import { RefreshToken } from "../entities/refresh-token.entity";
 import { Role } from "../entities/role.entity";
@@ -8,7 +9,6 @@ import { User } from "../entities/user.entity";
 import { UserRegisterDTO } from "../models/user.model";
 import { HashPassword } from "../utils/hash-password";
 import { logger } from "../utils/logger";
-import redisClient from "../utils/redis.util";
 
 /**
  * 用户服务类 - 处理用户相关的业务逻辑

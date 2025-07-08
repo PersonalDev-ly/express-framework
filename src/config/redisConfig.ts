@@ -1,5 +1,5 @@
 import Redis from "ioredis";
-import { logger } from "./logger";
+import { logger } from "../utils/logger";
 
 // 从环境变量获取Redis配置
 const redisConfig = {
