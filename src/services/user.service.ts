@@ -7,7 +7,7 @@ import { Role } from "../entities/role.entity";
 import { UserRole } from "../entities/user-role.entity";
 import { User } from "../entities/user.entity";
 import { UserRegisterDTO } from "../models/user.model";
-import { HashPassword } from "../utils/hash-password";
+import { HashPassword } from "../utils/hash-password-bcrypt";
 import { logger } from "../utils/logger";
 
 /**
@@ -48,7 +48,7 @@ export class UserService {
     const user = this.userRepository.create({
       email: userData.email,
       username: userData.username,
-      password: HashPassword.hashPassword(userData.password),
+      password: await HashPassword.hashPassword(userData.password),
       createdAt: now,
       updatedAt: now,
     });

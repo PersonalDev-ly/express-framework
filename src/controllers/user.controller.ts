@@ -9,7 +9,7 @@ import {
 } from "../decorators";
 import { toUserProfile } from "../models/user.model";
 import { UserService } from "../services/user.service";
-import { HashPassword } from "../utils/hash-password";
+import { HashPassword } from "../utils/hash-password-bcrypt";
 
 @Controller("/users")
 export class UserController {
@@ -82,7 +82,7 @@ export class UserController {
       // 更新用户信息
       const { username, password } = req.body;
       if (username) user.username = username;
-      if (password) user.password = HashPassword.hashPassword(password);
+      if (password) user.password = await HashPassword.hashPassword(password);
       // 保存用户信息
       const userData = await UserService.updateUserById(user);
       // 返回用户信息

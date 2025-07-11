@@ -7,7 +7,7 @@ import {
 } from "../models/user.model";
 import { TokenService } from "../services/token.service";
 import { UserService } from "../services/user.service";
-import { HashPassword } from "../utils/hash-password";
+import { HashPassword } from "../utils/hash-password-bcrypt";
 import { JwtUtil } from "../utils/jwt.util";
 import { logger } from "../utils/logger";
 import { TokenBlacklistUtil } from "../utils/token-blacklist.util";
@@ -70,7 +70,9 @@ export class AuthController {
       }
 
       // 验证密码
-      if (!HashPassword.verifyPassword(loginData.password, user.password)) {
+      if (
+        !(await HashPassword.verifyPassword(loginData.password, user.password))
+      ) {
         return res.status(401).json({ message: "密码错误" });
       }
 
