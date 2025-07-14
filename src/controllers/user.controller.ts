@@ -223,4 +223,31 @@ export class UserController {
       });
     }
   }
+
+  /**
+   * 移除指定用户下的角色
+   * @param req 请求对象
+   * @param res 响应对象
+   */
+  @RequirePermission({ resource: "user", action: "grant" })
+  @Delete("/:id/roles")
+  async removeRolesFromUser(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const { roles } = req.body;
+      const res_flg = await UserService.removeRolesFromUser(id, roles);
+      if (!res_flg) {
+        return res.status(400).json({
+          message: "为用户移除角色失败：角色不存在",
+        });
+      }
+      return res.status(200).json({
+        message: "为用户移除角色成功",
+      });
+    } catch (error) {
+      return res.status(400).json({
+        message: "为用户移除角色失败：" + (error as Error).message,
+      });
+    }
+  }
 }
