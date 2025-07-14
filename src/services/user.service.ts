@@ -1,4 +1,4 @@
-import { MoreThan, Repository } from "typeorm";
+import { In, MoreThan, Repository } from "typeorm";
 import { AppDataSource } from "../config/database";
 import redisClient from "../config/redisConfig";
 import { Permission } from "../entities/permission.entity";
@@ -415,7 +415,26 @@ export class UserService {
    * @param id 用户ID
    */
   static async deleteUserById(id: string): Promise<void> {
-    await this.userRepository.delete(id);
+    // 使用事务确保数据一致性
+    const queryRunner = AppDataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      // 先删除用户角色关联
+      await queryRunner.manager.delete(UserRole, { userId: id });
+      // 删除用户的刷新令牌
+      await queryRunner.manager.delete(RefreshToken, { userId: id });
+      // 最后删除用户
+      await queryRunner.manager.delete(User, { id });
+      
+      await queryRunner.commitTransaction();
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw error;
+    } finally {
+      await queryRunner.release();
+    }
   }
 
   /**
@@ -423,6 +442,25 @@ export class UserService {
    * @param ids 用户ID列表
    */
   static async deleteUsers(ids: string[]): Promise<void> {
-    await this.userRepository.delete(ids);
+    // 使用事务确保数据一致性
+    const queryRunner = AppDataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      // 先删除用户角色关联
+      await queryRunner.manager.delete(UserRole, { userId: In(ids) });
+      // 删除用户的刷新令牌
+      await queryRunner.manager.delete(RefreshToken, { userId: In(ids) });
+      // 最后删除用户
+      await queryRunner.manager.delete(User, { id: In(ids) });
+      
+      await queryRunner.commitTransaction();
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw error;
+    } finally {
+      await queryRunner.release();
+    }
   }
 }
