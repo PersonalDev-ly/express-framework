@@ -268,7 +268,27 @@
                     "oasExtensions": "",
                     "type": "http",
                     "preProcessors": [],
-                    "postProcessors": [],
+                    "postProcessors": [
+                      {
+                        "type": "extractor",
+                        "data": {
+                          "variableName": "AccessToken",
+                          "variableType": "environment",
+                          "subject": "responseJson",
+                          "extractSettings": {
+                            "expression": "$.data.tokens.accessToken",
+                            "continueExtractorSettings": {
+                              "isContinueExtractValue": false,
+                              "JsonArrayValueIndexValue": ""
+                            }
+                          },
+                          "expression": "$.data.tokens.accessToken"
+                        },
+                        "defaultEnable": true,
+                        "enable": true,
+                        "id": "JLKv78ZnJDLA1qYmITI9E"
+                      }
+                    ],
                     "inheritPostProcessors": {},
                     "inheritPreProcessors": {}
                   }
@@ -396,7 +416,7 @@
                           "description": "",
                           "type": "string",
                           "id": "7TFpm6VlyI",
-                          "example": "{{AccessToken}}",
+                          "example": "Bearer {{AccessToken}}",
                           "enable": true,
                           "name": "Authorization",
                           "schema": {
@@ -516,7 +536,7 @@
                           "description": "",
                           "type": "string",
                           "id": "Q07EpNIq9Z",
-                          "example": "{{AccessToken}}",
+                          "example": "Bearer {{AccessToken}}",
                           "enable": true,
                           "name": "Authorization"
                         }
@@ -627,7 +647,7 @@
                           "description": "",
                           "type": "string",
                           "id": "7MxAhNwA9d",
-                          "example": "{{AccessToken}}",
+                          "example": "Bearer {{AccessToken}}",
                           "enable": true,
                           "name": "Authorization"
                         }
@@ -669,7 +689,7 @@
                       "examples": [
                         {
                           "mediaType": "application/json",
-                          "value": "{\r\n    \"name\": \"test1\",\r\n    \"description\": \"测试1\"\r\n}"
+                          "value": "{\r\n    \"name\": \"test3\",\r\n    \"description\": \"测试3\"\r\n}"
                         }
                       ],
                       "oasExtensions": ""
@@ -728,7 +748,7 @@
                           "description": "",
                           "type": "string",
                           "id": "LnTWHTpTMC",
-                          "example": "{{AccessToken}}",
+                          "example": "Bearer {{AccessToken}}",
                           "enable": true,
                           "name": "Authorization"
                         }
@@ -828,7 +848,7 @@
                           "description": "",
                           "type": "string",
                           "id": "nX4uuVlaCc",
-                          "example": "{{AccessToken}}",
+                          "example": "Bearer {{AccessToken}}",
                           "enable": true,
                           "name": "Authorization"
                         }
@@ -928,7 +948,7 @@
                           "description": "",
                           "type": "string",
                           "id": "yi8ktxhIPh",
-                          "example": "{{AccessToken}}",
+                          "example": "Bearer {{AccessToken}}",
                           "enable": true,
                           "name": "Authorization"
                         }
@@ -1019,7 +1039,7 @@
                           "description": "",
                           "type": "string",
                           "id": "U96glR4lkP",
-                          "example": "{{AccessToken}}",
+                          "example": "Bearer {{AccessToken}}",
                           "enable": true,
                           "name": "Authorization"
                         }
@@ -1119,7 +1139,7 @@
                           "description": "",
                           "type": "string",
                           "id": "MtbGN0Z5W2",
-                          "example": "{{AccessToken}}",
+                          "example": "Bearer {{AccessToken}}",
                           "enable": true,
                           "name": "Authorization"
                         }
@@ -1236,7 +1256,7 @@
                           "description": "",
                           "type": "string",
                           "id": "vIwgzOd5wN",
-                          "example": "{{AccessToken}}",
+                          "example": "Bearer {{AccessToken}}",
                           "enable": true,
                           "name": "Authorization"
                         }
@@ -1316,7 +1336,7 @@
                           "description": "",
                           "type": "string",
                           "id": "ghHV9o9b2n",
-                          "example": "{{AccessToken}}",
+                          "example": "Bearer {{AccessToken}}",
                           "enable": true,
                           "name": "Authorization"
                         }
@@ -1416,7 +1436,7 @@
                           "description": "",
                           "type": "string",
                           "id": "Vvcp9pz1V1",
-                          "example": "{{AccessToken}}",
+                          "example": "Bearer {{AccessToken}}",
                           "enable": true,
                           "name": "Authorization"
                         }
@@ -1516,7 +1536,7 @@
                           "description": "",
                           "type": "string",
                           "id": "tOjlqKbZg3",
-                          "example": "{{AccessToken}}",
+                          "example": "Bearer {{AccessToken}}",
                           "enable": true,
                           "name": "Authorization"
                         }
@@ -1633,7 +1653,7 @@
                           "description": "",
                           "type": "string",
                           "id": "VcZZXeMV9A",
-                          "example": "{{AccessToken}}",
+                          "example": "Bearer {{AccessToken}}",
                           "enable": true,
                           "name": "Authorization"
                         }
@@ -1724,7 +1744,7 @@
                           "description": "",
                           "type": "string",
                           "id": "lVxYJEylx1",
-                          "example": "{{AccessToken}}",
+                          "example": "Bearer {{AccessToken}}",
                           "enable": true,
                           "name": "Authorization"
                         }
@@ -1815,7 +1835,7 @@
                           "description": "",
                           "type": "string",
                           "id": "J4FVEdmkU5",
-                          "example": "{{AccessToken}}",
+                          "example": "Bearer {{AccessToken}}",
                           "enable": true,
                           "name": "Authorization"
                         }
@@ -1915,7 +1935,7 @@
                           "description": "",
                           "type": "string",
                           "id": "IT963XhhsI",
-                          "example": "{{AccessToken}}",
+                          "example": "Bearer {{AccessToken}}",
                           "enable": true,
                           "name": "Authorization"
                         }
@@ -1995,7 +2015,7 @@
                           "description": "",
                           "type": "string",
                           "id": "6WFc054ObO",
-                          "example": "{{AccessToken}}",
+                          "example": "Bearer {{AccessToken}}",
                           "enable": true,
                           "name": "Authorization"
                         }
@@ -2084,7 +2104,7 @@
                           "description": "",
                           "type": "string",
                           "id": "GZqxbzmA4M",
-                          "example": "{{AccessToken}}",
+                          "example": "Bearer {{AccessToken}}",
                           "enable": true,
                           "name": "Authorization"
                         }
@@ -2185,7 +2205,7 @@
                           "description": "",
                           "type": "string",
                           "id": "eGaUFPsvOP",
-                          "example": "{{AccessToken}}",
+                          "example": "Bearer {{AccessToken}}",
                           "enable": true,
                           "name": "Authorization"
                         }
@@ -2227,7 +2247,7 @@
                       "examples": [
                         {
                           "mediaType": "application/json",
-                          "value": "{\r\n    \"roles\": [\"539bbe46-e1a8-4ce5-ab89-bf66d37306ef\"]\r\n}"
+                          "value": "{\r\n    \"roles\": [\"c53a4bcf-42b4-4e13-afa3-100c13412d10\",\"3a3bcbd6-fa17-415a-a9c5-67363a1f5ff5\"]\r\n}"
                         }
                       ],
                       "oasExtensions": ""
@@ -2285,7 +2305,7 @@
                           "description": "",
                           "type": "string",
                           "id": "qZw2W54bON",
-                          "example": "{{AccessToken}}",
+                          "example": "Bearer {{AccessToken}}",
                           "enable": true,
                           "name": "Authorization"
                         }
@@ -2341,6 +2361,106 @@
                     "commonResponseStatus": {},
                     "responseChildren": [
                       "BLANK.719988267"
+                    ],
+                    "visibility": "INHERITED",
+                    "moduleId": 2770189,
+                    "oasExtensions": "",
+                    "type": "http",
+                    "preProcessors": [],
+                    "postProcessors": [],
+                    "inheritPostProcessors": {},
+                    "inheritPreProcessors": {}
+                  }
+                },
+                {
+                  "name": "移除指定用户的角色",
+                  "api": {
+                    "id": "321534707",
+                    "method": "delete",
+                    "path": "/users/{id}/roles/",
+                    "parameters": {
+                      "path": [
+                        {
+                          "id": "id#0",
+                          "name": "id",
+                          "required": true,
+                          "description": "",
+                          "type": "string",
+                          "enable": true,
+                          "example": "93fef74d-4e25-40a3-b493-b071c8bae8e3"
+                        }
+                      ],
+                      "header": [
+                        {
+                          "required": false,
+                          "description": "",
+                          "type": "string",
+                          "id": "l9abdY4gka",
+                          "example": "Bearer {{AccessToken}}",
+                          "enable": true,
+                          "name": "Authorization"
+                        }
+                      ]
+                    },
+                    "auth": {},
+                    "securityScheme": {},
+                    "commonParameters": {
+                      "query": [],
+                      "body": [],
+                      "cookie": [],
+                      "header": []
+                    },
+                    "responses": [
+                      {
+                        "id": "720234976",
+                        "code": 200,
+                        "name": "成功",
+                        "headers": [],
+                        "jsonSchema": {
+                          "type": "object",
+                          "properties": {}
+                        },
+                        "description": "",
+                        "contentType": "json",
+                        "mediaType": "",
+                        "oasExtensions": ""
+                      }
+                    ],
+                    "responseExamples": [],
+                    "requestBody": {
+                      "type": "application/json",
+                      "parameters": [],
+                      "jsonSchema": {
+                        "type": "object",
+                        "properties": {}
+                      },
+                      "mediaType": "",
+                      "examples": [
+                        {
+                          "mediaType": "application/json",
+                          "value": "{\r\n    \"roles\": [\"539bbe46-e1a8-4ce5-ab89-bf66d37306ef\",\"3a3bcbd6-fa17-415a-a9c5-67363a1f5ff5\"]\r\n}"
+                        }
+                      ],
+                      "oasExtensions": ""
+                    },
+                    "description": "",
+                    "tags": [],
+                    "status": "developing",
+                    "serverId": "",
+                    "operationId": "",
+                    "sourceUrl": "",
+                    "ordering": 90,
+                    "cases": [],
+                    "mocks": [],
+                    "customApiFields": "{}",
+                    "advancedSettings": {
+                      "disabledSystemHeaders": {}
+                    },
+                    "mockScript": {},
+                    "codeSamples": [],
+                    "commonResponseStatus": {},
+                    "responseChildren": [
+                      "BLANK.720234976"
                     ],
                     "visibility": "INHERITED",
                     "moduleId": 2770189,
