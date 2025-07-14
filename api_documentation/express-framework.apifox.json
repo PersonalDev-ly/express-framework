@@ -162,7 +162,7 @@
                       "examples": [
                         {
                           "mediaType": "application/json",
-                          "value": "{\r\n    \"email\": \"test2@example.com\",\r\n    \"username\": \"test2\",\r\n    \"password\": \"abcd1234\"\r\n}"
+                          "value": "{\r\n    \"email\": \"test4@example.com\",\r\n    \"username\": \"test4\",\r\n    \"password\": \"abcd1234\"\r\n}"
                         }
                       ],
                       "oasExtensions": ""
@@ -189,6 +189,7 @@
                     "visibility": "INHERITED",
                     "moduleId": 2770189,
                     "oasExtensions": "",
+                    "type": "http",
                     "preProcessors": [],
                     "postProcessors": [],
                     "inheritPostProcessors": {},
@@ -265,6 +266,7 @@
                     "visibility": "INHERITED",
                     "moduleId": 2770189,
                     "oasExtensions": "",
+                    "type": "http",
                     "preProcessors": [],
                     "postProcessors": [],
                     "inheritPostProcessors": {},
@@ -374,6 +376,7 @@
                     "visibility": "INHERITED",
                     "moduleId": 2770189,
                     "oasExtensions": "",
+                    "type": "http",
                     "preProcessors": [],
                     "postProcessors": [],
                     "inheritPostProcessors": {},
@@ -456,6 +459,7 @@
                     "visibility": "INHERITED",
                     "moduleId": 2770189,
                     "oasExtensions": "",
+                    "type": "http",
                     "preProcessors": [],
                     "postProcessors": [],
                     "inheritPostProcessors": {},
@@ -603,6 +607,7 @@
                     "visibility": "INHERITED",
                     "moduleId": 2770189,
                     "oasExtensions": "",
+                    "type": "http",
                     "preProcessors": [],
                     "postProcessors": [],
                     "inheritPostProcessors": {},
@@ -691,6 +696,7 @@
                     "visibility": "INHERITED",
                     "moduleId": 2770189,
                     "oasExtensions": "",
+                    "type": "http",
                     "preProcessors": [],
                     "postProcessors": [],
                     "inheritPostProcessors": {},
@@ -791,6 +797,7 @@
                     "visibility": "INHERITED",
                     "moduleId": 2770189,
                     "oasExtensions": "",
+                    "type": "http",
                     "preProcessors": [],
                     "postProcessors": [],
                     "inheritPostProcessors": {},
@@ -812,7 +819,7 @@
                           "description": "",
                           "type": "string",
                           "enable": true,
-                          "example": "616dade1-56eb-4455-aa01-9e377453abf2"
+                          "example": "539bbe46-e1a8-4ce5-ab89-bf66d37306ef"
                         }
                       ],
                       "header": [
@@ -863,7 +870,7 @@
                       "examples": [
                         {
                           "mediaType": "application/json",
-                          "value": "{\r\n    \"permissionIds\": [\"0765a9b3-65cd-4e11-83c4-9d04064e4e18\"]\r\n}"
+                          "value": "{\r\n    \"permissionIds\": [\"e42170e0-2e9d-4e62-ae1a-9b36df3de47f\"]\r\n}"
                         }
                       ],
                       "oasExtensions": ""
@@ -890,6 +897,7 @@
                     "visibility": "INHERITED",
                     "moduleId": 2770189,
                     "oasExtensions": "",
+                    "type": "http",
                     "preProcessors": [],
                     "postProcessors": [],
                     "inheritPostProcessors": {},
@@ -980,6 +988,7 @@
                     "visibility": "INHERITED",
                     "moduleId": 2770189,
                     "oasExtensions": "",
+                    "type": "http",
                     "preProcessors": [],
                     "postProcessors": [],
                     "inheritPostProcessors": {},
@@ -1079,6 +1088,7 @@
                     "visibility": "INHERITED",
                     "moduleId": 2770189,
                     "oasExtensions": "",
+                    "type": "http",
                     "preProcessors": [],
                     "postProcessors": [],
                     "inheritPostProcessors": {},
@@ -1100,7 +1110,7 @@
                           "description": "",
                           "type": "string",
                           "enable": true,
-                          "example": "f2e91ec6-8801-4f16-af5a-c7b2416b4917"
+                          "example": "539bbe46-e1a8-4ce5-ab89-bf66d37306ef"
                         }
                       ],
                       "header": [
@@ -1169,6 +1179,7 @@
                     "visibility": "INHERITED",
                     "moduleId": 2770189,
                     "oasExtensions": "",
+                    "type": "http",
                     "preProcessors": [],
                     "postProcessors": [],
                     "inheritPostProcessors": {},
@@ -1285,6 +1296,7 @@
                     "visibility": "INHERITED",
                     "moduleId": 2770189,
                     "oasExtensions": "",
+                    "type": "http",
                     "preProcessors": [],
                     "postProcessors": [],
                     "inheritPostProcessors": {},
@@ -1373,6 +1385,7 @@
                     "visibility": "INHERITED",
                     "moduleId": 2770189,
                     "oasExtensions": "",
+                    "type": "http",
                     "preProcessors": [],
                     "postProcessors": [],
                     "inheritPostProcessors": {},
@@ -1472,6 +1485,7 @@
                     "visibility": "INHERITED",
                     "moduleId": 2770189,
                     "oasExtensions": "",
+                    "type": "http",
                     "preProcessors": [],
                     "postProcessors": [],
                     "inheritPostProcessors": {},
@@ -1562,6 +1576,7 @@
                     "visibility": "INHERITED",
                     "moduleId": 2770189,
                     "oasExtensions": "",
+                    "type": "http",
                     "preProcessors": [],
                     "postProcessors": [],
                     "inheritPostProcessors": {},
@@ -1678,6 +1693,7 @@
                     "visibility": "INHERITED",
                     "moduleId": 2770189,
                     "oasExtensions": "",
+                    "type": "http",
                     "preProcessors": [],
                     "postProcessors": [],
                     "inheritPostProcessors": {},
@@ -1699,7 +1715,7 @@
                           "description": "",
                           "type": "string",
                           "enable": true,
-                          "example": "67e1d21c-398d-4b63-960e-42428c1c4d3f"
+                          "example": "93fef74d-4e25-40a3-b493-b071c8bae8e3"
                         }
                       ],
                       "header": [
@@ -1768,6 +1784,7 @@
                     "visibility": "INHERITED",
                     "moduleId": 2770189,
                     "oasExtensions": "",
+                    "type": "http",
                     "preProcessors": [],
                     "postProcessors": [],
                     "inheritPostProcessors": {},
@@ -1867,6 +1884,7 @@
                     "visibility": "INHERITED",
                     "moduleId": 2770189,
                     "oasExtensions": "",
+                    "type": "http",
                     "preProcessors": [],
                     "postProcessors": [],
                     "inheritPostProcessors": {},
@@ -1957,6 +1975,7 @@
                     "visibility": "INHERITED",
                     "moduleId": 2770189,
                     "oasExtensions": "",
+                    "type": "http",
                     "preProcessors": [],
                     "postProcessors": [],
                     "inheritPostProcessors": {},
@@ -2045,6 +2064,7 @@
                     "visibility": "INHERITED",
                     "moduleId": 2770189,
                     "oasExtensions": "",
+                    "type": "http",
                     "preProcessors": [],
                     "postProcessors": [],
                     "inheritPostProcessors": {},
@@ -2133,6 +2153,199 @@
                     "visibility": "INHERITED",
                     "moduleId": 2770189,
                     "oasExtensions": "",
+                    "type": "http",
+                    "preProcessors": [],
+                    "postProcessors": [],
+                    "inheritPostProcessors": {},
+                    "inheritPreProcessors": {}
+                  }
+                },
+                {
+                  "name": "为用户分配角色",
+                  "api": {
+                    "id": "321364032",
+                    "method": "post",
+                    "path": "/users/{id}/roles/",
+                    "parameters": {
+                      "query": [],
+                      "path": [
+                        {
+                          "id": "id#0",
+                          "name": "id",
+                          "required": true,
+                          "description": "",
+                          "type": "string",
+                          "enable": true,
+                          "example": "93fef74d-4e25-40a3-b493-b071c8bae8e3"
+                        }
+                      ],
+                      "header": [
+                        {
+                          "required": false,
+                          "description": "",
+                          "type": "string",
+                          "id": "eGaUFPsvOP",
+                          "example": "{{AccessToken}}",
+                          "enable": true,
+                          "name": "Authorization"
+                        }
+                      ]
+                    },
+                    "auth": {},
+                    "securityScheme": {},
+                    "commonParameters": {
+                      "query": [],
+                      "body": [],
+                      "cookie": [],
+                      "header": []
+                    },
+                    "responses": [
+                      {
+                        "id": "719982106",
+                        "code": 200,
+                        "name": "成功",
+                        "headers": [],
+                        "jsonSchema": {
+                          "type": "object",
+                          "properties": {}
+                        },
+                        "description": "",
+                        "contentType": "json",
+                        "mediaType": "",
+                        "oasExtensions": ""
+                      }
+                    ],
+                    "responseExamples": [],
+                    "requestBody": {
+                      "type": "application/json",
+                      "parameters": [],
+                      "jsonSchema": {
+                        "type": "object",
+                        "properties": {}
+                      },
+                      "mediaType": "",
+                      "examples": [
+                        {
+                          "mediaType": "application/json",
+                          "value": "{\r\n    \"roles\": [\"539bbe46-e1a8-4ce5-ab89-bf66d37306ef\"]\r\n}"
+                        }
+                      ],
+                      "oasExtensions": ""
+                    },
+                    "description": "",
+                    "tags": [],
+                    "status": "developing",
+                    "serverId": "",
+                    "operationId": "",
+                    "sourceUrl": "",
+                    "ordering": 70,
+                    "cases": [],
+                    "mocks": [],
+                    "customApiFields": "{}",
+                    "advancedSettings": {
+                      "disabledSystemHeaders": {}
+                    },
+                    "mockScript": {},
+                    "codeSamples": [],
+                    "commonResponseStatus": {},
+                    "responseChildren": [
+                      "BLANK.719982106"
+                    ],
+                    "visibility": "INHERITED",
+                    "moduleId": 2770189,
+                    "oasExtensions": "",
+                    "type": "http",
+                    "preProcessors": [],
+                    "postProcessors": [],
+                    "inheritPostProcessors": {},
+                    "inheritPreProcessors": {}
+                  }
+                },
+                {
+                  "name": "获取指定用户具备哪些权限",
+                  "api": {
+                    "id": "321371109",
+                    "method": "get",
+                    "path": "/users/{id}/roles/",
+                    "parameters": {
+                      "path": [
+                        {
+                          "id": "id#0",
+                          "name": "id",
+                          "required": true,
+                          "description": "",
+                          "type": "string",
+                          "enable": true,
+                          "example": "93fef74d-4e25-40a3-b493-b071c8bae8e3"
+                        }
+                      ],
+                      "header": [
+                        {
+                          "required": false,
+                          "description": "",
+                          "type": "string",
+                          "id": "qZw2W54bON",
+                          "example": "{{AccessToken}}",
+                          "enable": true,
+                          "name": "Authorization"
+                        }
+                      ]
+                    },
+                    "auth": {},
+                    "securityScheme": {},
+                    "commonParameters": {
+                      "query": [],
+                      "body": [],
+                      "cookie": [],
+                      "header": []
+                    },
+                    "responses": [
+                      {
+                        "id": "719988267",
+                        "code": 200,
+                        "name": "成功",
+                        "headers": [],
+                        "jsonSchema": {
+                          "type": "object",
+                          "properties": {}
+                        },
+                        "description": "",
+                        "contentType": "json",
+                        "mediaType": "",
+                        "oasExtensions": ""
+                      }
+                    ],
+                    "responseExamples": [],
+                    "requestBody": {
+                      "type": "none",
+                      "parameters": [],
+                      "mediaType": "",
+                      "examples": [],
+                      "oasExtensions": ""
+                    },
+                    "description": "",
+                    "tags": [],
+                    "status": "developing",
+                    "serverId": "",
+                    "operationId": "",
+                    "sourceUrl": "",
+                    "ordering": 80,
+                    "cases": [],
+                    "mocks": [],
+                    "customApiFields": "{}",
+                    "advancedSettings": {
+                      "disabledSystemHeaders": {}
+                    },
+                    "mockScript": {},
+                    "codeSamples": [],
+                    "commonResponseStatus": {},
+                    "responseChildren": [
+                      "BLANK.719988267"
+                    ],
+                    "visibility": "INHERITED",
+                    "moduleId": 2770189,
+                    "oasExtensions": "",
+                    "type": "http",
                     "preProcessors": [],
                     "postProcessors": [],
                     "inheritPostProcessors": {},

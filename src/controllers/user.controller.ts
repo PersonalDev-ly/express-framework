@@ -174,4 +174,53 @@ export class UserController {
       });
     }
   }
+
+  /**
+   * 为用户分配角色
+   * @param req 请求对象
+   * @param res 响应对象
+   */
+  @RequirePermission({ resource: "user", action: "grant" })
+  @Post("/:id/roles")
+  async assignRolesToUser(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const { roles } = req.body;
+      const res_flg = await UserService.assignRolesToUser(id, roles);
+      if (!res_flg) {
+        return res.status(400).json({
+          message: "为用户分配角色失败：角色不存在",
+        });
+      }
+      return res.status(200).json({
+        message: "为用户分配角色成功",
+      });
+    } catch (error) {
+      return res.status(400).json({
+        message: "为用户分配角色失败：" + (error as Error).message,
+      });
+    }
+  }
+
+  /**
+   * 获取指定用户具备哪些权限
+   * @param req 请求对象
+   * @param res 响应对象
+   */
+  @RequirePermission({ resource: "user", action: "read" })
+  @Get("/:id/roles")
+  async getUserPermissions(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const roles = await UserService.getUserRoles(id);
+      return res.status(200).json({
+        message: "获取用户角色成功",
+        data: roles,
+      });
+    } catch (error) {
+      return res.status(400).json({
+        message: "获取用户角色失败：" + (error as Error).message,
+      });
+    }
+  }
 }
