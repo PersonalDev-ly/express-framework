@@ -67,7 +67,7 @@ src/
 ├── utils/              # 工具函数
 │   ├── logger.ts                 # 日志工具
 │   ├── jwt.util.ts               # JWT工具
-│   ├── hash-password.ts          # 密码哈希工具
+│   ├── hash-password-bcrypt.ts   # 密码哈希工具
 │   ├── route-registry.ts         # 路由注册工具
 │   └── token-blacklist.util.ts   # 令牌黑名单工具
 └── index.ts            # 应用入口
