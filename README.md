@@ -114,6 +114,8 @@ npm start
 - 用户登出
 - 令牌黑名单
 
+所有路由默认需要认证，可以通过 `@AllowAnonymous()` 装饰器取消认证限制。
+
 ```typescript
 // 用户登录示例
 @AllowAnonymous()
