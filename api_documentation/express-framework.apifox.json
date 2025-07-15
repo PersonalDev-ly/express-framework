@@ -369,7 +369,7 @@
                       "examples": [
                         {
                           "mediaType": "application/json",
-                          "value": "{\r\n    \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkNGI3MDgxNC00ODFkLTQ0NTItYTUyNi0yYzViMmM1Yzk0M2UiLCJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwiaWF0IjoxNzUxOTM5NTk4LCJleHAiOjE3NTIwMjU5OTh9.0JvzdIVBMbGoe0AWZbC_bCqjxvIK6uCkBIXKO7u3_vY\"\r\n}"
+                          "value": "{\r\n    \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkNGI3MDgxNC00ODFkLTQ0NTItYTUyNi0yYzViMmM1Yzk0M2UiLCJlbWFpbCI6ImFkbWluQGV4YW1wbGUuY29tIiwiaWF0IjoxNzUyNTQ1NTM1LCJleHAiOjE3NTI2MzE5MzV9.0x41oOmHWdcs8j7hVAXjjBSqwF_gVUv-EMUqqz_Jzb0\"\r\n}"
                         }
                       ],
                       "oasExtensions": ""
@@ -398,7 +398,26 @@
                     "oasExtensions": "",
                     "type": "http",
                     "preProcessors": [],
-                    "postProcessors": [],
+                    "postProcessors": [
+                      {
+                        "type": "extractor",
+                        "data": {
+                          "variableName": "AccessToken",
+                          "variableType": "environment",
+                          "subject": "responseJson",
+                          "extractSettings": {
+                            "expression": "$.data.tokens.accessToken",
+                            "continueExtractorSettings": {
+                              "isContinueExtractValue": false,
+                              "JsonArrayValueIndexValue": ""
+                            }
+                          }
+                        },
+                        "defaultEnable": false,
+                        "enable": true,
+                        "id": "10TmPAPNzjJSb0Z2SD6Aj"
+                      }
+                    ],
                     "inheritPostProcessors": {},
                     "inheritPreProcessors": {}
                   }
@@ -689,7 +708,7 @@
                       "examples": [
                         {
                           "mediaType": "application/json",
-                          "value": "{\r\n    \"name\": \"test3\",\r\n    \"description\": \"测试3\"\r\n}"
+                          "value": "{\r\n    \"name\": \"admin\",\r\n    \"description\": \"管理员\"\r\n}"
                         }
                       ],
                       "oasExtensions": ""
@@ -839,7 +858,7 @@
                           "description": "",
                           "type": "string",
                           "enable": true,
-                          "example": "539bbe46-e1a8-4ce5-ab89-bf66d37306ef"
+                          "example": "c53a4bcf-42b4-4e13-afa3-100c13412d10"
                         }
                       ],
                       "header": [
@@ -890,7 +909,7 @@
                       "examples": [
                         {
                           "mediaType": "application/json",
-                          "value": "{\r\n    \"permissionIds\": [\"e42170e0-2e9d-4e62-ae1a-9b36df3de47f\"]\r\n}"
+                          "value": "{\r\n    \"permissionIds\": [\r\n        \"e42170e0-2e9d-4e62-ae1a-9b36df3de47f\",\r\n        \"2b525277-b283-4358-8e15-6a48da4c11bb\",\r\n        \"0d27e190-cf11-4e64-aa6d-9a3daad64e73\",\r\n        \"af077980-6889-48c4-b02c-bc0f193441f8\",\r\n        \"5df08f52-0032-42dd-88f3-014eea4c1a5c\",\r\n        \"237ac9f2-0560-4086-8a61-2766c3a5d3d5\",\r\n        \"ce047b8a-d236-49be-a471-0286bc739903\",\r\n        \"34705e23-f58c-444b-86c2-83aeeb6ed88f\",\r\n        \"72f02a47-3d13-4113-947f-efd174392628\",\r\n        \"0765a9b3-65cd-4e11-83c4-9d04064e4e18\",\r\n        \"d504b1b8-035c-4de1-8a20-5be7e8032218\",\r\n        \"4268e5e1-4bff-4b31-8287-b8ece7691ec9\"\r\n    ]\r\n}"
                         }
                       ],
                       "oasExtensions": ""
@@ -1030,7 +1049,7 @@
                           "description": "",
                           "type": "string",
                           "enable": true,
-                          "example": "616dade1-56eb-4455-aa01-9e377453abf2"
+                          "example": "539bbe46-e1a8-4ce5-ab89-bf66d37306ef"
                         }
                       ],
                       "header": [
@@ -1081,7 +1100,7 @@
                       "examples": [
                         {
                           "mediaType": "application/json",
-                          "value": "{\r\n    \"permissionIds\": [\"e42170e0-2e9d-4e62-ae1a-9b36df3de47f\",\"2b525277-b283-4358-8e15-6a48da4c11bb\"]\r\n}"
+                          "value": "{\r\n    \"permissionIds\": [\r\n        \"e42170e0-2e9d-4e62-ae1a-9b36df3de47f\",\r\n        \"2b525277-b283-4358-8e15-6a48da4c11bb\",\r\n        \"0d27e190-cf11-4e64-aa6d-9a3daad64e73\",\r\n        \"af077980-6889-48c4-b02c-bc0f193441f8\",\r\n        \"5df08f52-0032-42dd-88f3-014eea4c1a5c\",\r\n        \"237ac9f2-0560-4086-8a61-2766c3a5d3d5\",\r\n        \"ce047b8a-d236-49be-a471-0286bc739903\",\r\n        \"34705e23-f58c-444b-86c2-83aeeb6ed88f\",\r\n        \"72f02a47-3d13-4113-947f-efd174392628\",\r\n        \"0765a9b3-65cd-4e11-83c4-9d04064e4e18\",\r\n        \"d504b1b8-035c-4de1-8a20-5be7e8032218\",\r\n        \"4268e5e1-4bff-4b31-8287-b8ece7691ec9\"\r\n    ]\r\n}"
                         }
                       ],
                       "oasExtensions": ""
@@ -1130,7 +1149,7 @@
                           "description": "",
                           "type": "string",
                           "enable": true,
-                          "example": "539bbe46-e1a8-4ce5-ab89-bf66d37306ef"
+                          "example": "c53a4bcf-42b4-4e13-afa3-100c13412d10"
                         }
                       ],
                       "header": [
@@ -1735,7 +1754,7 @@
                           "description": "",
                           "type": "string",
                           "enable": true,
-                          "example": "93fef74d-4e25-40a3-b493-b071c8bae8e3"
+                          "example": "55e58973-e419-422f-8e70-d29e17621542"
                         }
                       ],
                       "header": [
@@ -1926,7 +1945,7 @@
                           "description": "",
                           "type": "string",
                           "enable": true,
-                          "example": "67e1d21c-398d-4b63-960e-42428c1c4d3f"
+                          "example": "60b02113-1774-43a7-b7fe-fdd2ac3af08a"
                         }
                       ],
                       "header": [
@@ -2057,7 +2076,7 @@
                       "examples": [
                         {
                           "mediaType": "application/json",
-                          "value": "{\r\n    \"ids\": [\"14be9c6e-24b4-4ca9-93cc-098093b2dd93\"]\r\n}"
+                          "value": "{\r\n    \"ids\": [\"55e58973-e419-422f-8e70-d29e17621542\",\"7e702dd6-d9b5-4f71-957e-8109db2eed58\"]\r\n}"
                         }
                       ],
                       "oasExtensions": ""
@@ -2196,7 +2215,7 @@
                           "description": "",
                           "type": "string",
                           "enable": true,
-                          "example": "93fef74d-4e25-40a3-b493-b071c8bae8e3"
+                          "example": "55e58973-e419-422f-8e70-d29e17621542"
                         }
                       ],
                       "header": [
@@ -2282,7 +2301,7 @@
                   }
                 },
                 {
-                  "name": "获取指定用户具备哪些权限",
+                  "name": "获取指定用户具备哪些角色",
                   "api": {
                     "id": "321371109",
                     "method": "get",
@@ -2296,7 +2315,7 @@
                           "description": "",
                           "type": "string",
                           "enable": true,
-                          "example": "93fef74d-4e25-40a3-b493-b071c8bae8e3"
+                          "example": "60b02113-1774-43a7-b7fe-fdd2ac3af08a"
                         }
                       ],
                       "header": [
@@ -2438,7 +2457,7 @@
                       "examples": [
                         {
                           "mediaType": "application/json",
-                          "value": "{\r\n    \"roles\": [\"539bbe46-e1a8-4ce5-ab89-bf66d37306ef\",\"3a3bcbd6-fa17-415a-a9c5-67363a1f5ff5\"]\r\n}"
+                          "value": "{\r\n    \"roles\": [\"c53a4bcf-42b4-4e13-afa3-100c13412d10\"]\r\n}"
                         }
                       ],
                       "oasExtensions": ""
