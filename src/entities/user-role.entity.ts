@@ -1,22 +1,13 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-} from "typeorm";
+import { Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
 import { Role } from "./role.entity";
 import { User } from "./user.entity";
 
 @Entity("user_roles")
 export class UserRole {
-  @PrimaryGeneratedColumn("uuid")
-  id: string;
-
-  @Column({ name: "user_id" })
+  @PrimaryColumn({ name: "user_id", comment: "用户ID" })
   userId: string;
 
-  @Column({ name: "role_id" })
+  @PrimaryColumn({ name: "role_id", comment: "角色ID" })
   roleId: string;
 
   @ManyToOne(() => User, (user) => user.userRoles)

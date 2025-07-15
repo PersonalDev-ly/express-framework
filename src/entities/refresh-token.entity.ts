@@ -1,27 +1,18 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-} from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
 import { User } from "./user.entity";
 
 @Entity()
 export class RefreshToken {
-  @PrimaryGeneratedColumn("uuid")
-  id: string;
-
-  @Column()
+  @PrimaryColumn({ name: "user_id", comment: "用户ID" })
   userId: string;
 
-  @Column()
+  @Column({ comment: "刷新token" })
   token: string;
 
-  @Column()
+  @Column({ comment: "过期时间" })
   expiresAt: Date;
 
   @ManyToOne(() => User)
-  @JoinColumn({ name: "userId" })
+  @JoinColumn({ name: "user_id" })
   user: User;
 }
