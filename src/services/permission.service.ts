@@ -24,7 +24,10 @@ export class PermissionService {
     action: string
   ): Promise<Permission> {
     // 检查resource+action唯一性
-    const existingPermission = await this.findPermissionByResourceAction(resource, action);
+    const existingPermission = await this.findPermissionByResourceAction(
+      resource,
+      action
+    );
     if (existingPermission) {
       throw new Error(`权限 resource='${resource}' action='${action}' 已存在`);
     }
@@ -65,7 +68,10 @@ export class PermissionService {
    * @param action 操作
    * @returns 权限对象或undefined
    */
-  static async findPermissionByResourceAction(resource: string, action: string): Promise<Permission | null> {
+  static async findPermissionByResourceAction(
+    resource: string,
+    action: string
+  ): Promise<Permission | null> {
     return this.permissionRepository.findOne({ where: { resource, action } });
   }
 
@@ -92,10 +98,20 @@ export class PermissionService {
       throw new Error(`ID为 '${id}' 的权限不存在`);
     }
     // 如果要更新resource/action，检查唯一性
-    if ((data.resource && data.resource !== permission.resource) || (data.action && data.action !== permission.action)) {
-      const existing = await this.findPermissionByResourceAction(data.resource || permission.resource, data.action || permission.action);
+    if (
+      (data.resource && data.resource !== permission.resource) ||
+      (data.action && data.action !== permission.action)
+    ) {
+      const existing = await this.findPermissionByResourceAction(
+        data.resource || permission.resource,
+        data.action || permission.action
+      );
       if (existing && existing.id !== id) {
-        throw new Error(`权限 resource='${data.resource || permission.resource}' action='${data.action || permission.action}' 已存在`);
+        throw new Error(
+          `权限 resource='${data.resource || permission.resource}' action='${
+            data.action || permission.action
+          }' 已存在`
+        );
       }
     }
     // 如果要更新名称，检查新名称是否已存在
@@ -161,10 +177,16 @@ export class PermissionService {
    * @returns 创建的权限对象数组
    */
   static async createBulkPermissions(
-    permissions: { name: string; description: string; resource: string; action: string }[]
+    permissions: {
+      name: string;
+      description: string;
+      resource: string;
+      action: string;
+    }[]
   ): Promise<Permission[]> {
     const createdPermissions: Permission[] = [];
-    const queryRunner = this.permissionRepository.manager.connection.createQueryRunner();
+    const queryRunner =
+      this.permissionRepository.manager.connection.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
     try {

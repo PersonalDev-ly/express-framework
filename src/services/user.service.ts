@@ -427,7 +427,7 @@ export class UserService {
       await queryRunner.manager.delete(RefreshToken, { userId: id });
       // 最后删除用户
       await queryRunner.manager.delete(User, { id });
-      
+
       await queryRunner.commitTransaction();
     } catch (error) {
       await queryRunner.rollbackTransaction();
@@ -454,7 +454,7 @@ export class UserService {
       await queryRunner.manager.delete(RefreshToken, { userId: In(ids) });
       // 最后删除用户
       await queryRunner.manager.delete(User, { id: In(ids) });
-      
+
       await queryRunner.commitTransaction();
     } catch (error) {
       await queryRunner.rollbackTransaction();
