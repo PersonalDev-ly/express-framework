@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from "uuid";
 import { AppDataSource } from "../config/database";
 import redisClient from "../config/redisConfig";
 import { RefreshToken } from "../entities/refresh-token.entity";
@@ -102,7 +101,6 @@ export class TokenService {
 
     // 创建新的刷新令牌记录
     const refreshToken = new RefreshToken();
-    refreshToken.id = uuidv4();
     refreshToken.userId = userId;
     refreshToken.token = token;
     refreshToken.expiresAt = new Date(

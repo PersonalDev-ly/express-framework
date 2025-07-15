@@ -1,11 +1,14 @@
 import dotenv from "dotenv";
 import { DataSource } from "typeorm";
-import { Permission } from "../entities/permission.entity";
-import { RefreshToken } from "../entities/refresh-token.entity";
-import { RolePermission } from "../entities/role-permission.entity";
-import { Role } from "../entities/role.entity";
-import { UserRole } from "../entities/user-role.entity";
-import { User } from "../entities/user.entity";
+import {
+  MenuEntity,
+  Permission,
+  RefreshToken,
+  Role,
+  RolePermission,
+  User,
+  UserRole,
+} from "../entities";
 
 // 加载环境变量
 dotenv.config();
@@ -19,7 +22,15 @@ export const AppDataSource = new DataSource({
   database: process.env.DB_DATABASE || "postgres",
   synchronize: process.env.NODE_ENV === "development", // 开发环境下自动同步数据库结构
   logging: process.env.NODE_ENV === "development",
-  entities: [User, RefreshToken, Permission, RolePermission, Role, UserRole],
+  entities: [
+    User,
+    RefreshToken,
+    Permission,
+    RolePermission,
+    Role,
+    UserRole,
+    MenuEntity,
+  ],
   subscribers: [],
   migrations: [],
 });
