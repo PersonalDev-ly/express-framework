@@ -65,7 +65,7 @@
             }
           },
           "shareSettings": {},
-          "visibility": "INHERITED",
+          "visibility": "INTERNAL",
           "moduleId": 2770189,
           "preProcessors": [
             {
@@ -708,7 +708,7 @@
                       "examples": [
                         {
                           "mediaType": "application/json",
-                          "value": "{\r\n    \"name\": \"admin\",\r\n    \"description\": \"管理员\"\r\n}"
+                          "value": "{\r\n    \"name\": \"test3\",\r\n    \"description\": \"测试3\"\r\n}"
                         }
                       ],
                       "oasExtensions": ""
@@ -958,7 +958,7 @@
                           "description": "",
                           "type": "string",
                           "enable": true,
-                          "example": "f2e91ec6-8801-4f16-af5a-c7b2416b4917"
+                          "example": "61870b6e-3c19-4067-b0b8-53a9e7be76e9"
                         }
                       ],
                       "header": [
@@ -1214,6 +1214,95 @@
                     "commonResponseStatus": {},
                     "responseChildren": [
                       "BLANK.713835883"
+                    ],
+                    "visibility": "INHERITED",
+                    "moduleId": 2770189,
+                    "oasExtensions": "",
+                    "type": "http",
+                    "preProcessors": [],
+                    "postProcessors": [],
+                    "inheritPostProcessors": {},
+                    "inheritPreProcessors": {}
+                  }
+                },
+                {
+                  "name": "批量删除角色",
+                  "api": {
+                    "id": "322086161",
+                    "method": "delete",
+                    "path": "/roles/batch",
+                    "parameters": {
+                      "header": [
+                        {
+                          "required": false,
+                          "description": "",
+                          "type": "string",
+                          "id": "fca8nbXqfB",
+                          "example": "Bearer {{AccessToken}}",
+                          "enable": true,
+                          "name": "Authorization"
+                        }
+                      ]
+                    },
+                    "auth": {},
+                    "securityScheme": {},
+                    "commonParameters": {
+                      "query": [],
+                      "body": [],
+                      "cookie": [],
+                      "header": []
+                    },
+                    "responses": [
+                      {
+                        "id": "721173486",
+                        "code": 200,
+                        "name": "成功",
+                        "headers": [],
+                        "jsonSchema": {
+                          "type": "object",
+                          "properties": {}
+                        },
+                        "description": "",
+                        "contentType": "json",
+                        "mediaType": "",
+                        "oasExtensions": ""
+                      }
+                    ],
+                    "responseExamples": [],
+                    "requestBody": {
+                      "type": "application/json",
+                      "parameters": [],
+                      "jsonSchema": {
+                        "type": "object",
+                        "properties": {}
+                      },
+                      "mediaType": "",
+                      "examples": [
+                        {
+                          "mediaType": "application/json",
+                          "value": "{\r\n    \"ids\": [\"d636033f-89a2-44c6-820c-e4f160cb849c\"]\r\n}"
+                        }
+                      ],
+                      "oasExtensions": ""
+                    },
+                    "description": "",
+                    "tags": [],
+                    "status": "developing",
+                    "serverId": "",
+                    "operationId": "",
+                    "sourceUrl": "",
+                    "ordering": 130,
+                    "cases": [],
+                    "mocks": [],
+                    "customApiFields": "{}",
+                    "advancedSettings": {
+                      "disabledSystemHeaders": {}
+                    },
+                    "mockScript": {},
+                    "codeSamples": [],
+                    "commonResponseStatus": {},
+                    "responseChildren": [
+                      "BLANK.721173486"
                     ],
                     "visibility": "INHERITED",
                     "moduleId": 2770189,
