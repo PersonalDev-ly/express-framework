@@ -47,6 +47,22 @@ export class RoleController {
     }
   }
 
+  /** 批量删除角色 */
+  @RequirePermission({ resource: "role", action: "delete" })
+  @Delete("/batch")
+  async deleteBatch(req: Request, res: Response) {
+    const { ids } = req.body;
+    if (!Array.isArray(ids))
+      return res.status(400).json({ message: "ids必须为数组" });
+    try {
+      const result = await RoleService.deleteRoles(ids);
+      if (!result) return res.status(400).json({ message: "删除失败" });
+      res.json({ message: "删除成功" });
+    } catch (e) {
+      res.status(400).json({ message: (e as Error).message });
+    }
+  }
+
   /** 根据ID删除角色 */
   @RequirePermission({ resource: "role", action: "delete" })
   @Delete("/:id")

@@ -122,6 +122,18 @@ export class RoleService {
   }
 
   /**
+   * 批量删除角色
+   * @param ids 角色ID数组
+   * @returns 删除结果
+   */
+  static async deleteRoles(ids: string[]): Promise<boolean> {
+    for (const id of ids) {
+      await this.deleteRole(id);
+    }
+    return true;
+  }
+
+  /**
    * 为角色分配权限
    * @param roleId 角色ID
    * @param permissionIds 权限ID数组
