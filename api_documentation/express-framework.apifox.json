@@ -239,7 +239,7 @@
                       "examples": [
                         {
                           "mediaType": "application/json",
-                          "value": "{\r\n    \"email\": \"admin@example.com\",\r\n    \"password\": \"abcd1234\"\r\n}"
+                          "value": "{\r\n    \"email\": \"test1@example.com\",\r\n    \"password\": \"abcd1234\"\r\n}"
                         }
                       ],
                       "oasExtensions": ""
@@ -2569,6 +2569,97 @@
                     "commonResponseStatus": {},
                     "responseChildren": [
                       "BLANK.720234976"
+                    ],
+                    "visibility": "INHERITED",
+                    "moduleId": 2770189,
+                    "oasExtensions": "",
+                    "type": "http",
+                    "preProcessors": [],
+                    "postProcessors": [],
+                    "inheritPostProcessors": {},
+                    "inheritPreProcessors": {}
+                  }
+                },
+                {
+                  "name": "获取用户的所有权限",
+                  "api": {
+                    "id": "322920028",
+                    "method": "get",
+                    "path": "/users/{id}/permissions/",
+                    "parameters": {
+                      "path": [
+                        {
+                          "id": "id#0",
+                          "name": "id",
+                          "required": true,
+                          "description": "",
+                          "type": "string",
+                          "enable": true,
+                          "example": "f8acd07e-1997-4a51-af98-1abd3cb333c7"
+                        }
+                      ],
+                      "header": [
+                        {
+                          "required": false,
+                          "description": "",
+                          "type": "string",
+                          "id": "82tOuK60a8",
+                          "example": "Bearer {{AccessToken}}",
+                          "enable": true,
+                          "name": "Authorization"
+                        }
+                      ]
+                    },
+                    "auth": {},
+                    "securityScheme": {},
+                    "commonParameters": {
+                      "query": [],
+                      "body": [],
+                      "cookie": [],
+                      "header": []
+                    },
+                    "responses": [
+                      {
+                        "id": "722597428",
+                        "code": 200,
+                        "name": "成功",
+                        "headers": [],
+                        "jsonSchema": {
+                          "type": "object",
+                          "properties": {}
+                        },
+                        "description": "",
+                        "contentType": "json",
+                        "mediaType": "",
+                        "oasExtensions": ""
+                      }
+                    ],
+                    "responseExamples": [],
+                    "requestBody": {
+                      "type": "none",
+                      "parameters": [],
+                      "mediaType": "",
+                      "examples": [],
+                      "oasExtensions": ""
+                    },
+                    "description": "",
+                    "tags": [],
+                    "status": "developing",
+                    "serverId": "",
+                    "operationId": "",
+                    "sourceUrl": "",
+                    "ordering": 100,
+                    "cases": [],
+                    "mocks": [],
+                    "customApiFields": "{}",
+                    "advancedSettings": {
+                      "disabledSystemHeaders": {}
+                    },
+                    "mockScript": {},
+                    "codeSamples": [],
+                    "commonResponseStatus": {},
+                    "responseChildren": [
+                      "BLANK.722597428"
                     ],
                     "visibility": "INHERITED",
                     "moduleId": 2770189,
