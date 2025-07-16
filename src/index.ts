@@ -3,11 +3,13 @@ import dotenv from "dotenv";
 import express from "express";
 import path from "path";
 import { initializeDatabase } from "./config/database";
-import { AuthController } from "./controllers/auth.controller";
-import { MenuController } from "./controllers/menu.controller";
-import { PermissionController } from "./controllers/permission.controller";
-import { RoleController } from "./controllers/role.controller";
-import { UserController } from "./controllers/user.controller";
+import {
+  AuthController,
+  MenuController,
+  PermissionController,
+  RoleController,
+  UserController,
+} from "./controllers";
 import {
   errorHandler,
   notFoundHandler,
