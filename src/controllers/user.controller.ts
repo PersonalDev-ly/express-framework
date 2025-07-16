@@ -13,11 +13,7 @@ import { HashPassword } from "../utils/hash-password-bcrypt";
 
 @Controller("/users")
 export class UserController {
-  /**
-   * 获取所有用户
-   * @param req 请求对象
-   * @param res 响应对象
-   */
+  /** 获取所有用户 */
   @RequirePermission({ resource: "user", action: "read" })
   @Get("/")
   async getAllUsers(req: Request, res: Response) {
@@ -35,11 +31,7 @@ export class UserController {
     }
   }
 
-  /**
-   * 根据ID获取用户信息
-   * @param req 请求对象
-   * @param res 响应对象
-   */
+  /** 根据ID获取用户信息 */
   @RequirePermission({ resource: "user", action: "read" })
   @Get("/:id")
   async getUserById(req: Request, res: Response) {
@@ -63,11 +55,7 @@ export class UserController {
     }
   }
 
-  /**
-   * 修改用户信息
-   * @param req 请求对象
-   * @param res 响应对象
-   */
+  /** 修改用户信息 */
   @RequirePermission({ resource: "user", action: "update" })
   @Put("/:id")
   async updateUserById(req: Request, res: Response) {
@@ -97,11 +85,7 @@ export class UserController {
     }
   }
 
-  /**
-   * 删除用户
-   * @param req 请求对象
-   * @param res 响应对象
-   */
+  /** 删除用户 */
   @RequirePermission({ resource: "user", action: "delete" })
   @Delete("/:id")
   async deleteUserById(req: Request, res: Response) {
@@ -126,11 +110,7 @@ export class UserController {
     }
   }
 
-  /**
-   * 批量删除用户
-   * @param req 请求对象
-   * @param res 响应对象
-   */
+  /** 批量删除用户 */
   @RequirePermission({ resource: "user", action: "delete" })
   @Delete("/")
   async deleteUsers(req: Request, res: Response) {
@@ -150,11 +130,7 @@ export class UserController {
     }
   }
 
-  /**
-   * 创建用户
-   * @param req 请求对象
-   * @param res 响应对象
-   */
+  /** 创建用户 */
   @RequirePermission({ resource: "user", action: "create" })
   @Post("/")
   async createUser(req: Request, res: Response) {
@@ -175,11 +151,7 @@ export class UserController {
     }
   }
 
-  /**
-   * 为用户分配角色
-   * @param req 请求对象
-   * @param res 响应对象
-   */
+  /** 为用户分配角色 */
   @RequirePermission({ resource: "user", action: "grant" })
   @Post("/:id/roles")
   async assignRolesToUser(req: Request, res: Response) {
@@ -202,11 +174,7 @@ export class UserController {
     }
   }
 
-  /**
-   * 获取指定用户具备哪些权限
-   * @param req 请求对象
-   * @param res 响应对象
-   */
+  /** 获取指定用户具备哪些权限 */
   @RequirePermission({ resource: "user", action: "read" })
   @Get("/:id/roles")
   async getUserPermissions(req: Request, res: Response) {
@@ -224,11 +192,7 @@ export class UserController {
     }
   }
 
-  /**
-   * 移除指定用户下的角色
-   * @param req 请求对象
-   * @param res 响应对象
-   */
+  /** 移除指定用户下的角色 */
   @RequirePermission({ resource: "user", action: "grant" })
   @Delete("/:id/roles")
   async removeRolesFromUser(req: Request, res: Response) {

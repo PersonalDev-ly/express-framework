@@ -14,11 +14,7 @@ import { TokenBlacklistUtil } from "../utils/token-blacklist.util";
 
 @Controller("/auth")
 export class AuthController {
-  /**
-   * 用户注册
-   * @param req 请求对象
-   * @param res 响应对象
-   */
+  /** 用户注册 */
   @AllowAnonymous()
   @Post("/register")
   async register(req: Request, res: Response) {
@@ -47,11 +43,7 @@ export class AuthController {
     }
   }
 
-  /**
-   * 用户登录
-   * @param req 请求对象
-   * @param res 响应对象
-   */
+  /** 用户登录 */
   @AllowAnonymous()
   @Post("/login")
   async login(req: Request, res: Response) {
@@ -104,11 +96,7 @@ export class AuthController {
     }
   }
 
-  /**
-   * 刷新访问令牌
-   * @param req 请求对象
-   * @param res 响应对象
-   */
+  /** 刷新访问令牌 */
   @AllowAnonymous()
   @Post("/refresh")
   async refresh(req: Request, res: Response) {
@@ -160,11 +148,7 @@ export class AuthController {
     }
   }
 
-  /**
-   * 用户登出
-   * @param req 请求对象
-   * @param res 响应对象
-   */
+  /** 用户登出 */
   @Post("/logout")
   async logout(req: Request, res: Response) {
     try {
