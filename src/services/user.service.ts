@@ -316,7 +316,7 @@ export class UserService {
       const query = `
         SELECT COUNT(*) as count
             FROM permissions p
-        JOIN role_permissions rp ON p.id = rp.permission_id
+        JOIN role_permissions rp ON p.permission_id = rp.permission_id
             WHERE rp.role_id IN (${roleIds
               .map((_, i) => `$${i + 1}`)
               .join(", ")})
@@ -335,7 +335,7 @@ export class UserService {
       const query = `
         SELECT COUNT(*) as count
             FROM permissions p
-        JOIN role_permissions rp ON p.id = rp.permission_id
+        JOIN role_permissions rp ON p.permission_id = rp.permission_id
             WHERE rp.role_id IN (${roleIds
               .map(() => "?")
               .join(", ")}) AND p.name = ?
