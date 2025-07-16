@@ -338,7 +338,7 @@ export class UserService {
         JOIN role_permissions rp ON p.permission_id = rp.permission_id
             WHERE rp.role_id IN (${roleIds
               .map((_, i) => `$${i + 1}`)
-              .join(", ")}) AND p.name = ?
+              .join(", ")}) AND p.name = $${roleIds.length + 1}
       `;
       const result = await this.permissionRepository.query(query, [
         ...roleIds,
