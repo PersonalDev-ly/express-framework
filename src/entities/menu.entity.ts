@@ -2,13 +2,15 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
+import { RoleMenu } from "./role-menu.entity";
 
 @Entity("menu")
 export class MenuEntity {
-  @PrimaryGeneratedColumn("uuid", { name: "menu_id", comment: "菜单ID" })
-  id: string;
+  @PrimaryGeneratedColumn({ name: "menu_id", comment: "菜单ID" })
+  id: number;
 
   @Column({ name: "parent_id", default: 0, comment: "父菜单ID（0为根）" })
   parentId: number;
@@ -51,4 +53,7 @@ export class MenuEntity {
 
   @CreateDateColumn({ name: "updated_at", comment: "更新时间" })
   updatedAt: Date;
+
+  @OneToMany(() => RoleMenu, (roleMenu) => roleMenu.menu)
+  roleMenus: RoleMenu[];
 }

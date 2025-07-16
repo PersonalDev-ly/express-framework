@@ -4,6 +4,7 @@ import express from "express";
 import path from "path";
 import { initializeDatabase } from "./config/database";
 import { AuthController } from "./controllers/auth.controller";
+import { MenuController } from "./controllers/menu.controller";
 import { PermissionController } from "./controllers/permission.controller";
 import { RoleController } from "./controllers/role.controller";
 import { UserController } from "./controllers/user.controller";
@@ -43,6 +44,7 @@ registerControllers(app, [
   PermissionController,
   RoleController,
   UserController,
+  MenuController,
 ]);
 
 // 404处理中间件（必须在所有路由之后注册）
