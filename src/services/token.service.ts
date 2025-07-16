@@ -89,6 +89,8 @@ export class TokenService {
 
   /**
    * 数据库备份：保存刷新令牌
+   * @param userId 用户ID
+   * @param token 刷新令牌
    */
   private static async fallbackSaveRefreshToken(
     userId: string,
@@ -113,6 +115,8 @@ export class TokenService {
 
   /**
    * 数据库备份：验证刷新令牌
+   * @param userId 用户ID
+   * @param token 刷新令牌
    */
   private static async fallbackValidateRefreshToken(
     userId: string,
@@ -138,6 +142,7 @@ export class TokenService {
 
   /**
    * 数据库备份：删除刷新令牌
+   * @param userId 用户ID
    */
   private static async fallbackRemoveRefreshToken(
     userId: string

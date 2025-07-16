@@ -293,6 +293,7 @@ export class UserService {
 
   /**
    * 清理用户权限缓存
+   * @param userId 用户ID
    */
   static async clearUserPermissionsCache(userId: string) {
     const cacheKey = `user:permissions:${userId}`;
@@ -413,6 +414,7 @@ export class UserService {
   /**
    * 修改用户信息
    * @param data 用户信息
+   * @returns 更新后的用户信息
    */
   static async updateUserById(data: Partial<User>): Promise<User> {
     return await this.userRepository.save(data);
