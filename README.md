@@ -33,6 +33,7 @@ src/
 ├── controllers/                  # 控制器目录
 │   ├── auth.controller.ts        # 认证控制器
 │   ├── user.controller.ts        # 用户控制器
+│   ├── menu.controller.ts        # 菜单控制器
 │   ├── role.controller.ts        # 角色控制器
 │   └── permission.controller.ts  # 权限控制器
 ├── decorators/         # 装饰器实现
@@ -50,6 +51,7 @@ src/
 │   ├── permission.entity.ts      # 权限实体
 │   ├── sys-menu.entity.ts        # 菜单实体
 │   ├── user-role.entity.ts       # 用户-角色关系
+│   ├── role-menu.entity.ts       # 菜单-角色关系
 │   ├── role-permission.entity.ts # 角色-权限关系
 │   └── refresh-token.entity.ts   # 刷新令牌实体
 ├── middleware/         # 中间件
@@ -57,8 +59,10 @@ src/
 │   ├── rbac.middleware.ts        # 权限中间件
 │   └── error-handler.middleware.ts # 错误处理中间件
 ├── models/             # 数据模型/DTO
+│   ├── menu.model.ts             # 菜单模型
 │   └── user.model.ts             # 用户模型
 ├── services/           # 业务逻辑服务
+│   ├── menu.service.ts           # 菜单服务
 │   ├── user.service.ts           # 用户服务
 │   ├── token.service.ts          # 令牌服务
 │   ├── permission.service.ts     # 权限服务
