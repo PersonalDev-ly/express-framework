@@ -174,10 +174,10 @@ export class UserController {
     }
   }
 
-  /** 获取指定用户具备哪些权限 */
+  /** 获取指定用户具备哪些角色 */
   @RequirePermission({ resource: "user", action: "read" })
   @Get("/:id/roles")
-  async getUserPermissions(req: Request, res: Response) {
+  async getUserRoles(req: Request, res: Response) {
     try {
       const { id } = req.params;
       const roles = await UserService.getUserRoles(id);
@@ -212,6 +212,19 @@ export class UserController {
       return res.status(400).json({
         message: "为用户移除角色失败：" + (error as Error).message,
       });
+    }
+  }
+
+  /** 获取用户的权限 */
+  @RequirePermission({ resource: "user", action: "read" })
+  @Get("/:id/permissions/")
+  async getUserPermissions(req: Request, res: Response) {
+    const { id } = req.params;
+    try {
+      const permissions = await UserService.getUserPermissions(id);
+      res.json({ message: "获取成功", data: permissions });
+    } catch (e) {
+      res.status(400).json({ message: (e as Error).message });
     }
   }
 }

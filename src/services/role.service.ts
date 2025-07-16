@@ -1,9 +1,7 @@
 import { Repository } from "typeorm";
 import { AppDataSource } from "../config/database";
-import { Permission } from "../entities/permission.entity";
-import { RolePermission } from "../entities/role-permission.entity";
-import { Role } from "../entities/role.entity";
-import { UserRole } from "../entities/user-role.entity";
+import { Permission, Role, RolePermission, UserRole } from "../entities";
+import { UserService } from "./user.service";
 
 export class RoleService {
   private static roleRepository: Repository<Role> =
@@ -176,8 +174,6 @@ export class RoleService {
       });
       const userIds = userRoles.map((ur) => ur.userId);
       for (const userId of userIds) {
-        // 这里直接调用UserService的静态方法
-        const { UserService } = require("./user.service");
         await UserService.clearUserPermissionsCache(userId);
       }
       return true;
@@ -225,7 +221,6 @@ export class RoleService {
       });
       const userIds = userRoles.map((ur) => ur.userId);
       for (const userId of userIds) {
-        const { UserService } = require("./user.service");
         await UserService.clearUserPermissionsCache(userId);
       }
       return true;

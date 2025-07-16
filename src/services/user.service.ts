@@ -253,33 +253,45 @@ export class UserService {
    */
   static async getUserPermissions(userId: string): Promise<Permission[]> {
     const cacheKey = `user:permissions:${userId}`;
-    // 先查缓存
-    const cached = await redisClient.get(cacheKey);
-    if (cached) {
-      try {
-        return JSON.parse(cached);
-      } catch {}
-    }
+
     const user = await this.findById(userId);
     if (!user) {
       throw new Error(`ID为 '${userId}' 的用户不存在`);
     }
-    const userRoles = await this.userRoleRepository.find({ where: { userId } });
-    const roleIds = userRoles.map((ur) => ur.roleId);
-    if (roleIds.length === 0) {
-      await redisClient.setex(cacheKey, 3600, JSON.stringify([]));
-      return [];
+
+    // 1. 查询缓存
+    const cached = await redisClient.get(cacheKey);
+    if (cached) {
+      try {
+        return JSON.parse(cached);
+      } catch (err) {
+        console.warn(`缓存解析失败: ${err}`);
+      }
     }
-    const placeholders = roleIds.map(() => "?").join(", ");
+
+    // 2. 查询数据库
     const query = `
-      SELECT DISTINCT p.*
-      FROM permissions p
-      JOIN role_permissions rp ON p.id = rp.permission_id
-      WHERE rp.role_id IN (${placeholders})
-    `;
-    const permissions = await this.permissionRepository.query(query, roleIds);
-    // 写入缓存
+      SELECT DISTINCT
+          P.name,
+          P.resource,
+          P.action
+      FROM
+          "user" U
+      JOIN
+          user_roles U2 ON U.user_id = U2.user_id
+      JOIN 
+          role_permissions R ON R.role_id = U2.role_id
+      JOIN
+          permissions P ON P.permission_id = R.permission_id
+      WHERE
+          U.user_id = $1;
+  `;
+
+    const permissions = await this.permissionRepository.query(query, [userId]);
+
+    // 3. 写入缓存（缓存时间：1小时）
     await redisClient.setex(cacheKey, 3600, JSON.stringify(permissions));
+
     return permissions;
   }
 
