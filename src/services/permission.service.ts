@@ -1,7 +1,6 @@
 import { Repository } from "typeorm";
 import { AppDataSource } from "../config/database";
-import { Permission } from "../entities/permission.entity";
-import { RolePermission } from "../entities/role-permission.entity";
+import { Permission, RolePermission } from "../entities";
 
 export class PermissionService {
   private static permissionRepository: Repository<Permission> =

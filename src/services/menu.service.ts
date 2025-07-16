@@ -1,7 +1,6 @@
 import { Repository } from "typeorm";
 import { AppDataSource } from "../config/database";
-import { MenuEntity } from "../entities/menu.entity";
-import { RoleMenu } from "../entities/role-menu.entity";
+import { MenuEntity, RoleMenu } from "../entities";
 import { MenuDTO, MenuTreeNode } from "../models/menu.model";
 
 export class MenuService {

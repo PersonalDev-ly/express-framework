@@ -1,6 +1,6 @@
 import { AppDataSource } from "../config/database";
 import redisClient from "../config/redisConfig";
-import { RefreshToken } from "../entities/refresh-token.entity";
+import { RefreshToken } from "../entities";
 import { logger } from "../utils/logger";
 
 /**

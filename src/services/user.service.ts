@@ -1,11 +1,7 @@
 import { In, MoreThan, Repository } from "typeorm";
 import { AppDataSource } from "../config/database";
 import redisClient from "../config/redisConfig";
-import { Permission } from "../entities/permission.entity";
-import { RefreshToken } from "../entities/refresh-token.entity";
-import { Role } from "../entities/role.entity";
-import { UserRole } from "../entities/user-role.entity";
-import { User } from "../entities/user.entity";
+import { Permission, RefreshToken, Role, User, UserRole } from "../entities";
 import { UserRegisterDTO } from "../models/user.model";
 import { HashPassword } from "../utils/hash-password-bcrypt";
 import { logger } from "../utils/logger";
