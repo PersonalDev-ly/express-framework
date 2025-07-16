@@ -181,6 +181,9 @@ export class AuthController {
       // 删除用户的刷新令牌
       await TokenService.removeRefreshToken(userId);
 
+      // 删除用户权限缓存
+      await UserService.clearUserPermissionsCache(userId);
+
       // 返回成功响应
       return res.status(200).json({
         message: "登出成功",
