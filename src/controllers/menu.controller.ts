@@ -41,7 +41,7 @@ export class MenuController {
 
   /** 更新菜单 */
   @RequirePermission({ resource: "menu", action: "update" })
-  @Put(":id")
+  @Put("/:id")
   async update(req: Request, res: Response) {
     try {
       const menu = await MenuService.updateMenu(
@@ -56,7 +56,7 @@ export class MenuController {
 
   /** 删除菜单 */
   @RequirePermission({ resource: "menu", action: "delete" })
-  @Delete(":id")
+  @Delete("/:id")
   async delete(req: Request, res: Response) {
     try {
       await MenuService.deleteMenu(Number(req.params.id));
