@@ -44,9 +44,11 @@ src/
 │   ├── rbac.decorator.ts         # 权限装饰器
 │   └── index.ts                  # 装饰器导出
 ├── entities/           # 数据库实体
+│   ├── index.ts                  # 实体导出
 │   ├── user.entity.ts            # 用户实体
 │   ├── role.entity.ts            # 角色实体
 │   ├── permission.entity.ts      # 权限实体
+│   ├── sys-menu.entity.ts        # 菜单实体
 │   ├── user-role.entity.ts       # 用户-角色关系
 │   ├── role-permission.entity.ts # 角色-权限关系
 │   └── refresh-token.entity.ts   # 刷新令牌实体
