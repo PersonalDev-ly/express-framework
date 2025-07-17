@@ -435,6 +435,8 @@ export class UserService {
       await queryRunner.manager.delete(UserRole, { userId: id });
       // 删除用户的刷新令牌
       await queryRunner.manager.delete(RefreshToken, { userId: id });
+      // 删除用户的刷新令牌（redis）
+      await redisClient.del(`refresh:token:${id}`);
       // 最后删除用户
       await queryRunner.manager.delete(User, { id });
 
@@ -462,6 +464,10 @@ export class UserService {
       await queryRunner.manager.delete(UserRole, { userId: In(ids) });
       // 删除用户的刷新令牌
       await queryRunner.manager.delete(RefreshToken, { userId: In(ids) });
+      // 删除用户的刷新令牌（redis）
+      for (const id of ids) {
+        await redisClient.del(`refresh:token:${id}`);
+      }
       // 最后删除用户
       await queryRunner.manager.delete(User, { id: In(ids) });
 
