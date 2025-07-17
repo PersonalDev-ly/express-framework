@@ -275,7 +275,7 @@ REDIS_TTL=86400
 docker build -t express-framework .
 
 # 运行容器
-docker run --env-file .env -d -p 3002:3001 --name express-app express-framework
+docker run --env-file .env -d -p 3000:3000 --name express-app express-framework
 ```
 
 ### 使用 Docker Compose 部署完整环境
