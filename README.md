@@ -154,14 +154,14 @@ async getAllUsers(req: Request, res: Response) {
 使用装饰器定义路由和中间件：
 
 ```typescript
-@Controller("/users")
+@Controller('/users')
 export class UserController {
-  @Get("/:id")
+  @Get('/:id')
   async getUserById(req: Request, res: Response) {
     // 获取用户详情
   }
 
-  @Post("/")
+  @Post('/')
   async createUser(req: Request, res: Response) {
     // 创建用户
   }
@@ -175,14 +175,14 @@ export class UserController {
 ```typescript
 // 数据库配置
 export const AppDataSource = new DataSource({
-  type: "postgres",
-  host: process.env.DB_HOST || "localhost",
-  port: parseInt(process.env.DB_PORT || "5432", 10),
-  username: process.env.DB_USERNAME || "postgres",
-  password: process.env.DB_PASSWORD || "your_password",
-  database: process.env.DB_DATABASE || "express_auth",
-  synchronize: process.env.NODE_ENV === "development",
-  logging: process.env.NODE_ENV === "development",
+  type: 'postgres',
+  host: process.env.DB_HOST || 'localhost',
+  port: parseInt(process.env.DB_PORT || '5432', 10),
+  username: process.env.DB_USERNAME || 'postgres',
+  password: process.env.DB_PASSWORD || 'your_password',
+  database: process.env.DB_DATABASE || 'express_auth',
+  synchronize: process.env.NODE_ENV === 'development',
+  logging: process.env.NODE_ENV === 'development',
   entities: [User, RefreshToken, Permission, RolePermission, Role, UserRole],
   subscribers: [],
   migrations: [],
@@ -197,16 +197,16 @@ export const AppDataSource = new DataSource({
 // 日志配置
 logger.configure({
   consoleLevel:
-    process.env.NODE_ENV === "production" ? LogLevel.INFO : LogLevel.DEBUG,
+    process.env.NODE_ENV === 'production' ? LogLevel.INFO : LogLevel.DEBUG,
   fileLevel: LogLevel.INFO,
-  logFilePath: path.join(__dirname, "../logs/app.log"),
+  logFilePath: path.join(__dirname, '../logs/app.log'),
   includeTimestamp: true,
   includeLogLevel: true,
 });
 
 // 使用日志
-logger.info("服务器已启动");
-logger.error("发生错误", error);
+logger.info('服务器已启动');
+logger.error('发生错误', error);
 ```
 
 ## 环境变量配置
@@ -264,6 +264,46 @@ REDIS_TTL=86400
 1. 在数据库中添加相应的权限记录
 2. 使用 `@RequirePermission` 装饰器保护路由
 
+## Docker 部署
+
+本项目支持使用 Docker 进行部署，提供了完整的 Docker 配置文件。
+
+### 使用 Dockerfile 构建镜像
+
+```bash
+# 构建 Docker 镜像
+docker build -t express-framework .
+
+# 运行容器
+docker run --env-file .env -d -p 3002:3001 --name express-app express-framework
+```
+
+### 使用 Docker Compose 部署完整环境
+
+项目提供了 docker-compose.yml 文件，可以一键部署应用、PostgreSQL 和 Redis：
+
+```bash
+# 启动所有服务
+docker-compose up -d
+
+# 查看日志
+docker-compose logs -f app
+
+# 停止所有服务
+docker-compose down
+
+# 停止并删除所有数据卷（慎用）
+docker-compose down -v
+```
+
+### 环境变量配置
+
+在 Docker 环境中，可以通过以下方式配置环境变量：
+
+1. 修改 docker-compose.yml 文件中的 environment 部分
+2. 创建 .env.production 文件并挂载到容器中
+3. 使用 Docker 的环境变量注入功能
+
 ## 注意事项
 
 1. 确保在 `tsconfig.json` 中启用装饰器支持：
@@ -278,3 +318,4 @@ REDIS_TTL=86400
 ```
 
 2. 开发环境下数据库会自动同步结构，生产环境请使用迁移
+3. 在 Docker 生产环境中，建议将敏感信息（如密码、密钥）通过环境变量注入，而不是硬编码在配置文件中
