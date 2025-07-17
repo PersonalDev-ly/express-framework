@@ -14,7 +14,7 @@ export class RoleController {
   /** 获取所有角色 */
   @RequirePermission({ resource: "role", action: "read" })
   @Get("/")
-  async getAll(req: Request, res: Response) {
+  async getAll(_req: Request, res: Response) {
     const roles = await RoleService.getAllRoles();
     res.json({ message: "获取成功", data: roles });
   }

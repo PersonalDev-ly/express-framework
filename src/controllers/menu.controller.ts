@@ -14,7 +14,7 @@ export class MenuController {
   /** 获取所有菜单 */
   @RequirePermission({ resource: "menu", action: "read" })
   @Get("/")
-  async getAll(req: Request, res: Response) {
+  async getAll(_req: Request, res: Response) {
     const menus = await MenuService.getAllMenus();
     res.json({ message: "获取成功", data: menus });
   }
@@ -22,7 +22,7 @@ export class MenuController {
   /** 获取菜单树结构 */
   @RequirePermission({ resource: "menu", action: "read" })
   @Get("/tree")
-  async getTree(req: Request, res: Response) {
+  async getTree(_req: Request, res: Response) {
     const tree = await MenuService.getMenuTree();
     res.json({ message: "获取成功", data: tree });
   }

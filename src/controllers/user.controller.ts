@@ -16,7 +16,7 @@ export class UserController {
   /** 获取所有用户 */
   @RequirePermission({ resource: "user", action: "read" })
   @Get("/")
-  async getAllUsers(req: Request, res: Response) {
+  async getAllUsers(_req: Request, res: Response) {
     try {
       // 查找所有用户
       const users = await UserService.getAllUsers();

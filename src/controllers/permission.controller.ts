@@ -14,7 +14,7 @@ export class PermissionController {
   /** 获取所有权限 */
   @RequirePermission({ resource: "permission", action: "read" })
   @Get("/")
-  async getAll(req: Request, res: Response) {
+  async getAll(_req: Request, res: Response) {
     const permissions = await PermissionService.getAllPermissions();
     res.json({ message: "获取成功", data: permissions });
   }
