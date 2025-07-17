@@ -23,9 +23,9 @@ export class BaseError extends Error {
   constructor(
     message: string,
     statusCode: number = 500,
-    code: string = "INTERNAL_SERVER_ERROR",
+    code: string = 'INTERNAL_SERVER_ERROR',
     isOperational: boolean = true,
-    details?: any
+    details?: any,
   ) {
     super(message);
     this.name = this.constructor.name;
@@ -44,8 +44,8 @@ export class BaseError extends Error {
  * 用于请求参数验证失败的情况
  */
 export class ValidationError extends BaseError {
-  constructor(message: string = "验证失败", details?: any) {
-    super(message, 400, "VALIDATION_ERROR", true, details);
+  constructor(message: string = '验证失败', details?: any) {
+    super(message, 400, 'VALIDATION_ERROR', true, details);
   }
 }
 
@@ -54,8 +54,8 @@ export class ValidationError extends BaseError {
  * 用于用户未登录的情况
  */
 export class UnauthorizedError extends BaseError {
-  constructor(message: string = "未授权访问") {
-    super(message, 401, "UNAUTHORIZED", true);
+  constructor(message: string = '未授权访问') {
+    super(message, 401, 'UNAUTHORIZED', true);
   }
 }
 
@@ -64,8 +64,8 @@ export class UnauthorizedError extends BaseError {
  * 用于用户无权限访问的情况
  */
 export class ForbiddenError extends BaseError {
-  constructor(message: string = "禁止访问") {
-    super(message, 403, "FORBIDDEN", true);
+  constructor(message: string = '禁止访问') {
+    super(message, 403, 'FORBIDDEN', true);
   }
 }
 
@@ -74,8 +74,8 @@ export class ForbiddenError extends BaseError {
  * 用于请求的资源不存在的情况
  */
 export class NotFoundError extends BaseError {
-  constructor(message: string = "资源未找到") {
-    super(message, 404, "NOT_FOUND", true);
+  constructor(message: string = '资源未找到') {
+    super(message, 404, 'NOT_FOUND', true);
   }
 }
 
@@ -84,8 +84,8 @@ export class NotFoundError extends BaseError {
  * 用于资源已存在或冲突的情况
  */
 export class ConflictError extends BaseError {
-  constructor(message: string = "资源冲突") {
-    super(message, 409, "CONFLICT", true);
+  constructor(message: string = '资源冲突') {
+    super(message, 409, 'CONFLICT', true);
   }
 }
 
@@ -94,8 +94,8 @@ export class ConflictError extends BaseError {
  * 用于请求处理超时的情况
  */
 export class RequestTimeoutError extends BaseError {
-  constructor(message: string = "请求处理超时") {
-    super(message, 408, "REQUEST_TIMEOUT", true);
+  constructor(message: string = '请求处理超时') {
+    super(message, 408, 'REQUEST_TIMEOUT', true);
   }
 }
 
@@ -104,8 +104,8 @@ export class RequestTimeoutError extends BaseError {
  * 用于服务暂时不可用的情况
  */
 export class ServiceUnavailableError extends BaseError {
-  constructor(message: string = "服务暂时不可用") {
-    super(message, 503, "SERVICE_UNAVAILABLE", true);
+  constructor(message: string = '服务暂时不可用') {
+    super(message, 503, 'SERVICE_UNAVAILABLE', true);
   }
 }
 
@@ -114,8 +114,8 @@ export class ServiceUnavailableError extends BaseError {
  * 用于服务器内部错误的情况
  */
 export class InternalServerError extends BaseError {
-  constructor(message: string = "服务器内部错误", details?: any) {
-    super(message, 500, "INTERNAL_SERVER_ERROR", false, details);
+  constructor(message: string = '服务器内部错误', details?: any) {
+    super(message, 500, 'INTERNAL_SERVER_ERROR', false, details);
   }
 }
 
@@ -124,7 +124,7 @@ export class InternalServerError extends BaseError {
  * 用于数据库操作失败的情况
  */
 export class DatabaseError extends BaseError {
-  constructor(message: string = "数据库操作失败", details?: any) {
-    super(message, 500, "DATABASE_ERROR", false, details);
+  constructor(message: string = '数据库操作失败', details?: any) {
+    super(message, 500, 'DATABASE_ERROR', false, details);
   }
 }

@@ -1,14 +1,14 @@
-import { Application, NextFunction, Request, Response } from "express";
-import { extractParamValue } from "../decorators";
-import { authMiddleware } from "../middleware/auth.middleware";
+import { Application, NextFunction, Request, Response } from 'express';
+import { extractParamValue } from '../decorators';
+import { authMiddleware } from '../middleware/auth.middleware';
 import {
   Constructor,
   CONTROLLER_METADATA,
   PARAM_METADATA,
   ParamMetadata,
   ROUTE_METADATA,
-} from "../types";
-import { logger } from "./logger";
+} from '../types';
+import { logger } from './logger';
 
 /**
  * 注册控制器类到Express应用
@@ -17,7 +17,7 @@ import { logger } from "./logger";
  */
 export function registerControllers(
   app: Application,
-  controllers: Constructor[]
+  controllers: Constructor[],
 ) {
   for (const controller of controllers) {
     registerController(app, controller);
@@ -33,7 +33,7 @@ function registerController(app: Application, Controller: Constructor) {
   // 获取控制器元数据
   const controllerMetadata = Reflect.getMetadata(
     CONTROLLER_METADATA,
-    Controller
+    Controller,
   );
   if (!controllerMetadata) {
     return;
@@ -52,9 +52,9 @@ function registerController(app: Application, Controller: Constructor) {
 
     // 检查是否允许匿名访问
     const isAllowAnonymous = Reflect.getMetadata(
-      "allow_anonymous",
+      'allow_anonymous',
       Controller,
-      methodName
+      methodName,
     );
 
     // 组装中间件，默认加authMiddleware，除非允许匿名
@@ -105,7 +105,7 @@ function prepareMethodArguments(
   req: Request,
   res: Response,
   next: NextFunction,
-  paramMetadata: ParamMetadata[]
+  paramMetadata: ParamMetadata[],
 ): any[] {
   // 默认参数是请求、响应和next函数
   const defaultArgs: any[] = [req, res, next];

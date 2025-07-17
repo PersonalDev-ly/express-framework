@@ -1,12 +1,12 @@
-import jwt, { Secret, SignOptions } from "jsonwebtoken";
+import jwt, { Secret, SignOptions } from 'jsonwebtoken';
 
-const JWT_SECRET: Secret = process.env.JWT_SECRET ?? "your-secret-key";
-const JWT_EXPIRES_IN: SignOptions["expiresIn"] = (process.env.JWT_EXPIRES_IN ??
-  "24h") as SignOptions["expiresIn"];
+const JWT_SECRET: Secret = process.env.JWT_SECRET ?? 'your-secret-key';
+const JWT_EXPIRES_IN: SignOptions['expiresIn'] = (process.env.JWT_EXPIRES_IN ??
+  '24h') as SignOptions['expiresIn'];
 const JWT_REFRESH_SECRET: Secret =
-  process.env.JWT_REFRESH_SECRET ?? "your-refresh-secret-key";
-const JWT_REFRESH_EXPIRES_IN: SignOptions["expiresIn"] = (process.env
-  .JWT_REFRESH_EXPIRES_IN ?? "7d") as SignOptions["expiresIn"];
+  process.env.JWT_REFRESH_SECRET ?? 'your-refresh-secret-key';
+const JWT_REFRESH_EXPIRES_IN: SignOptions['expiresIn'] = (process.env
+  .JWT_REFRESH_EXPIRES_IN ?? '7d') as SignOptions['expiresIn'];
 
 export interface AppJwtPayload {
   userId: string;
@@ -61,7 +61,7 @@ export class JwtUtil {
     try {
       return jwt.verify(token, JWT_SECRET) as AppJwtPayload;
     } catch (error) {
-      throw new Error("Invalid access token");
+      throw new Error('Invalid access token');
     }
   }
 
@@ -74,7 +74,7 @@ export class JwtUtil {
     try {
       return jwt.verify(token, JWT_REFRESH_SECRET) as AppJwtPayload;
     } catch (error) {
-      throw new Error("Invalid refresh token");
+      throw new Error('Invalid refresh token');
     }
   }
 
@@ -84,10 +84,10 @@ export class JwtUtil {
    * @returns token字符串
    */
   static extractTokenFromHeader(authHeader: string | undefined): string {
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      throw new Error("No token provided");
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      throw new Error('No token provided');
     }
-    return authHeader.split(" ")[1];
+    return authHeader.split(' ')[1];
   }
 
   /**

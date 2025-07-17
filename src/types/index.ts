@@ -1,4 +1,4 @@
-import { Request as ExpressRequest, NextFunction, Response } from "express";
+import { Request as ExpressRequest, NextFunction, Response } from 'express';
 
 // 扩展Express的Request类型
 declare global {
@@ -26,7 +26,7 @@ export type Constructor<T = any> = new (...args: any[]) => T;
 export type Middleware = (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => void;
 
 export type RouteDefinition = {
@@ -43,10 +43,10 @@ export type ControllerDefinition = {
 
 export interface ParamMetadata {
   index: number;
-  type: "body" | "query" | "param" | "headers" | "cookies";
+  type: 'body' | 'query' | 'param' | 'headers' | 'cookies';
   name?: string;
 }
 
-export const CONTROLLER_METADATA = "controller:metadata";
-export const ROUTE_METADATA = "route:metadata";
-export const PARAM_METADATA = "param:metadata";
+export const CONTROLLER_METADATA = 'controller:metadata';
+export const ROUTE_METADATA = 'route:metadata';
+export const PARAM_METADATA = 'param:metadata';

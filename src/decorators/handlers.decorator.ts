@@ -1,5 +1,5 @@
-import "reflect-metadata";
-import { ROUTE_METADATA, RouteDefinition } from "../types";
+import 'reflect-metadata';
+import { ROUTE_METADATA, RouteDefinition } from '../types';
 
 /**
  * 创建路由方法装饰器的工厂函数
@@ -7,14 +7,14 @@ import { ROUTE_METADATA, RouteDefinition } from "../types";
  * @returns 方法装饰器
  */
 function createRouteDecorator(method: string) {
-  return (path: string = ""): MethodDecorator => {
+  return (path: string = ''): MethodDecorator => {
     return (
       target: any,
       propertyKey: string | symbol,
-      descriptor: PropertyDescriptor
+      descriptor: PropertyDescriptor,
     ) => {
       // 确保路径以/开头
-      if (path && !path.startsWith("/")) {
+      if (path && !path.startsWith('/')) {
         path = `/${path}`;
       }
 
@@ -39,10 +39,10 @@ function createRouteDecorator(method: string) {
 }
 
 // 导出HTTP方法装饰器
-export const Get = createRouteDecorator("get");
-export const Post = createRouteDecorator("post");
-export const Put = createRouteDecorator("put");
-export const Delete = createRouteDecorator("delete");
-export const Patch = createRouteDecorator("patch");
-export const Options = createRouteDecorator("options");
-export const Head = createRouteDecorator("head");
+export const Get = createRouteDecorator('get');
+export const Post = createRouteDecorator('post');
+export const Put = createRouteDecorator('put');
+export const Delete = createRouteDecorator('delete');
+export const Patch = createRouteDecorator('patch');
+export const Options = createRouteDecorator('options');
+export const Head = createRouteDecorator('head');

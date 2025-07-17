@@ -1,10 +1,10 @@
-import { In, MoreThan, Repository } from "typeorm";
-import { AppDataSource } from "../config/database";
-import redisClient from "../config/redisConfig";
-import { Permission, RefreshToken, Role, User, UserRole } from "../entities";
-import { UserRegisterDTO } from "../models/user.model";
-import { HashPassword } from "../utils/hash-password-bcrypt";
-import { logger } from "../utils/logger";
+import { In, MoreThan, Repository } from 'typeorm';
+import { AppDataSource } from '../config/database';
+import redisClient from '../config/redisConfig';
+import { Permission, RefreshToken, Role, User, UserRole } from '../entities';
+import { UserRegisterDTO } from '../models/user.model';
+import { HashPassword } from '../utils/hash-password-bcrypt';
+import { logger } from '../utils/logger';
 
 /**
  * 用户服务类 - 处理用户相关的业务逻辑
@@ -36,7 +36,7 @@ export class UserService {
     logger.info(`正在创建用户 ${userData.email}`);
 
     if (existingUser) {
-      throw new Error("邮箱已被注册");
+      throw new Error('邮箱已被注册');
     }
 
     // 创建新用户
@@ -82,7 +82,7 @@ export class UserService {
    */
   static async saveRefreshToken(
     userId: string,
-    refreshToken: string
+    refreshToken: string,
   ): Promise<void> {
     // 删除该用户的所有现有刷新令牌
     await this.refreshTokenRepository.delete({ userId });
@@ -105,7 +105,7 @@ export class UserService {
    */
   static async validateRefreshToken(
     userId: string,
-    refreshToken: string
+    refreshToken: string,
   ): Promise<boolean> {
     const tokenEntity = await this.refreshTokenRepository.findOne({
       where: {
@@ -134,7 +134,7 @@ export class UserService {
    */
   static async assignRolesToUser(
     userId: string,
-    roleIds: string[]
+    roleIds: string[],
   ): Promise<boolean> {
     const user = await this.findById(userId);
     if (!user) {
@@ -190,7 +190,7 @@ export class UserService {
    */
   static async removeRolesFromUser(
     userId: string,
-    roleIds: string[]
+    roleIds: string[],
   ): Promise<boolean> {
     const user = await this.findById(userId);
     if (!user) {
@@ -235,7 +235,7 @@ export class UserService {
     // 查询用户的所有角色
     const userRoles = await this.userRoleRepository.find({
       where: { userId },
-      relations: ["role"],
+      relations: ['role'],
     });
 
     // 提取角色对象
@@ -308,7 +308,7 @@ export class UserService {
    */
   static async hasPermission(
     userId: string,
-    opts: { resource?: string; action?: string; name?: string }
+    opts: { resource?: string; action?: string; name?: string },
   ): Promise<boolean> {
     const user = await this.findById(userId);
     if (!user) {
@@ -328,7 +328,7 @@ export class UserService {
         JOIN role_permissions rp ON p.permission_id = rp.permission_id
             WHERE rp.role_id IN (${roleIds
               .map((_, i) => `$${i + 1}`)
-              .join(", ")})
+              .join(', ')})
             AND p.resource = $${roleIds.length + 1}
             AND p.action = $${roleIds.length + 2}
       `;
@@ -347,7 +347,7 @@ export class UserService {
         JOIN role_permissions rp ON p.permission_id = rp.permission_id
             WHERE rp.role_id IN (${roleIds
               .map((_, i) => `$${i + 1}`)
-              .join(", ")}) AND p.name = $${roleIds.length + 1}
+              .join(', ')}) AND p.name = $${roleIds.length + 1}
       `;
       const result = await this.permissionRepository.query(query, [
         ...roleIds,
@@ -366,7 +366,7 @@ export class UserService {
    */
   static async hasAnyPermission(
     userId: string,
-    permissions: { resource?: string; action?: string; name?: string }[]
+    permissions: { resource?: string; action?: string; name?: string }[],
   ): Promise<boolean> {
     for (const perm of permissions) {
       if (await this.hasPermission(userId, perm)) {
@@ -384,7 +384,7 @@ export class UserService {
    */
   static async hasAllPermissions(
     userId: string,
-    permissions: { resource?: string; action?: string; name?: string }[]
+    permissions: { resource?: string; action?: string; name?: string }[],
   ): Promise<boolean> {
     for (const perm of permissions) {
       if (!(await this.hasPermission(userId, perm))) {

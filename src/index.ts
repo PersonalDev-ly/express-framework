@@ -1,22 +1,22 @@
-import bodyParser from "body-parser";
-import dotenv from "dotenv";
-import express from "express";
-import path from "path";
-import { initializeDatabase } from "./config/database";
+import bodyParser from 'body-parser';
+import dotenv from 'dotenv';
+import express from 'express';
+import path from 'path';
+import { initializeDatabase } from './config/database';
 import {
   AuthController,
   MenuController,
   PermissionController,
   RoleController,
   UserController,
-} from "./controllers";
+} from './controllers';
 import {
   errorHandler,
   notFoundHandler,
   setupGlobalErrorHandlers,
-} from "./middleware/error-handler.middleware";
-import { logger, LogLevel } from "./utils/logger";
-import { registerControllers } from "./utils/route-registry";
+} from './middleware/error-handler.middleware';
+import { logger, LogLevel } from './utils/logger';
+import { registerControllers } from './utils/route-registry';
 
 dotenv.config();
 
@@ -24,10 +24,10 @@ dotenv.config();
 logger.configure({
   // 控制台日志级别
   consoleLevel:
-    process.env.NODE_ENV === "production" ? LogLevel.INFO : LogLevel.DEBUG,
+    process.env.NODE_ENV === 'production' ? LogLevel.INFO : LogLevel.DEBUG,
   // 文件日志级别
   fileLevel: LogLevel.INFO,
-  logFilePath: path.join(__dirname, "../logs/app.log"),
+  logFilePath: path.join(__dirname, '../logs/app.log'),
   includeTimestamp: true,
   includeLogLevel: true,
 });
@@ -63,13 +63,13 @@ const startServer = async () => {
   try {
     // 初始化数据库连接
     await initializeDatabase();
-    logger.info("数据库连接已初始化");
+    logger.info('数据库连接已初始化');
 
     app.listen(PORT, () => {
       logger.info(`服务器运行在 http://localhost:${PORT}`);
     });
   } catch (error) {
-    logger.error("服务器启动失败:", error);
+    logger.error('服务器启动失败:', error);
     process.exit(1);
   }
 };

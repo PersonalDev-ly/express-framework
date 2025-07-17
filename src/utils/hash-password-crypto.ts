@@ -1,4 +1,4 @@
-import * as crypto from "crypto";
+import * as crypto from 'crypto';
 
 export class HashPassword {
   /**
@@ -7,7 +7,7 @@ export class HashPassword {
    * @returns 哈希后的密码
    */
   static hashPassword(password: string): string {
-    return crypto.createHash("sha256").update(password).digest("hex");
+    return crypto.createHash('sha256').update(password).digest('hex');
   }
 
   /**
@@ -18,12 +18,12 @@ export class HashPassword {
    */
   static verifyPassword(
     plainPassword: string,
-    hashedPassword: string
+    hashedPassword: string,
   ): boolean {
     const hash = crypto
-      .createHash("sha256")
+      .createHash('sha256')
       .update(plainPassword)
-      .digest("hex");
+      .digest('hex');
     return hash === hashedPassword;
   }
 }

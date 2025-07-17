@@ -1,6 +1,6 @@
-import { Repository } from "typeorm";
-import { AppDataSource } from "../config/database";
-import { Permission, RolePermission } from "../entities";
+import { Repository } from 'typeorm';
+import { AppDataSource } from '../config/database';
+import { Permission, RolePermission } from '../entities';
 
 export class PermissionService {
   private static permissionRepository: Repository<Permission> =
@@ -20,12 +20,12 @@ export class PermissionService {
     name: string,
     description: string,
     resource: string,
-    action: string
+    action: string,
   ): Promise<Permission> {
     // 检查resource+action唯一性
     const existingPermission = await this.findPermissionByResourceAction(
       resource,
-      action
+      action,
     );
     if (existingPermission) {
       throw new Error(`权限 resource='${resource}' action='${action}' 已存在`);
@@ -69,7 +69,7 @@ export class PermissionService {
    */
   static async findPermissionByResourceAction(
     resource: string,
-    action: string
+    action: string,
   ): Promise<Permission | null> {
     return this.permissionRepository.findOne({ where: { resource, action } });
   }
@@ -90,7 +90,7 @@ export class PermissionService {
    */
   static async updatePermission(
     id: string,
-    data: Partial<Permission>
+    data: Partial<Permission>,
   ): Promise<Permission> {
     const permission = await this.findPermissionById(id);
     if (!permission) {
@@ -103,13 +103,13 @@ export class PermissionService {
     ) {
       const existing = await this.findPermissionByResourceAction(
         data.resource || permission.resource,
-        data.action || permission.action
+        data.action || permission.action,
       );
       if (existing && existing.id !== id) {
         throw new Error(
           `权限 resource='${data.resource || permission.resource}' action='${
             data.action || permission.action
-          }' 已存在`
+          }' 已存在`,
         );
       }
     }
@@ -181,7 +181,7 @@ export class PermissionService {
       description: string;
       resource: string;
       action: string;
-    }[]
+    }[],
   ): Promise<Permission[]> {
     const createdPermissions: Permission[] = [];
     const queryRunner =

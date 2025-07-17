@@ -1,7 +1,7 @@
-import { NextFunction, Request, Response } from "express";
-import { UserService } from "../services/user.service";
-import { JwtUtil } from "../utils/jwt.util";
-import { TokenBlacklistUtil } from "../utils/token-blacklist.util";
+import { NextFunction, Request, Response } from 'express';
+import { UserService } from '../services/user.service';
+import { JwtUtil } from '../utils/jwt.util';
+import { TokenBlacklistUtil } from '../utils/token-blacklist.util';
 
 /**
  * 认证中间件 - 验证用户是否已登录
@@ -9,7 +9,7 @@ import { TokenBlacklistUtil } from "../utils/token-blacklist.util";
 export async function authMiddleware(
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) {
   try {
     // 从请求头中获取token
@@ -21,13 +21,13 @@ export async function authMiddleware(
 
     // 检查令牌是否在黑名单中
     if (await TokenBlacklistUtil.isBlacklisted(token)) {
-      return res.status(401).json({ message: "未授权：令牌已被吊销" });
+      return res.status(401).json({ message: '未授权：令牌已被吊销' });
     }
 
     // 查找用户
     const user = await UserService.findById(payload.userId);
     if (!user) {
-      return res.status(401).json({ message: "未授权：用户不存在" });
+      return res.status(401).json({ message: '未授权：用户不存在' });
     }
 
     // 将用户信息添加到请求对象中
@@ -41,6 +41,6 @@ export async function authMiddleware(
   } catch (error) {
     return res
       .status(401)
-      .json({ message: "未授权：" + (error as Error).message });
+      .json({ message: '未授权：' + (error as Error).message });
   }
 }

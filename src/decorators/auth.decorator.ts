@@ -5,10 +5,10 @@
 export function AllowAnonymous(): MethodDecorator {
   return (target, propertyKey, descriptor) => {
     Reflect.defineMetadata(
-      "allow_anonymous",
+      'allow_anonymous',
       true,
       target.constructor,
-      propertyKey!
+      propertyKey!,
     );
     return descriptor;
   };

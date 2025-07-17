@@ -1,7 +1,7 @@
-import { Repository } from "typeorm";
-import { AppDataSource } from "../config/database";
-import { MenuEntity, RoleMenu } from "../entities";
-import { MenuDTO, MenuTreeNode } from "../models/menu.model";
+import { Repository } from 'typeorm';
+import { AppDataSource } from '../config/database';
+import { MenuEntity, RoleMenu } from '../entities';
+import { MenuDTO, MenuTreeNode } from '../models/menu.model';
 
 export class MenuService {
   private static menuRepository: Repository<MenuEntity> =
@@ -27,7 +27,7 @@ export class MenuService {
    */
   static async updateMenu(
     id: number,
-    data: Partial<MenuDTO>
+    data: Partial<MenuDTO>,
   ): Promise<MenuEntity> {
     await this.menuRepository.update(id, data);
     return this.menuRepository.findOneByOrFail({ id });
@@ -66,7 +66,7 @@ export class MenuService {
    */
   static buildMenuTree(
     menus: MenuEntity[],
-    parentId: number = 0
+    parentId: number = 0,
   ): MenuTreeNode[] {
     return menus
       .filter((menu) => menu.parentId === parentId)
@@ -84,7 +84,7 @@ export class MenuService {
    */
   static async assignMenusToRole(
     roleId: string,
-    menuIds: number[]
+    menuIds: number[],
   ): Promise<void> {
     // 先删除原有分配
     await this.roleMenuRepository.delete({ roleId });

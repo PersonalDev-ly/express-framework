@@ -1,12 +1,12 @@
-import redisClient from "../config/redisConfig";
-import { logger } from "./logger";
+import redisClient from '../config/redisConfig';
+import { logger } from './logger';
 
 /**
  * 令牌黑名单工具类
  * 使用Redis存储已吊销的JWT令牌，同时保留内存存储作为备份
  */
 export class TokenBlacklistUtil {
-  private static readonly KEY_PREFIX = "token:blacklist:";
+  private static readonly KEY_PREFIX = 'token:blacklist:';
 
   // 内存存储作为备份机制
   private static blacklistedTokens: Set<string> = new Set();
@@ -32,11 +32,11 @@ export class TokenBlacklistUtil {
 
       // 只有当令牌还未过期时才添加到Redis
       if (ttl > 0) {
-        await redisClient.set(`${this.KEY_PREFIX}${token}`, "1", "EX", ttl);
+        await redisClient.set(`${this.KEY_PREFIX}${token}`, '1', 'EX', ttl);
         logger.debug(`令牌已添加到Redis黑名单，过期时间: ${ttl}秒`);
       }
     } catch (error) {
-      logger.error("将令牌添加到Redis黑名单时出错", { error });
+      logger.error('将令牌添加到Redis黑名单时出错', { error });
       // 降级到内存存储作为备份
       this.fallbackAddToBlacklist(token, expiresAt);
     }
@@ -52,7 +52,7 @@ export class TokenBlacklistUtil {
       const exists = await redisClient.exists(`${this.KEY_PREFIX}${token}`);
       return exists === 1;
     } catch (error) {
-      logger.error("检查Redis令牌黑名单状态时出错", { error });
+      logger.error('检查Redis令牌黑名单状态时出错', { error });
       // 降级到内存存储作为备份
       return this.fallbackIsBlacklisted(token);
     }
@@ -71,11 +71,11 @@ export class TokenBlacklistUtil {
    */
   private static fallbackAddToBlacklist(
     token: string,
-    expiresAt: number
+    expiresAt: number,
   ): void {
     this.blacklistedTokens.add(token);
     this.tokenExpirations.set(token, expiresAt);
-    logger.warn("使用内存备份存储令牌黑名单", {
+    logger.warn('使用内存备份存储令牌黑名单', {
       expiresAt: new Date(expiresAt).toISOString(),
     });
   }

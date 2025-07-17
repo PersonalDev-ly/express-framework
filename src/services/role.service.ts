@@ -1,7 +1,7 @@
-import { Repository } from "typeorm";
-import { AppDataSource } from "../config/database";
-import { Permission, Role, RolePermission, UserRole } from "../entities";
-import { UserService } from "./user.service";
+import { Repository } from 'typeorm';
+import { AppDataSource } from '../config/database';
+import { Permission, Role, RolePermission, UserRole } from '../entities';
+import { UserService } from './user.service';
 
 export class RoleService {
   private static roleRepository: Repository<Role> =
@@ -139,7 +139,7 @@ export class RoleService {
    */
   static async assignPermissionsToRole(
     roleId: string,
-    permissionIds: string[]
+    permissionIds: string[],
   ): Promise<boolean> {
     const role = await this.findRoleById(roleId);
     if (!role) {
@@ -193,7 +193,7 @@ export class RoleService {
    */
   static async removePermissionsFromRole(
     roleId: string,
-    permissionIds: string[]
+    permissionIds: string[],
   ): Promise<boolean> {
     const role = await this.findRoleById(roleId);
     if (!role) {
@@ -245,7 +245,7 @@ export class RoleService {
 
     const rolePermissions = await this.rolePermissionRepository.find({
       where: { roleId },
-      relations: ["permission"],
+      relations: ['permission'],
     });
 
     return rolePermissions.map((rp) => rp.permission);

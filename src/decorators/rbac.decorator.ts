@@ -1,5 +1,5 @@
-import { requirePermission } from "../middleware/rbac.middleware";
-import { Use } from "./middleware.decorator";
+import { requirePermission } from '../middleware/rbac.middleware';
+import { Use } from './middleware.decorator';
 
 /**
  * 权限检查装饰器，用于检查用户是否具有特定权限
@@ -10,8 +10,8 @@ export function RequirePermission(
     | { resource?: string; action?: string; name?: string }
     | {
         permissions: { resource?: string; action?: string; name?: string }[];
-        mode?: "any" | "all";
-      }
+        mode?: 'any' | 'all';
+      },
 ): MethodDecorator {
   return Use(requirePermission(opts));
 }

@@ -1,6 +1,6 @@
-import fs from "fs";
-import path from "path";
-import { format } from "util";
+import fs from 'fs';
+import path from 'path';
+import { format } from 'util';
 
 /**
  * 日志级别枚举
@@ -34,7 +34,7 @@ export interface LoggerConfig {
  */
 const DEFAULT_CONFIG: LoggerConfig = {
   consoleLevel:
-    process.env.NODE_ENV === "production" ? LogLevel.INFO : LogLevel.DEBUG,
+    process.env.NODE_ENV === 'production' ? LogLevel.INFO : LogLevel.DEBUG,
   fileLevel: LogLevel.NONE,
   includeTimestamp: true,
   includeLogLevel: true,
@@ -53,7 +53,7 @@ export class Logger {
    * 获取当前日期字符串（YYYY-MM-DD格式）
    */
   private getCurrentDate(): string {
-    return new Date().toISOString().split("T")[0];
+    return new Date().toISOString().split('T')[0];
   }
 
   /**
@@ -61,7 +61,7 @@ export class Logger {
    */
   private getLogFilePath(): string {
     if (!this.config.logFilePath) {
-      throw new Error("Log file path is not configured");
+      throw new Error('Log file path is not configured');
     }
     const dir = path.dirname(this.config.logFilePath);
     const ext = path.extname(this.config.logFilePath);
@@ -91,7 +91,7 @@ export class Logger {
       }
 
       // 创建新的日志流
-      this.logStream = fs.createWriteStream(logPath, { flags: "a" });
+      this.logStream = fs.createWriteStream(logPath, { flags: 'a' });
       this.currentLogDate = currentDate;
     }
   }
@@ -151,7 +151,7 @@ export class Logger {
     const message = format(...args);
     parts.push(message);
 
-    return parts.join(" ");
+    return parts.join(' ');
   }
 
   /**
