@@ -61,7 +61,7 @@ export class JwtUtil {
     try {
       return jwt.verify(token, JWT_SECRET) as AppJwtPayload;
     } catch (error) {
-      throw new Error('Invalid access token');
+      throw new Error('Invalid access token: ' + error);
     }
   }
 
@@ -74,7 +74,7 @@ export class JwtUtil {
     try {
       return jwt.verify(token, JWT_REFRESH_SECRET) as AppJwtPayload;
     } catch (error) {
-      throw new Error('Invalid refresh token');
+      throw new Error('Invalid refresh token: ' + error);
     }
   }
 

@@ -16,7 +16,7 @@ export class UserController {
   /** 获取所有用户 */
   @RequirePermission({ resource: 'user', action: 'read' })
   @Get('/')
-  async getAllUsers(_req: Request, res: Response) {
+  async getAllUsers(_req: Request, res: Response): Promise<void | Response> {
     try {
       // 查找所有用户
       const users = await UserService.getAllUsers();
@@ -34,7 +34,7 @@ export class UserController {
   /** 根据ID获取用户信息 */
   @RequirePermission({ resource: 'user', action: 'read' })
   @Get('/:id')
-  async getUserById(req: Request, res: Response) {
+  async getUserById(req: Request, res: Response): Promise<void | Response> {
     try {
       // 从请求对象中获取用户ID
       const { id } = req.params;
@@ -58,7 +58,7 @@ export class UserController {
   /** 修改用户信息 */
   @RequirePermission({ resource: 'user', action: 'update' })
   @Put('/:id')
-  async updateUserById(req: Request, res: Response) {
+  async updateUserById(req: Request, res: Response): Promise<void | Response> {
     try {
       // 从请求对象中获取用户ID
       const { id } = req.params;
@@ -88,7 +88,7 @@ export class UserController {
   /** 删除用户 */
   @RequirePermission({ resource: 'user', action: 'delete' })
   @Delete('/:id')
-  async deleteUserById(req: Request, res: Response) {
+  async deleteUserById(req: Request, res: Response): Promise<void | Response> {
     try {
       // 从请求对象中获取用户ID
       const { id } = req.params;
@@ -113,7 +113,7 @@ export class UserController {
   /** 批量删除用户 */
   @RequirePermission({ resource: 'user', action: 'delete' })
   @Delete('/')
-  async deleteUsers(req: Request, res: Response) {
+  async deleteUsers(req: Request, res: Response): Promise<void | Response> {
     try {
       // 从请求对象中获取用户ID列表
       const { ids } = req.body;
@@ -133,7 +133,7 @@ export class UserController {
   /** 创建用户 */
   @RequirePermission({ resource: 'user', action: 'create' })
   @Post('/')
-  async createUser(req: Request, res: Response) {
+  async createUser(req: Request, res: Response): Promise<void | Response> {
     try {
       // 从请求对象中获取用户信息
       const userData = req.body;
@@ -154,7 +154,10 @@ export class UserController {
   /** 为用户分配角色 */
   @RequirePermission({ resource: 'user', action: 'grant' })
   @Post('/:id/roles')
-  async assignRolesToUser(req: Request, res: Response) {
+  async assignRolesToUser(
+    req: Request,
+    res: Response,
+  ): Promise<void | Response> {
     try {
       const { id } = req.params;
       const { roles } = req.body;
@@ -177,7 +180,7 @@ export class UserController {
   /** 获取指定用户具备哪些角色 */
   @RequirePermission({ resource: 'user', action: 'read' })
   @Get('/:id/roles')
-  async getUserRoles(req: Request, res: Response) {
+  async getUserRoles(req: Request, res: Response): Promise<void | Response> {
     try {
       const { id } = req.params;
       const roles = await UserService.getUserRoles(id);
@@ -195,7 +198,10 @@ export class UserController {
   /** 移除指定用户下的角色 */
   @RequirePermission({ resource: 'user', action: 'grant' })
   @Delete('/:id/roles')
-  async removeRolesFromUser(req: Request, res: Response) {
+  async removeRolesFromUser(
+    req: Request,
+    res: Response,
+  ): Promise<void | Response> {
     try {
       const { id } = req.params;
       const { roles } = req.body;
@@ -218,7 +224,7 @@ export class UserController {
   /** 获取用户的权限 */
   @RequirePermission({ resource: 'user', action: 'read' })
   @Get('/:id/permissions/')
-  async getUserPermissions(req: Request, res: Response) {
+  async getUserPermissions(req: Request, res: Response): Promise<void> {
     const { id } = req.params;
     try {
       const permissions = await UserService.getUserPermissions(id);

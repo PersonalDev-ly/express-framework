@@ -17,7 +17,7 @@ export class AuthController {
   /** 用户注册 */
   @AllowAnonymous()
   @Post('/register')
-  async register(req: Request, res: Response) {
+  async register(req: Request, res: Response): Promise<Response> {
     try {
       const userData: UserRegisterDTO = req.body;
 
@@ -46,7 +46,7 @@ export class AuthController {
   /** 用户登录 */
   @AllowAnonymous()
   @Post('/login')
-  async login(req: Request, res: Response) {
+  async login(req: Request, res: Response): Promise<Response> {
     try {
       const loginData: UserLoginDTO = req.body;
 
@@ -99,7 +99,7 @@ export class AuthController {
   /** 刷新访问令牌 */
   @AllowAnonymous()
   @Post('/refresh')
-  async refresh(req: Request, res: Response) {
+  async refresh(req: Request, res: Response): Promise<Response> {
     try {
       const { refreshToken } = req.body;
 
@@ -150,7 +150,7 @@ export class AuthController {
 
   /** 用户登出 */
   @Post('/logout')
-  async logout(req: Request, res: Response) {
+  async logout(req: Request, res: Response): Promise<Response> {
     try {
       // 从请求中获取用户ID
       const userId = req.user?.id;

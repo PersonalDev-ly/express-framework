@@ -14,7 +14,11 @@ export const requirePermission = (
         mode?: 'any' | 'all';
       },
 ) => {
-  return async (req: Request, _res: Response, next: NextFunction) => {
+  return async (
+    req: Request,
+    _res: Response,
+    next: NextFunction,
+  ): Promise<void> => {
     try {
       if (!req.user?.id) {
         throw new UnauthorizedError('Authentication required');

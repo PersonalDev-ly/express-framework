@@ -14,7 +14,7 @@ export class MenuController {
   /** 获取所有菜单 */
   @RequirePermission({ resource: 'menu', action: 'read' })
   @Get('/')
-  async getAll(_req: Request, res: Response) {
+  async getAll(_req: Request, res: Response): Promise<void> {
     const menus = await MenuService.getAllMenus();
     res.json({ message: '获取成功', data: menus });
   }
@@ -22,7 +22,7 @@ export class MenuController {
   /** 获取菜单树结构 */
   @RequirePermission({ resource: 'menu', action: 'read' })
   @Get('/tree')
-  async getTree(_req: Request, res: Response) {
+  async getTree(_req: Request, res: Response): Promise<void> {
     const tree = await MenuService.getMenuTree();
     res.json({ message: '获取成功', data: tree });
   }
@@ -30,7 +30,7 @@ export class MenuController {
   /** 创建菜单 */
   @RequirePermission({ resource: 'menu', action: 'create' })
   @Post('/')
-  async create(req: Request, res: Response) {
+  async create(req: Request, res: Response): Promise<void> {
     try {
       const menu = await MenuService.createMenu(req.body);
       res.status(201).json({ message: '创建成功', data: menu });
@@ -42,7 +42,7 @@ export class MenuController {
   /** 更新菜单 */
   @RequirePermission({ resource: 'menu', action: 'update' })
   @Put('/:id')
-  async update(req: Request, res: Response) {
+  async update(req: Request, res: Response): Promise<void> {
     try {
       const menu = await MenuService.updateMenu(
         Number(req.params.id),
@@ -57,7 +57,7 @@ export class MenuController {
   /** 删除菜单 */
   @RequirePermission({ resource: 'menu', action: 'delete' })
   @Delete('/:id')
-  async delete(req: Request, res: Response) {
+  async delete(req: Request, res: Response): Promise<void> {
     try {
       await MenuService.deleteMenu(Number(req.params.id));
       res.json({ message: '删除成功' });
@@ -69,7 +69,7 @@ export class MenuController {
   /** 为角色分配菜单 */
   @RequirePermission({ resource: 'menu', action: 'grant' })
   @Post('/role/:roleId')
-  async assignMenus(req: Request, res: Response) {
+  async assignMenus(req: Request, res: Response): Promise<void | Response> {
     const roleId = req.params.roleId;
     const menuIds = Array.isArray(req.body.menuIds)
       ? req.body.menuIds.map(Number)
@@ -87,7 +87,7 @@ export class MenuController {
   /** 获取角色的所有菜单ID */
   @RequirePermission({ resource: 'menu', action: 'read' })
   @Get('/role/:roleId')
-  async getRoleMenus(req: Request, res: Response) {
+  async getRoleMenus(req: Request, res: Response): Promise<void> {
     const roleId = req.params.roleId;
     try {
       const menuIds = await MenuService.getRoleMenus(roleId);

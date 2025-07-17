@@ -228,7 +228,7 @@ export class Logger {
 export const logger = Logger.getInstance();
 
 // 导出便捷函数
-export const debug = (...args: any[]) => logger.debug(...args);
-export const info = (...args: any[]) => logger.info(...args);
-export const warn = (...args: any[]) => logger.warn(...args);
-export const error = (...args: any[]) => logger.error(...args);
+export const debug = (...args: any[]): void => logger.debug(...args);
+export const info = (...args: any[]): void => logger.info(...args);
+export const warn = (...args: any[]): void => logger.warn(...args);
+export const error = (...args: any[]): void => logger.error(...args);

@@ -38,10 +38,10 @@ export const AppDataSource = new DataSource({
 });
 
 // 初始化数据库连接
-export const initializeDatabase = async () => {
+export const initializeDatabase = async (): Promise<void> => {
   try {
     await AppDataSource.initialize();
   } catch (error) {
-    throw error;
+    throw new Error(`数据库连接失败: ${error}`);
   }
 };

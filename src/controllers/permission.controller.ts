@@ -14,7 +14,7 @@ export class PermissionController {
   /** 获取所有权限 */
   @RequirePermission({ resource: 'permission', action: 'read' })
   @Get('/')
-  async getAll(_req: Request, res: Response) {
+  async getAll(_req: Request, res: Response): Promise<void> {
     const permissions = await PermissionService.getAllPermissions();
     res.json({ message: '获取成功', data: permissions });
   }
@@ -22,7 +22,7 @@ export class PermissionController {
   /** 创建权限 */
   @RequirePermission({ resource: 'permission', action: 'create' })
   @Post('/')
-  async create(req: Request, res: Response) {
+  async create(req: Request, res: Response): Promise<void | Response> {
     const { name, description, resource, action } = req.body;
     if (!name || !resource || !action)
       return res
@@ -44,7 +44,7 @@ export class PermissionController {
   /** 更新权限 */
   @RequirePermission({ resource: 'permission', action: 'update' })
   @Put('/:id')
-  async update(req: Request, res: Response) {
+  async update(req: Request, res: Response): Promise<void | Response> {
     const { id } = req.params;
     const data = req.body;
     try {
@@ -58,7 +58,7 @@ export class PermissionController {
   /** 删除权限 */
   @RequirePermission({ resource: 'permission', action: 'delete' })
   @Delete('/:id')
-  async delete(req: Request, res: Response) {
+  async delete(req: Request, res: Response): Promise<void | Response> {
     const { id } = req.params;
     try {
       await PermissionService.deletePermission(id);

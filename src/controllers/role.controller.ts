@@ -14,7 +14,7 @@ export class RoleController {
   /** 获取所有角色 */
   @RequirePermission({ resource: 'role', action: 'read' })
   @Get('/')
-  async getAll(_req: Request, res: Response) {
+  async getAll(_req: Request, res: Response): Promise<void> {
     const roles = await RoleService.getAllRoles();
     res.json({ message: '获取成功', data: roles });
   }
@@ -22,7 +22,7 @@ export class RoleController {
   /** 创建角色 */
   @RequirePermission({ resource: 'role', action: 'create' })
   @Post('/')
-  async create(req: Request, res: Response) {
+  async create(req: Request, res: Response): Promise<void | Response> {
     const { name, description } = req.body;
     if (!name) return res.status(400).json({ message: '角色名不能为空' });
     try {
@@ -36,7 +36,7 @@ export class RoleController {
   /** 更新角色 */
   @RequirePermission({ resource: 'role', action: 'update' })
   @Put('/:id')
-  async update(req: Request, res: Response) {
+  async update(req: Request, res: Response): Promise<void> {
     const { id } = req.params;
     const data = req.body;
     try {
@@ -50,7 +50,7 @@ export class RoleController {
   /** 批量删除角色 */
   @RequirePermission({ resource: 'role', action: 'delete' })
   @Delete('/batch')
-  async deleteBatch(req: Request, res: Response) {
+  async deleteBatch(req: Request, res: Response): Promise<void | Response> {
     const { ids } = req.body;
     if (!Array.isArray(ids))
       return res.status(400).json({ message: 'ids必须为数组' });
@@ -66,7 +66,7 @@ export class RoleController {
   /** 根据ID删除角色 */
   @RequirePermission({ resource: 'role', action: 'delete' })
   @Delete('/:id')
-  async delete(req: Request, res: Response) {
+  async delete(req: Request, res: Response): Promise<void> {
     const { id } = req.params;
     try {
       await RoleService.deleteRole(id);
@@ -79,7 +79,10 @@ export class RoleController {
   /** 为角色分配权限 */
   @RequirePermission({ resource: 'role', action: 'grant' })
   @Post('/:id/permissions')
-  async assignPermissions(req: Request, res: Response) {
+  async assignPermissions(
+    req: Request,
+    res: Response,
+  ): Promise<void | Response> {
     const { id } = req.params;
     const { permissionIds } = req.body;
     if (!Array.isArray(permissionIds))
@@ -95,7 +98,10 @@ export class RoleController {
   /** 移除角色的权限 */
   @RequirePermission({ resource: 'role', action: 'revoke' })
   @Delete('/:id/permissions')
-  async removePermissions(req: Request, res: Response) {
+  async removePermissions(
+    req: Request,
+    res: Response,
+  ): Promise<void | Response> {
     const { id } = req.params;
     const { permissionIds } = req.body;
     if (!Array.isArray(permissionIds))
@@ -111,7 +117,7 @@ export class RoleController {
   /** 获取角色的所有权限 */
   @RequirePermission({ resource: 'role', action: 'read' })
   @Get('/:id/permissions')
-  async getRolePermissions(req: Request, res: Response) {
+  async getRolePermissions(req: Request, res: Response): Promise<void> {
     const { id } = req.params;
     try {
       const permissions = await RoleService.getRolePermissions(id);

@@ -295,7 +295,7 @@ export class UserService {
    * 清理用户权限缓存
    * @param userId 用户ID
    */
-  static async clearUserPermissionsCache(userId: string) {
+  static async clearUserPermissionsCache(userId: string): Promise<void> {
     const cacheKey = `user:permissions:${userId}`;
     await redisClient.del(cacheKey);
   }

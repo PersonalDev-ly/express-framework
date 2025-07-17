@@ -18,7 +18,7 @@ import { logger } from './logger';
 export function registerControllers(
   app: Application,
   controllers: Constructor[],
-) {
+): void {
   for (const controller of controllers) {
     registerController(app, controller);
   }
@@ -29,7 +29,7 @@ export function registerControllers(
  * @param app Express应用实例
  * @param Controller 控制器类
  */
-function registerController(app: Application, Controller: Constructor) {
+function registerController(app: Application, Controller: Constructor): void {
   // 获取控制器元数据
   const controllerMetadata = Reflect.getMetadata(
     CONTROLLER_METADATA,
@@ -63,7 +63,11 @@ function registerController(app: Application, Controller: Constructor) {
       : [authMiddleware, ...middleware];
 
     // 创建路由处理函数
-    const handler = async (req: Request, res: Response, next: NextFunction) => {
+    const handler = async (
+      req: Request,
+      res: Response,
+      next: NextFunction,
+    ): Promise<void> => {
       try {
         // 获取参数元数据
         const paramMetadata: ParamMetadata[] =

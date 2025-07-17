@@ -59,7 +59,7 @@ app.use(errorHandler);
 setupGlobalErrorHandlers();
 
 // 启动服务器
-const startServer = async () => {
+const startServer = async (): Promise<void> => {
   try {
     // 初始化数据库连接
     await initializeDatabase();

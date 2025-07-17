@@ -6,11 +6,11 @@ import { TokenBlacklistUtil } from '../utils/token-blacklist.util';
 /**
  * 认证中间件 - 验证用户是否已登录
  */
-export async function authMiddleware(
+export const authMiddleware = async (
   req: Request,
   res: Response,
   next: NextFunction,
-) {
+): Promise<void | Response<any, Record<string, any>>> => {
   try {
     // 从请求头中获取token
     const authHeader = req.headers.authorization;
@@ -43,4 +43,4 @@ export async function authMiddleware(
       .status(401)
       .json({ message: '未授权：' + (error as Error).message });
   }
-}
+};

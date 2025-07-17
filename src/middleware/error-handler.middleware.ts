@@ -10,7 +10,7 @@ export const errorHandler = (
   err: Error,
   req: Request,
   res: Response,
-  next: NextFunction,
+  _next: NextFunction,
 ): void => {
   // 默认错误状态码和错误代码
   let statusCode = 500;
