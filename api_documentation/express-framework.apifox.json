@@ -209,7 +209,11 @@
                       "query": [],
                       "body": [],
                       "cookie": [],
-                      "header": []
+                      "header": [
+                        {
+                          "name": "Authorization"
+                        }
+                      ]
                     },
                     "responses": [
                       {
@@ -239,7 +243,7 @@
                       "examples": [
                         {
                           "mediaType": "application/json",
-                          "value": "{\r\n    \"email\": \"test1@example.com\",\r\n    \"password\": \"abcd1234\"\r\n}"
+                          "value": "{\r\n    \"email\": \"admin@example.com\",\r\n    \"password\": \"abcd1234\"\r\n}"
                         }
                       ],
                       "oasExtensions": ""
@@ -429,20 +433,7 @@
                     "method": "post",
                     "path": "/auth/logout/",
                     "parameters": {
-                      "header": [
-                        {
-                          "required": false,
-                          "description": "",
-                          "type": "string",
-                          "id": "7TFpm6VlyI",
-                          "example": "Bearer {{AccessToken}}",
-                          "enable": true,
-                          "name": "Authorization",
-                          "schema": {
-                            "type": "string"
-                          }
-                        }
-                      ]
+                      "header": []
                     },
                     "auth": {},
                     "securityScheme": {},
@@ -450,7 +441,11 @@
                       "query": [],
                       "body": [],
                       "cookie": [],
-                      "header": []
+                      "header": [
+                        {
+                          "name": "Authorization"
+                        }
+                      ]
                     },
                     "responses": [
                       {
@@ -549,17 +544,7 @@
                     "method": "get",
                     "path": "/roles/",
                     "parameters": {
-                      "header": [
-                        {
-                          "required": false,
-                          "description": "",
-                          "type": "string",
-                          "id": "Q07EpNIq9Z",
-                          "example": "Bearer {{AccessToken}}",
-                          "enable": true,
-                          "name": "Authorization"
-                        }
-                      ]
+                      "header": []
                     },
                     "auth": {},
                     "securityScheme": {},
@@ -567,7 +552,11 @@
                       "query": [],
                       "body": [],
                       "cookie": [],
-                      "header": []
+                      "header": [
+                        {
+                          "name": "Authorization"
+                        }
+                      ]
                     },
                     "responses": [
                       {
@@ -660,17 +649,7 @@
                     "method": "post",
                     "path": "/roles/",
                     "parameters": {
-                      "header": [
-                        {
-                          "required": false,
-                          "description": "",
-                          "type": "string",
-                          "id": "7MxAhNwA9d",
-                          "example": "Bearer {{AccessToken}}",
-                          "enable": true,
-                          "name": "Authorization"
-                        }
-                      ]
+                      "header": []
                     },
                     "auth": {},
                     "securityScheme": {},
@@ -678,7 +657,11 @@
                       "query": [],
                       "body": [],
                       "cookie": [],
-                      "header": []
+                      "header": [
+                        {
+                          "name": "Authorization"
+                        }
+                      ]
                     },
                     "responses": [
                       {
@@ -761,17 +744,7 @@
                           "example": "72f02a47-3d13-4113-947f-efd174392628"
                         }
                       ],
-                      "header": [
-                        {
-                          "required": false,
-                          "description": "",
-                          "type": "string",
-                          "id": "LnTWHTpTMC",
-                          "example": "Bearer {{AccessToken}}",
-                          "enable": true,
-                          "name": "Authorization"
-                        }
-                      ]
+                      "header": []
                     },
                     "auth": {},
                     "securityScheme": {},
@@ -779,7 +752,11 @@
                       "query": [],
                       "body": [],
                       "cookie": [],
-                      "header": []
+                      "header": [
+                        {
+                          "name": "Authorization"
+                        }
+                      ]
                     },
                     "responses": [
                       {
@@ -861,17 +838,7 @@
                           "example": "c53a4bcf-42b4-4e13-afa3-100c13412d10"
                         }
                       ],
-                      "header": [
-                        {
-                          "required": false,
-                          "description": "",
-                          "type": "string",
-                          "id": "nX4uuVlaCc",
-                          "example": "Bearer {{AccessToken}}",
-                          "enable": true,
-                          "name": "Authorization"
-                        }
-                      ]
+                      "header": []
                     },
                     "auth": {},
                     "securityScheme": {},
@@ -879,7 +846,11 @@
                       "query": [],
                       "body": [],
                       "cookie": [],
-                      "header": []
+                      "header": [
+                        {
+                          "name": "Authorization"
+                        }
+                      ]
                     },
                     "responses": [
                       {
@@ -961,17 +932,7 @@
                           "example": "61870b6e-3c19-4067-b0b8-53a9e7be76e9"
                         }
                       ],
-                      "header": [
-                        {
-                          "required": false,
-                          "description": "",
-                          "type": "string",
-                          "id": "yi8ktxhIPh",
-                          "example": "Bearer {{AccessToken}}",
-                          "enable": true,
-                          "name": "Authorization"
-                        }
-                      ]
+                      "header": []
                     },
                     "auth": {},
                     "securityScheme": {},
@@ -979,7 +940,11 @@
                       "query": [],
                       "body": [],
                       "cookie": [],
-                      "header": []
+                      "header": [
+                        {
+                          "name": "Authorization"
+                        }
+                      ]
                     },
                     "responses": [
                       {
@@ -1052,17 +1017,7 @@
                           "example": "539bbe46-e1a8-4ce5-ab89-bf66d37306ef"
                         }
                       ],
-                      "header": [
-                        {
-                          "required": false,
-                          "description": "",
-                          "type": "string",
-                          "id": "U96glR4lkP",
-                          "example": "Bearer {{AccessToken}}",
-                          "enable": true,
-                          "name": "Authorization"
-                        }
-                      ]
+                      "header": []
                     },
                     "auth": {},
                     "securityScheme": {},
@@ -1070,7 +1025,11 @@
                       "query": [],
                       "body": [],
                       "cookie": [],
-                      "header": []
+                      "header": [
+                        {
+                          "name": "Authorization"
+                        }
+                      ]
                     },
                     "responses": [
                       {
@@ -1152,17 +1111,7 @@
                           "example": "c53a4bcf-42b4-4e13-afa3-100c13412d10"
                         }
                       ],
-                      "header": [
-                        {
-                          "required": false,
-                          "description": "",
-                          "type": "string",
-                          "id": "MtbGN0Z5W2",
-                          "example": "Bearer {{AccessToken}}",
-                          "enable": true,
-                          "name": "Authorization"
-                        }
-                      ]
+                      "header": []
                     },
                     "auth": {},
                     "securityScheme": {},
@@ -1170,7 +1119,11 @@
                       "query": [],
                       "body": [],
                       "cookie": [],
-                      "header": []
+                      "header": [
+                        {
+                          "name": "Authorization"
+                        }
+                      ]
                     },
                     "responses": [
                       {
@@ -1232,17 +1185,7 @@
                     "method": "delete",
                     "path": "/roles/batch",
                     "parameters": {
-                      "header": [
-                        {
-                          "required": false,
-                          "description": "",
-                          "type": "string",
-                          "id": "fca8nbXqfB",
-                          "example": "Bearer {{AccessToken}}",
-                          "enable": true,
-                          "name": "Authorization"
-                        }
-                      ]
+                      "header": []
                     },
                     "auth": {},
                     "securityScheme": {},
@@ -1250,7 +1193,11 @@
                       "query": [],
                       "body": [],
                       "cookie": [],
-                      "header": []
+                      "header": [
+                        {
+                          "name": "Authorization"
+                        }
+                      ]
                     },
                     "responses": [
                       {
@@ -1358,17 +1305,7 @@
                     "method": "get",
                     "path": "/permissions/",
                     "parameters": {
-                      "header": [
-                        {
-                          "required": false,
-                          "description": "",
-                          "type": "string",
-                          "id": "vIwgzOd5wN",
-                          "example": "Bearer {{AccessToken}}",
-                          "enable": true,
-                          "name": "Authorization"
-                        }
-                      ]
+                      "header": []
                     },
                     "auth": {},
                     "securityScheme": {},
@@ -1376,7 +1313,11 @@
                       "query": [],
                       "body": [],
                       "cookie": [],
-                      "header": []
+                      "header": [
+                        {
+                          "name": "Authorization"
+                        }
+                      ]
                     },
                     "responses": [
                       {
@@ -1438,17 +1379,7 @@
                     "method": "post",
                     "path": "/permissions/",
                     "parameters": {
-                      "header": [
-                        {
-                          "required": false,
-                          "description": "",
-                          "type": "string",
-                          "id": "ghHV9o9b2n",
-                          "example": "Bearer {{AccessToken}}",
-                          "enable": true,
-                          "name": "Authorization"
-                        }
-                      ]
+                      "header": []
                     },
                     "auth": {},
                     "securityScheme": {},
@@ -1456,7 +1387,11 @@
                       "query": [],
                       "body": [],
                       "cookie": [],
-                      "header": []
+                      "header": [
+                        {
+                          "name": "Authorization"
+                        }
+                      ]
                     },
                     "responses": [
                       {
@@ -1538,17 +1473,7 @@
                           "example": "72f02a47-3d13-4113-947f-efd174392628"
                         }
                       ],
-                      "header": [
-                        {
-                          "required": false,
-                          "description": "",
-                          "type": "string",
-                          "id": "Vvcp9pz1V1",
-                          "example": "Bearer {{AccessToken}}",
-                          "enable": true,
-                          "name": "Authorization"
-                        }
-                      ]
+                      "header": []
                     },
                     "auth": {},
                     "securityScheme": {},
@@ -1556,7 +1481,11 @@
                       "query": [],
                       "body": [],
                       "cookie": [],
-                      "header": []
+                      "header": [
+                        {
+                          "name": "Authorization"
+                        }
+                      ]
                     },
                     "responses": [
                       {
@@ -1638,17 +1567,7 @@
                           "example": "667027fa-a8a3-4bbe-bbbe-ce142b42825e"
                         }
                       ],
-                      "header": [
-                        {
-                          "required": false,
-                          "description": "",
-                          "type": "string",
-                          "id": "tOjlqKbZg3",
-                          "example": "Bearer {{AccessToken}}",
-                          "enable": true,
-                          "name": "Authorization"
-                        }
-                      ]
+                      "header": []
                     },
                     "auth": {},
                     "securityScheme": {},
@@ -1656,7 +1575,11 @@
                       "query": [],
                       "body": [],
                       "cookie": [],
-                      "header": []
+                      "header": [
+                        {
+                          "name": "Authorization"
+                        }
+                      ]
                     },
                     "responses": [
                       {
@@ -1755,17 +1678,7 @@
                     "method": "get",
                     "path": "/users/",
                     "parameters": {
-                      "header": [
-                        {
-                          "required": false,
-                          "description": "",
-                          "type": "string",
-                          "id": "VcZZXeMV9A",
-                          "example": "Bearer {{AccessToken}}",
-                          "enable": true,
-                          "name": "Authorization"
-                        }
-                      ]
+                      "header": []
                     },
                     "auth": {},
                     "securityScheme": {},
@@ -1773,7 +1686,11 @@
                       "query": [],
                       "body": [],
                       "cookie": [],
-                      "header": []
+                      "header": [
+                        {
+                          "name": "Authorization"
+                        }
+                      ]
                     },
                     "responses": [
                       {
@@ -1846,17 +1763,7 @@
                           "example": "55e58973-e419-422f-8e70-d29e17621542"
                         }
                       ],
-                      "header": [
-                        {
-                          "required": false,
-                          "description": "",
-                          "type": "string",
-                          "id": "lVxYJEylx1",
-                          "example": "Bearer {{AccessToken}}",
-                          "enable": true,
-                          "name": "Authorization"
-                        }
-                      ]
+                      "header": []
                     },
                     "auth": {},
                     "securityScheme": {},
@@ -1864,7 +1771,11 @@
                       "query": [],
                       "body": [],
                       "cookie": [],
-                      "header": []
+                      "header": [
+                        {
+                          "name": "Authorization"
+                        }
+                      ]
                     },
                     "responses": [
                       {
@@ -1937,17 +1848,7 @@
                           "example": "55e58973-e419-422f-8e70-d29e17621542"
                         }
                       ],
-                      "header": [
-                        {
-                          "required": false,
-                          "description": "",
-                          "type": "string",
-                          "id": "J4FVEdmkU5",
-                          "example": "Bearer {{AccessToken}}",
-                          "enable": true,
-                          "name": "Authorization"
-                        }
-                      ]
+                      "header": []
                     },
                     "auth": {},
                     "securityScheme": {},
@@ -1955,7 +1856,11 @@
                       "query": [],
                       "body": [],
                       "cookie": [],
-                      "header": []
+                      "header": [
+                        {
+                          "name": "Authorization"
+                        }
+                      ]
                     },
                     "responses": [
                       {
@@ -2037,17 +1942,7 @@
                           "example": "60b02113-1774-43a7-b7fe-fdd2ac3af08a"
                         }
                       ],
-                      "header": [
-                        {
-                          "required": false,
-                          "description": "",
-                          "type": "string",
-                          "id": "IT963XhhsI",
-                          "example": "Bearer {{AccessToken}}",
-                          "enable": true,
-                          "name": "Authorization"
-                        }
-                      ]
+                      "header": []
                     },
                     "auth": {},
                     "securityScheme": {},
@@ -2055,7 +1950,11 @@
                       "query": [],
                       "body": [],
                       "cookie": [],
-                      "header": []
+                      "header": [
+                        {
+                          "name": "Authorization"
+                        }
+                      ]
                     },
                     "responses": [
                       {
@@ -2117,17 +2016,7 @@
                     "method": "delete",
                     "path": "/users/",
                     "parameters": {
-                      "header": [
-                        {
-                          "required": false,
-                          "description": "",
-                          "type": "string",
-                          "id": "6WFc054ObO",
-                          "example": "Bearer {{AccessToken}}",
-                          "enable": true,
-                          "name": "Authorization"
-                        }
-                      ]
+                      "header": []
                     },
                     "auth": {},
                     "securityScheme": {},
@@ -2135,7 +2024,11 @@
                       "query": [],
                       "body": [],
                       "cookie": [],
-                      "header": []
+                      "header": [
+                        {
+                          "name": "Authorization"
+                        }
+                      ]
                     },
                     "responses": [
                       {
@@ -2206,17 +2099,7 @@
                     "method": "post",
                     "path": "/users/",
                     "parameters": {
-                      "header": [
-                        {
-                          "required": false,
-                          "description": "",
-                          "type": "string",
-                          "id": "GZqxbzmA4M",
-                          "example": "Bearer {{AccessToken}}",
-                          "enable": true,
-                          "name": "Authorization"
-                        }
-                      ]
+                      "header": []
                     },
                     "auth": {},
                     "securityScheme": {},
@@ -2224,7 +2107,11 @@
                       "query": [],
                       "body": [],
                       "cookie": [],
-                      "header": []
+                      "header": [
+                        {
+                          "name": "Authorization"
+                        }
+                      ]
                     },
                     "responses": [
                       {
@@ -2307,17 +2194,7 @@
                           "example": "d4b70814-481d-4452-a526-2c5b2c5c943e"
                         }
                       ],
-                      "header": [
-                        {
-                          "required": false,
-                          "description": "",
-                          "type": "string",
-                          "id": "eGaUFPsvOP",
-                          "example": "Bearer {{AccessToken}}",
-                          "enable": true,
-                          "name": "Authorization"
-                        }
-                      ]
+                      "header": []
                     },
                     "auth": {},
                     "securityScheme": {},
@@ -2325,7 +2202,11 @@
                       "query": [],
                       "body": [],
                       "cookie": [],
-                      "header": []
+                      "header": [
+                        {
+                          "name": "Authorization"
+                        }
+                      ]
                     },
                     "responses": [
                       {
@@ -2407,17 +2288,7 @@
                           "example": "d4b70814-481d-4452-a526-2c5b2c5c943e"
                         }
                       ],
-                      "header": [
-                        {
-                          "required": false,
-                          "description": "",
-                          "type": "string",
-                          "id": "qZw2W54bON",
-                          "example": "Bearer {{AccessToken}}",
-                          "enable": true,
-                          "name": "Authorization"
-                        }
-                      ]
+                      "header": []
                     },
                     "auth": {},
                     "securityScheme": {},
@@ -2425,7 +2296,11 @@
                       "query": [],
                       "body": [],
                       "cookie": [],
-                      "header": []
+                      "header": [
+                        {
+                          "name": "Authorization"
+                        }
+                      ]
                     },
                     "responses": [
                       {
@@ -2498,17 +2373,7 @@
                           "example": "93fef74d-4e25-40a3-b493-b071c8bae8e3"
                         }
                       ],
-                      "header": [
-                        {
-                          "required": false,
-                          "description": "",
-                          "type": "string",
-                          "id": "l9abdY4gka",
-                          "example": "Bearer {{AccessToken}}",
-                          "enable": true,
-                          "name": "Authorization"
-                        }
-                      ]
+                      "header": []
                     },
                     "auth": {},
                     "securityScheme": {},
@@ -2516,7 +2381,11 @@
                       "query": [],
                       "body": [],
                       "cookie": [],
-                      "header": []
+                      "header": [
+                        {
+                          "name": "Authorization"
+                        }
+                      ]
                     },
                     "responses": [
                       {
@@ -2598,17 +2467,7 @@
                           "example": "f8acd07e-1997-4a51-af98-1abd3cb333c7"
                         }
                       ],
-                      "header": [
-                        {
-                          "required": false,
-                          "description": "",
-                          "type": "string",
-                          "id": "82tOuK60a8",
-                          "example": "Bearer {{AccessToken}}",
-                          "enable": true,
-                          "name": "Authorization"
-                        }
-                      ]
+                      "header": []
                     },
                     "auth": {},
                     "securityScheme": {},
@@ -2616,7 +2475,11 @@
                       "query": [],
                       "body": [],
                       "cookie": [],
-                      "header": []
+                      "header": [
+                        {
+                          "name": "Authorization"
+                        }
+                      ]
                     },
                     "responses": [
                       {
@@ -2715,17 +2578,7 @@
                     "method": "get",
                     "path": "/menus/",
                     "parameters": {
-                      "header": [
-                        {
-                          "required": false,
-                          "description": "",
-                          "type": "string",
-                          "id": "OwGvTQQQkk",
-                          "example": "Bearer {{AccessToken}}",
-                          "enable": true,
-                          "name": "Authorization"
-                        }
-                      ]
+                      "header": []
                     },
                     "auth": {},
                     "securityScheme": {},
@@ -2733,7 +2586,11 @@
                       "query": [],
                       "body": [],
                       "cookie": [],
-                      "header": []
+                      "header": [
+                        {
+                          "name": "Authorization"
+                        }
+                      ]
                     },
                     "responses": [
                       {
@@ -2795,17 +2652,7 @@
                     "method": "get",
                     "path": "/menus/tree/",
                     "parameters": {
-                      "header": [
-                        {
-                          "required": false,
-                          "description": "",
-                          "type": "string",
-                          "id": "sqvJRyQX6U",
-                          "example": "Bearer {{AccessToken}}",
-                          "enable": true,
-                          "name": "Authorization"
-                        }
-                      ]
+                      "header": []
                     },
                     "auth": {},
                     "securityScheme": {},
@@ -2813,7 +2660,11 @@
                       "query": [],
                       "body": [],
                       "cookie": [],
-                      "header": []
+                      "header": [
+                        {
+                          "name": "Authorization"
+                        }
+                      ]
                     },
                     "responses": [
                       {
@@ -2875,17 +2726,7 @@
                     "method": "post",
                     "path": "/menus/",
                     "parameters": {
-                      "header": [
-                        {
-                          "required": false,
-                          "description": "",
-                          "type": "string",
-                          "id": "7WrNreNeTc",
-                          "example": "Bearer {{AccessToken}}",
-                          "enable": true,
-                          "name": "Authorization"
-                        }
-                      ]
+                      "header": []
                     },
                     "auth": {},
                     "securityScheme": {},
@@ -2893,7 +2734,11 @@
                       "query": [],
                       "body": [],
                       "cookie": [],
-                      "header": []
+                      "header": [
+                        {
+                          "name": "Authorization"
+                        }
+                      ]
                     },
                     "responses": [
                       {
@@ -2975,17 +2820,7 @@
                           "example": "14"
                         }
                       ],
-                      "header": [
-                        {
-                          "required": false,
-                          "description": "",
-                          "type": "string",
-                          "id": "wnl9DXlUxO",
-                          "example": "Bearer {{AccessToken}}",
-                          "enable": true,
-                          "name": "Authorization"
-                        }
-                      ]
+                      "header": []
                     },
                     "auth": {},
                     "securityScheme": {},
@@ -2993,7 +2828,11 @@
                       "query": [],
                       "body": [],
                       "cookie": [],
-                      "header": []
+                      "header": [
+                        {
+                          "name": "Authorization"
+                        }
+                      ]
                     },
                     "responses": [
                       {
@@ -3082,17 +2921,7 @@
                           "example": "14"
                         }
                       ],
-                      "header": [
-                        {
-                          "required": false,
-                          "description": "",
-                          "type": "string",
-                          "id": "z00KKQBjs0",
-                          "example": "Bearer {{AccessToken}}",
-                          "enable": true,
-                          "name": "Authorization"
-                        }
-                      ]
+                      "header": []
                     },
                     "auth": {},
                     "securityScheme": {},
@@ -3100,7 +2929,11 @@
                       "query": [],
                       "body": [],
                       "cookie": [],
-                      "header": []
+                      "header": [
+                        {
+                          "name": "Authorization"
+                        }
+                      ]
                     },
                     "responses": [
                       {
@@ -3173,17 +3006,7 @@
                           "example": "d0748fb2-6613-4bfa-8c8d-107adf7b3551"
                         }
                       ],
-                      "header": [
-                        {
-                          "required": false,
-                          "description": "",
-                          "type": "string",
-                          "id": "4rwosCWJny",
-                          "example": "Bearer {{AccessToken}}",
-                          "enable": true,
-                          "name": "Authorization"
-                        }
-                      ]
+                      "header": []
                     },
                     "auth": {},
                     "securityScheme": {},
@@ -3191,7 +3014,11 @@
                       "query": [],
                       "body": [],
                       "cookie": [],
-                      "header": []
+                      "header": [
+                        {
+                          "name": "Authorization"
+                        }
+                      ]
                     },
                     "responses": [
                       {
@@ -3273,17 +3100,7 @@
                           "example": "d0748fb2-6613-4bfa-8c8d-107adf7b3551"
                         }
                       ],
-                      "header": [
-                        {
-                          "required": false,
-                          "description": "",
-                          "type": "string",
-                          "id": "rab4UYJixU",
-                          "example": "Bearer {{AccessToken}}",
-                          "enable": true,
-                          "name": "Authorization"
-                        }
-                      ]
+                      "header": []
                     },
                     "auth": {},
                     "securityScheme": {},
@@ -3291,7 +3108,11 @@
                       "query": [],
                       "body": [],
                       "cookie": [],
-                      "header": []
+                      "header": [
+                        {
+                          "name": "Authorization"
+                        }
+                      ]
                     },
                     "responses": [
                       {
@@ -3501,7 +3322,41 @@
       "items": []
     }
   ],
-  "environments": [],
+  "environments": [
+    {
+      "name": "开发环境",
+      "requestProxyAgentSettings": {},
+      "variables": [
+        {
+          "name": "AccessToken",
+          "value": "",
+          "description": "",
+          "initialValue": "",
+          "isSync": true
+        }
+      ],
+      "parameters": {
+        "cookie": [],
+        "query": [],
+        "header": [],
+        "body": []
+      },
+      "type": "normal",
+      "visibility": "protected",
+      "ordering": 0,
+      "tags": [
+        {
+          "name": "",
+          "color": "#9373EE"
+        }
+      ],
+      "id": "22533852",
+      "baseUrl": "http://localhost:3001",
+      "baseUrls": {
+        "default": "http://localhost:3001"
+      }
+    }
+  ],
   "commonScripts": [],
   "globalVariables": [],
   "moduleVariables": [
@@ -3510,17 +3365,34 @@
       "variables": []
     }
   ],
-  "commonParameters": null,
+  "commonParameters": {
+    "id": 815866,
+    "createdAt": "2025-07-23T05:57:20.000Z",
+    "updatedAt": "2025-07-23T05:58:08.000Z",
+    "deletedAt": null,
+    "parameters": {
+      "header": [
+        {
+          "name": "Authorization",
+          "defaultEnable": true,
+          "type": "string",
+          "id": "zzvwcFNQiA",
+          "defaultValue": "Bearer {{AccessToken}}",
+          "schema": {
+            "type": "string",
+            "default": "Bearer {{AccessToken}}"
+          }
+        }
+      ]
+    },
+    "projectId": 4813809,
+    "creatorId": 2429300,
+    "editorId": 2429300
+  },
   "projectSetting": {
     "id": "4826529",
     "auth": {},
     "securityScheme": {},
-    "servers": [
-      {
-        "id": "default",
-        "name": "默认服务"
-      }
-    ],
     "gateway": [],
     "language": "zh-CN",
     "apiStatuses": [
@@ -3552,6 +3424,12 @@
       }
     },
     "initialDisabledMockIds": [],
+    "servers": [
+      {
+        "id": "default",
+        "name": "默认服务"
+      }
+    ],
     "cloudMock": {
       "security": "free",
       "enable": false,
